@@ -1,0 +1,24 @@
+.button-container {
+  padding: 15px;
+  border: 2px solid black;
+  background-color: rgba(255, 255, 255, 0.6);
+  transition: 0.2s background-color ease-in-out, 0.2s box-shadow ease-in-out;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.button-container:hover {
+  cursor: pointer;
+  background-color: black;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.button-text {
+  margin: 0px;
+  color: black;
+  transition: 0.2s color ease-in-out;
+}
+
+.button-container:hover>.button-text {
+  color: white;
+}

@@ -1,0 +1,15 @@
+.app-header {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/headerImage.jpg");
+  font-size: calc(10px + 2vmin);
+}
+
+.horizontal {
+  display: flex;
+  flex-direction: row;
+}
