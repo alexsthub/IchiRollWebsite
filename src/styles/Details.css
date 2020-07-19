@@ -1,0 +1,32 @@
+.details-container {
+  margin-top: 5em;
+  margin-bottom: 5em;
+}
+
+.details {
+  display: flex;
+  flex-direction: row;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.hours-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.hours-row p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.day {
+  margin-right: 15px;
+}
+
+.range {
+  margin-left: 15px;
+}

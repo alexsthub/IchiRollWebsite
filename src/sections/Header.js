@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Header.css";
 
-import Button from "./Button";
+import Button from "../components/Button";
 
 export default class Header extends React.Component {
   render() {

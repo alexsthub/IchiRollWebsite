@@ -34,23 +34,29 @@ function minuteToTime(startingMinute, duration) {
   return [days - 1, openHour];
 }
 
-export function hoursToDateString(day, startHours, startMinutes, endHours, endMinutes) {
+export function hoursToDateString(day, range) {
   const dayConversion = {
-    1: "Monday",
-    2: "Tuesday",
-    3: "Wednesday",
-    4: "Thursday",
-    5: "Friday",
-    6: "Saturday",
-    7: "Sunday",
+    0: "Monday",
+    1: "Tuesday",
+    2: "Wednesday",
+    3: "Thursday",
+    4: "Friday",
+    5: "Saturday",
+    6: "Sunday",
   };
-
-  const isAM = Math.floor(startHours / 12) % 2 === 0;
-  const endIsAM = Math.floor(endHours / 12) % 2 === 0;
-  let dateString = `${dayConversion[day]}, ${startHours % 12}:${
-    startMinutes.toString().length < 2 ? "0" + startMinutes : startMinutes
-  }${isAM ? "AM" : "PM"} - ${endHours % 12}:${
-    endMinutes.toString().length < 2 ? "0" + endMinutes : endMinutes
+  if (!range) return { day: dayConversion[day], dateString: "Closed" };
+  const { startHour, startMinute, endHour, endMinute } = range;
+  const isAM = Math.floor(startHour / 12) % 2 === 0;
+  const endIsAM = Math.floor(endHour / 12) % 2 === 0;
+  let dateString = `${startHour % 12}:${
+    startMinute.toString().length < 2 ? "0" + startMinute : startMinute
+  }${isAM ? "AM" : "PM"} - ${endHour % 12}:${
+    endMinute.toString().length < 2 ? "0" + endMinute : endMinute
   }${endIsAM ? "AM" : "PM"}`;
-  return dateString;
+
+  const res = {
+    day: dayConversion[day],
+    dateString: dateString,
+  };
+  return res;
 }
