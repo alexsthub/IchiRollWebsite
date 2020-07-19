@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/Header.css";
+import "../styles/Background.css";
 
 import Button from "../components/Button";
 
-export default class Header extends React.Component {
+export default class Background extends React.Component {
   render() {
     return (
       <div className="app-header">

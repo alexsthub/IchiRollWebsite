@@ -6,7 +6,8 @@ import constructMenu from "./helpers/menuQuery";
 import { convertRawOpenHours } from "./helpers/hoursParser";
 import { clients } from "wix-restaurants-js-sdk";
 
-import Header from "./sections/Header";
+import Header from "./components/Header";
+import Background from "./sections/Background";
 import Details from "./sections/Details";
 
 export default class App extends React.Component {
@@ -33,6 +34,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Header />
+        <Background />
         <Details openHours={this.state.openHours} />
       </div>
     );
