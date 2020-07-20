@@ -8,9 +8,9 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 export default class Button extends React.Component {
   render() {
     return (
-      <div className="button-container">
+      <div className="button-container" onClick={this.props.onClick}>
         <p className="button-text">{this.props.text}</p>
-        <FontAwesomeIcon className="right-arrow" icon={faArrowRight} size="s" />
+        <FontAwesomeIcon className="right-arrow" icon={faArrowRight} size="sm" />
       </div>
     );
   }
@@ -18,4 +18,5 @@ export default class Button extends React.Component {
 
 Button.propTypes = {
   text: PropTypes.string,
+  onClick: PropTypes.func,
 };

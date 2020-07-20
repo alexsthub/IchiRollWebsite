@@ -1,15 +1,24 @@
 import React from "react";
 import "../styles/components/Header.css";
 
-export default class ActualHeader extends React.Component {
+import { Link } from "react-router-dom";
+
+// TODO: Do not want to links to be purple?
+export default class Header extends React.Component {
   render() {
     return (
-      <header className="header">
+      <header className="header" ref={this.props.refProp}>
         <p className="title">{"Ichi Roll Wok & Terriyaki"}</p>
         <div className="options-container">
-          <div className="option">Home</div>
-          <div className="option">Menu</div>
-          <div className="option">Order</div>
+          <Link to="/" className="option">
+            Home
+          </Link>
+          <Link to="/menu" className="option">
+            Menu
+          </Link>
+          <Link to="/order" className="option">
+            Order
+          </Link>
         </div>
       </header>
     );

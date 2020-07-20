@@ -1,15 +1,22 @@
+// Libraries
 import React, { createRef } from "react";
-// import { Route, Switch, Link, NavLink, Redirect } from "react-router-dom";
-import "./styles/App.css";
-
-import constructMenu from "./helpers/menuQuery";
-import { convertRawOpenHours } from "./helpers/hoursParser";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { clients } from "wix-restaurants-js-sdk";
 
+// Helpers
+import constructMenu from "./helpers/menuQuery";
+import { convertRawOpenHours } from "./helpers/hoursParser";
+
+// Components
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
-import Background from "./sections/Background";
-import Details from "./sections/Details";
+
+// Pages
+import HomeScreen from "./pages/Home";
+import MenuScreen from "./pages/Menu";
+import OrderScreen from "./pages/Order";
+
+import "./styles/App.css";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -36,10 +43,14 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar backgroundRef={this.backgroundRef} />
-        <Header />
-        <Background refProp={this.backgroundRef} />
-        <Details openHours={this.state.openHours} />
+        <Navbar headerRef={this.backgroundRef} />
+        <Header refProp={this.backgroundRef} />
+        <Switch>
+          <Route exact path="/" render={() => <HomeScreen openHours={this.state.openHours} />} />
+          <Route path="/menu" component={MenuScreen} />
+          <Route path="/order" component={OrderScreen} />
+          <Redirect to="/" />
+        </Switch>
       </div>
     );
   }

@@ -18,22 +18,31 @@ export default class Navbar extends React.Component {
   }
 
   listenToScroll = () => {
-    if (!this.props.backgroundRef) return;
+    const headerRef = this.props.headerRef;
+    if (!headerRef) return;
     const currentScrollPos = window.pageYOffset;
-    const backgroundTop = this.props.backgroundRef.current.offsetTop + 1;
-    if (currentScrollPos >= backgroundTop && this.state.top === -70) {
+    const bottom = headerRef.current.offsetTop + headerRef.current.offsetHeight;
+    if (currentScrollPos >= bottom && this.state.top === -70) {
       this.setState({ top: 0 });
-    } else if (currentScrollPos < backgroundTop && this.state.top === 0) {
+    } else if (currentScrollPos < bottom && this.state.top === 0) {
       this.setState({ top: -70 });
     }
+  };
+
+  handleHomeClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   render() {
     return (
       <div className="nav" style={{ top: this.state.top }}>
-        <div className="option">Home</div>
-        <div className="option">Menu</div>
-        <Button text="Order Online" />
+        <div onClick={this.handleHomeClick} className="option">
+          Home
+        </div>
+        <div onClick={() => console.log("navigate to menu")} className="option">
+          Menu
+        </div>
+        <Button text="Order Online" onClick={() => console.log("navigate to another page")} />
       </div>
     );
   }
