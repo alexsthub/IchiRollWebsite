@@ -3,7 +3,6 @@ import "../styles/components/Header.css";
 
 import { Link } from "react-router-dom";
 
-// TODO: Do not want to links to be purple?
 export default class Header extends React.Component {
   render() {
     return (

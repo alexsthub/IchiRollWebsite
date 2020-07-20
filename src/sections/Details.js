@@ -36,9 +36,7 @@ export default class Details extends React.Component {
     return (
       <section id="details" className="details-container">
         <div className="details">
-          <div className="inline-block hours-table">
-            {hoursTable}
-          </div>
+          <div className="inline-block hours-table">{hoursTable}</div>
           <div className="inline-block map-container">
             <MapContainer />
           </div>

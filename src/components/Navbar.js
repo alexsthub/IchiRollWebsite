@@ -29,21 +29,32 @@ export default class Navbar extends React.Component {
     }
   };
 
-  handleHomeClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  handleNavigation = (path) => {
+    const url = window.location.pathname;
+    if (url === path) window.scrollTo({ top: 0, behavior: "smooth" });
+    else window.open(path, "_self");
   };
 
   render() {
     return (
-      <div className="nav" style={{ top: this.state.top }}>
-        <div onClick={this.handleHomeClick} className="option">
-          Home
+      <nav className="nav" style={{ top: this.state.top }}>
+        <div className="nav-content">
+          <div style={{ display: "flex" }}>
+            <div onClick={() => this.handleNavigation("/")} className="option">
+              Home
+            </div>
+            <div onClick={() => this.handleNavigation("/menu")} className="option">
+              Menu
+            </div>
+          </div>
+
+          <div style={{ fontWeight: "bold", paddingBottom: 5, fontSize: "1.5rem" }}>
+            {"Ichi Roll Wok & Teriyaki"}
+          </div>
+
+          <Button text="Order Online" onClick={() => this.handleNavigation("/order")} />
         </div>
-        <div onClick={() => console.log("navigate to menu")} className="option">
-          Menu
-        </div>
-        <Button text="Order Online" onClick={() => console.log("navigate to another page")} />
-      </div>
+      </nav>
     );
   }
 }

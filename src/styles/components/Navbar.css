@@ -5,12 +5,19 @@
   background-color: white;
   width: 100%;
   transition: top 0.3s;
-
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
-.nav div {
+.nav-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.nav-content div {
   font-size: 1rem;
   font-weight: bold;
 }
