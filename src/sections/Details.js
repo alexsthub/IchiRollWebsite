@@ -13,7 +13,7 @@ export default class Details extends React.Component {
       const { day, dateString } = hoursToDateString(i, range);
 
       const row = (
-        <div className="hours-row">
+        <div key={String(i)} className="hours-row">
           <p className="day">{`${day}:`}</p>
           <p className="range">{dateString}</p>
         </div>

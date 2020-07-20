@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 // import { Route, Switch, Link, NavLink, Redirect } from "react-router-dom";
 import "./styles/App.css";
 
@@ -6,6 +6,7 @@ import constructMenu from "./helpers/menuQuery";
 import { convertRawOpenHours } from "./helpers/hoursParser";
 import { clients } from "wix-restaurants-js-sdk";
 
+import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import Background from "./sections/Background";
 import Details from "./sections/Details";
@@ -17,6 +18,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount = async () => {
+    this.backgroundRef = createRef();
+
     const organizationId = "258553461683418";
     const rest = clients.createRestClient();
 
@@ -33,8 +36,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Navbar backgroundRef={this.backgroundRef} />
         <Header />
-        <Background />
+        <Background refProp={this.backgroundRef} />
         <Details openHours={this.state.openHours} />
       </div>
     );
