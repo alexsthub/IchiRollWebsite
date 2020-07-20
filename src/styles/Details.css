@@ -6,8 +6,8 @@
 .details {
   display: flex;
   flex-direction: row;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 200px;
+  margin-right: 200px;
 }
 
 .hours-row {
@@ -23,10 +23,24 @@
   margin-bottom: 0px;
 }
 
+.hours-table {
+  width: 30%;
+  margin-right: 20%;
+}
+
+.map-container {
+  width: 50%;
+}
+
 .day {
   margin-right: 15px;
 }
 
 .range {
   margin-left: 15px;
+}
+
+.inline-block {
+  display: inline-block;
+  position: relative;
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Details.css";
+import MapContainer from "../components/MapContainer.js";
 
 import { hoursToDateString } from "../helpers/hoursParser";
 
@@ -35,8 +36,12 @@ export default class Details extends React.Component {
     return (
       <section id="details" className="details-container">
         <div className="details">
-          {hoursTable}
-          <p style={{ marginLeft: 100 }}>The google maps over here</p>
+          <div className="inline-block hours-table">
+            {hoursTable}
+          </div>
+          <div className="inline-block map-container">
+            <MapContainer />
+          </div>
         </div>
       </section>
     );
