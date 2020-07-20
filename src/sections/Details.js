@@ -4,6 +4,9 @@ import MapContainer from "../components/MapContainer.js";
 
 import { hoursToDateString } from "../helpers/hoursParser";
 
+// TODO: Hours container is hardcoded width, whats the big idea here?
+// TODO: Redo hours to date string to fit https://www.google.com/search?q=restaurant+hours+design&sxsrf=ALeKk02IPnUX6aihrYwiSeuvpCnFpboUwQ:1595274473309&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiv0LPCzNzqAhUTNn0KHRohAi0Q_AUoAXoECA8QAw&cshid=1595274661669336&biw=1680&bih=868#imgrc=lkIbizCJrTwRfM
+const phoneNumber = "(206) 363-5100";
 export default class Details extends React.Component {
   createHoursTable = (openHours) => {
     if (!openHours) return null;
@@ -22,9 +25,13 @@ export default class Details extends React.Component {
       rows.push(row);
     }
     return (
-      <div>
-        <h3>Opening Hours:</h3>
-        {rows}
+      <div className="hours-container">
+        <div className="hours-descr">
+          <h3>Opening Hours</h3>
+          <p>{`Tel: ${phoneNumber}`}</p>
+        </div>
+        <div className="border" />
+        <div style={{ display: "flex", flexDirection: "column" }}>{rows}</div>
       </div>
     );
   };
@@ -36,10 +43,10 @@ export default class Details extends React.Component {
     return (
       <section id="details" className="details-container">
         <div className="details">
-          <div className="inline-block hours-table">{hoursTable}</div>
-          <div className="inline-block map-container">
+          <div className="hours-table">{hoursTable}</div>
+          {/* <div className="inline-block map-container">
             <MapContainer />
-          </div>
+          </div> */}
         </div>
       </section>
     );

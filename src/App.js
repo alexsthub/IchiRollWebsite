@@ -31,6 +31,7 @@ export default class App extends React.Component {
     const rest = clients.createRestClient();
 
     const restaurantDetails = await rest(`/organizations/${organizationId}`);
+    console.log(restaurantDetails);
     const openHours = convertRawOpenHours(restaurantDetails.openTimes);
 
     const menuObj = await rest(`/organizations/${organizationId}/menu`);
