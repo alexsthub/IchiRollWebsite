@@ -34,17 +34,53 @@ function minuteToTime(startingMinute, duration) {
   return [days - 1, openHour];
 }
 
-export function hoursToDateString(day, range) {
+export function groupHours(openHours) {
   const dayConversion = {
-    0: "Mon",
-    1: "Tue",
-    2: "Wed",
-    3: "Thur",
-    4: "Fri",
-    5: "Sat",
-    6: "Sun",
+    0: "Monday",
+    1: "Tuesday",
+    2: "Wednesday",
+    3: "Thursday",
+    4: "Friday",
+    5: "Saturday",
+    6: "Sunday",
   };
-  if (!range) return { day: dayConversion[day], dateString: "Closed" };
+  let res = [];
+  let start = null;
+  let prev = null;
+  for (let i = 0; i < 7; i++) {
+    let range = openHours[i];
+    if (!range) range = {};
+
+    if (start === null) {
+      start = i;
+      prev = i;
+      continue;
+    }
+    const prevRange = openHours[prev];
+    if (!isEquivalent(range, prevRange)) {
+      const dayRange =
+        start === prev ? dayConversion[start] : `${dayConversion[start]} - ${dayConversion[prev]}`;
+      const timeRange = rangeToString(openHours[start]);
+      const rowRange = { dayRange: dayRange, timeRange: timeRange };
+      res.push(rowRange);
+      start = i;
+    }
+    if (i === 6) {
+      const dayRange =
+        start === i ? dayConversion[start] : `${dayConversion[start]} - ${dayConversion[i]}`;
+      const timeRange = rangeToString(range);
+      const rowRange = { dayRange: dayRange, timeRange: timeRange };
+      res.push(rowRange);
+      break;
+    }
+    prev = i;
+  }
+  return res;
+}
+
+function rangeToString(range) {
+  if (Object.keys(range).length === 0 && range.constructor === Object) return "Closed";
+
   const { startHour, startMinute, endHour, endMinute } = range;
   const isAM = Math.floor(startHour / 12) % 2 === 0;
   const endIsAM = Math.floor(endHour / 12) % 2 === 0;
@@ -53,10 +89,20 @@ export function hoursToDateString(day, range) {
   }${isAM ? "AM" : "PM"} - ${endHour % 12}:${
     endMinute.toString().length < 2 ? "0" + endMinute : endMinute
   }${endIsAM ? "AM" : "PM"}`;
+  return dateString;
+}
 
-  const res = {
-    day: dayConversion[day],
-    dateString: dateString,
-  };
-  return res;
+function isEquivalent(a, b) {
+  var aProps = Object.getOwnPropertyNames(a);
+  var bProps = Object.getOwnPropertyNames(b);
+  if (aProps.length !== bProps.length) {
+    return false;
+  }
+  for (var i = 0; i < aProps.length; i++) {
+    var propName = aProps[i];
+    if (a[propName] !== b[propName]) {
+      return false;
+    }
+  }
+  return true;
 }

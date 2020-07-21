@@ -31,14 +31,14 @@ export default class App extends React.Component {
     const rest = clients.createRestClient();
 
     const restaurantDetails = await rest(`/organizations/${organizationId}`);
-    console.log(restaurantDetails);
+    // console.log(restaurantDetails);
     const openHours = convertRawOpenHours(restaurantDetails.openTimes);
 
     const menuObj = await rest(`/organizations/${organizationId}/menu`);
     const menu = constructMenu(menuObj);
     this.setState({ menu: menu, openHours: openHours });
-    console.log(menu);
-    console.log(openHours);
+    // console.log(menu);
+    // console.log(openHours);
   };
 
   render() {

@@ -2,28 +2,25 @@ import React from "react";
 import "../styles/Details.css";
 import MapContainer from "../components/MapContainer.js";
 
-import { hoursToDateString } from "../helpers/hoursParser";
+import { groupHours } from "../helpers/hoursParser";
 
 // TODO: Hours container is hardcoded width, whats the big idea here?
 // TODO: Redo hours to date string to fit https://www.google.com/search?q=restaurant+hours+design&sxsrf=ALeKk02IPnUX6aihrYwiSeuvpCnFpboUwQ:1595274473309&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiv0LPCzNzqAhUTNn0KHRohAi0Q_AUoAXoECA8QAw&cshid=1595274661669336&biw=1680&bih=868#imgrc=lkIbizCJrTwRfM
 const phoneNumber = "(206) 363-5100";
 export default class Details extends React.Component {
   createHoursTable = (openHours) => {
-    if (!openHours) return null;
+    if (Object.keys(openHours).length === 0 && openHours.constructor === Object) return null;
 
-    let rows = [];
-    for (let i = 0; i < 7; i++) {
-      const range = openHours[i];
-      const { day, dateString } = hoursToDateString(i, range);
-
-      const row = (
-        <div key={String(i)} className="hours-row">
-          <p className="day">{`${day}:`}</p>
-          <p className="range">{dateString}</p>
+    const hours = groupHours(openHours);
+    const rows = hours.map((hour) => {
+      const { dayRange, timeRange } = hour;
+      return (
+        <div key={dayRange} className="hours-row">
+          <p className="day">{dayRange}</p>
+          <p className="range">{timeRange}</p>
         </div>
       );
-      rows.push(row);
-    }
+    });
     return (
       <div className="hours-container">
         <div className="hours-descr">
