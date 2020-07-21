@@ -6,16 +6,55 @@
 .details {
   display: flex;
   flex-direction: row;
-  margin-left: 200px;
-  margin-right: 200px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.hours-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: #f0e3d5;
+  border-radius: 5px;
+  padding: 200px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+}
+
+.hours-descr {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.opening-hours {
+  margin: 0px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000000;
+}
+
+.phone {
+  margin-left: auto;
+  text-shadow: 1px 1px 1px #000000;
+  margin: 0px;
+}
+
+.border {
+  width: 2px;
+  height: auto;
+  background-color: black;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 2px 3px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .hours-row {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   margin-top: 10px;
   margin-bottom: 10px;
+  text-shadow: 1px 1px 1px #000000;
 }
 
 .hours-row p {
@@ -33,12 +72,10 @@
 }
 
 .day {
-  margin-right: 15px;
+  font-size: 1.5rem;
 }
 
-.range {
-  margin-left: 15px;
-}
+.range {}
 
 .inline-block {
   display: inline-block;
