@@ -34,7 +34,7 @@ export default class Details extends React.Component {
           <p className="phone">{`Tel: ${phoneNumber}`}</p>
         </div>
         <div className="border" />
-        <div style={{ display: "flex", flexDirection: "column" }}>{rows}</div>
+        <div className="hours">{rows}</div>
       </div>
     );
   };
@@ -47,10 +47,9 @@ export default class Details extends React.Component {
       <section id="details" className="details-container">
         <div className="details">
           <div className="hours-table">{hoursTable}</div>
-          <div className="inline-block map-container">
-            <MapContainer />
-          </div>
         </div>
+
+        <MapContainer />
       </section>
     );
   }

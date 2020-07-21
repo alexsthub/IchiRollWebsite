@@ -5,20 +5,21 @@
 
 .details {
   display: flex;
-  flex-direction: row;
-  margin-left: 80px;
-  margin-right: 80px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hours-container {
   display: flex;
   flex-direction: row;
-  width: 100%;
   background-color: #f0e3d5;
   border-radius: 5px;
-  padding: 200px;
+  padding-right: 400px;
   padding-left: 30px;
-  padding-bottom: 30px;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  font-size: 1.5rem;
+  white-space: nowrap;
 }
 
 .hours-descr {
@@ -29,7 +30,7 @@
 
 .opening-hours {
   margin: 0px;
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: bold;
   text-shadow: 1px 1px 2px #000000;
 }
@@ -62,22 +63,6 @@
   margin-bottom: 0px;
 }
 
-.hours-table {
-  width: 30%;
-  margin-right: 20%;
-}
-
-.map-container {
-  width: 50%;
-}
-
 .day {
-  font-size: 1.5rem;
-}
-
-.range {}
-
-.inline-block {
-  display: inline-block;
-  position: relative;
+  font-size: 1.5em;
 }

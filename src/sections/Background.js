@@ -1,8 +1,6 @@
 import React from "react";
 import "../styles/Background.css";
 
-// import Button from "../components/Button";
-
 export default class Background extends React.Component {
   render() {
     return (
