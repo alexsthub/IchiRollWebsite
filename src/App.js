@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { clients } from "wix-restaurants-js-sdk";
 
 // Helpers
-import constructMenu from "./helpers/menuQuery";
 import { convertRawOpenHours } from "./helpers/hoursParser";
 
 // Components
@@ -21,11 +20,11 @@ import "./styles/App.css";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menu: {}, openHours: {} };
+    this.state = { openHours: {} };
   }
 
   componentDidMount = async () => {
-    this.backgroundRef = createRef();
+    this.headerRef = createRef();
 
     const organizationId = "258553461683418";
     const rest = clients.createRestClient();
@@ -34,9 +33,7 @@ export default class App extends React.Component {
     // console.log(restaurantDetails);
     const openHours = convertRawOpenHours(restaurantDetails.openTimes);
 
-    const menuObj = await rest(`/organizations/${organizationId}/menu`);
-    const menu = constructMenu(menuObj);
-    this.setState({ menu: menu, openHours: openHours });
+    this.setState({ openHours: openHours });
     // console.log(menu);
     // console.log(openHours);
   };
@@ -44,8 +41,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar headerRef={this.backgroundRef} />
-        <Header refProp={this.backgroundRef} />
+        <Navbar headerRef={this.headerRef} />
+        <Header refProp={this.headerRef} />
         <Switch>
           <Route exact path="/" render={() => <HomeScreen openHours={this.state.openHours} />} />
           <Route path="/menu" component={MenuScreen} />

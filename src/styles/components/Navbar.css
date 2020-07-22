@@ -21,3 +21,12 @@
   font-size: 1rem;
   font-weight: bold;
 }
+
+.nav-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: black;
+}
