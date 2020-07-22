@@ -54,7 +54,7 @@ export default class Navbar extends React.Component {
 
           <Button text="Order Online" onClick={() => this.handleNavigation("/order")} />
         </div>
-        <div className="nav-border" />
+        {/* <div className="nav-border" /> */}
       </nav>
     );
   }

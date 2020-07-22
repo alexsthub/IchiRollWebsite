@@ -7,6 +7,8 @@
   transition: top 0.3s;
   display: flex;
   justify-content: center;
+
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2)
 }
 
 .nav-content {
@@ -22,11 +24,11 @@
   font-weight: bold;
 }
 
-.nav-border {
+/* .nav-border {
   position: absolute;
   bottom: 0;
   left: 0;
   height: 2px;
   width: 100%;
   background-color: black;
-}
+} */

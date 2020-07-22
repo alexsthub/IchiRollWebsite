@@ -7,7 +7,8 @@ import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
-// TODO: Render the menu
+// TODO: Be able to collapse the section
+// TODO: Add borders
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
