@@ -43,6 +43,24 @@
   text-align: start;
 }
 
+.section-border {
+  height: 1px;
+  width: 100%;
+  background-color: lightgray;
+  margin-top: 20px;
+}
+
+.section-title-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title-container:hover {
+  cursor: pointer;
+}
+
 .section-title {
   font-size: 20px;
   font-family: CircularMed;
@@ -50,10 +68,13 @@
   line-height: 1.25;
   letter-spacing: 0.25px;
   text-transform: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0px;
 }
 
 .basic-grid {
-  margin-top: 25px;
+  margin-top: 8px;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));

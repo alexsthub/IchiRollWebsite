@@ -1,14 +1,11 @@
 import React from "react";
 import { clients } from "wix-restaurants-js-sdk";
 
-import MenuItem from "../components/MenuItem";
-
+import MenuSection from "../components/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
-// TODO: Be able to collapse the section
-// TODO: Add borders
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +18,6 @@ export default class MenuScreen extends React.Component {
     const menuObj = await rest(`/organizations/${organizationId}/menu`);
     const menu = constructMenu(menuObj);
     this.setState({ menu: menu });
-    console.log(menu);
   };
 
   renderMenu = () => {
@@ -29,15 +25,7 @@ export default class MenuScreen extends React.Component {
     if (keys.length === 0) return null;
     const section = keys.map((sectionTitle) => {
       const menuItems = this.state.menu[sectionTitle];
-      const items = menuItems.map((item) => {
-        return <MenuItem key={item.title.en_US} item={item} />;
-      });
-      return (
-        <div className="section-container" key={sectionTitle}>
-          <p className="section-title">{sectionTitle}</p>
-          <div className="basic-grid">{items}</div>
-        </div>
-      );
+      return <MenuSection key={sectionTitle} title={sectionTitle} menuItems={menuItems} />;
     });
     return section;
   };

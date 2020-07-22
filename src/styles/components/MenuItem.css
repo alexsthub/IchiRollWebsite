@@ -7,7 +7,6 @@
   border-radius: 8px;
 
   text-align: start;
-
 }
 
 .item-details {
@@ -26,6 +25,7 @@
 .item-description {
   margin: 0px;
   margin-top: 8px;
+  color: #696970;
 }
 
 .item-price {
