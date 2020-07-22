@@ -3,10 +3,11 @@ import MenuItem from "./MenuItem";
 
 import "../styles/Menu.css";
 
+import { SlideDown } from "react-slidedown";
+import "react-slidedown/lib/slidedown.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: Be able to collapse the section
 export default class MenuSection extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,9 @@ export default class MenuSection extends React.Component {
           <p className="section-title">{title}</p>
           <FontAwesomeIcon style={{ color: "gray" }} icon={icon} size="sm" />
         </div>
-        <div className="basic-grid">{items}</div>
+        <SlideDown className="slide-transition" transitionOnAppear={false}>
+          {this.state.showItems ? <div className="basic-grid">{items}</div> : null}
+        </SlideDown>
       </div>
     );
   }

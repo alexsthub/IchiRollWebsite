@@ -6,6 +6,8 @@ import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
+// TODO: Show loading
+// TODO: Do I want to have a categories thing that updates?
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
