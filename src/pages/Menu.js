@@ -1,17 +1,18 @@
 import React from "react";
 import { clients } from "wix-restaurants-js-sdk";
+import Loader from "react-loader-spinner";
 
 import MenuSection from "../components/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-// TODO: Show loading
 // TODO: Do I want to have a categories thing that updates?
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menu: {} };
+    this.state = { menu: {}, loading: true };
   }
 
   componentDidMount = async () => {
@@ -19,7 +20,7 @@ export default class MenuScreen extends React.Component {
     const rest = clients.createRestClient();
     const menuObj = await rest(`/organizations/${organizationId}/menu`);
     const menu = constructMenu(menuObj);
-    this.setState({ menu: menu });
+    this.setState({ menu: menu, loading: false });
   };
 
   renderMenu = () => {
@@ -33,6 +34,14 @@ export default class MenuScreen extends React.Component {
   };
 
   render() {
+    if (this.state.loading) {
+      return (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Loader type="TailSpin" color="gray" height={75} width={75} />
+        </div>
+      );
+    }
+
     const menu = this.renderMenu();
     return (
       <div className="menu-container">
