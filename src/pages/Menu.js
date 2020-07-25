@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import { clients } from "wix-restaurants-js-sdk";
 import Loader from "react-loader-spinner";
 
@@ -8,19 +8,73 @@ import constructMenu from "../helpers/menuQuery";
 import "../styles/Menu.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-// TODO: Do I want to have a categories thing that updates?
+// TODO: Style categories & Turn into a drop down
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menu: {}, loading: true };
+    this.state = { menu: {}, loading: true, selectedCategoryIndex: -1 };
   }
 
   componentDidMount = async () => {
+    window.addEventListener("scroll", this.listenToScroll);
+
     const organizationId = "258553461683418";
     const rest = clients.createRestClient();
     const menuObj = await rest(`/organizations/${organizationId}/menu`);
     const menu = constructMenu(menuObj);
+    this.menuOptions = Object.keys(menu);
+    this.sectionRefs = this.generateSectionRefs(menu);
     this.setState({ menu: menu, loading: false });
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.listenToScroll);
+  }
+
+  listenToScroll = () => {
+    const yPos = window.scrollY + 52;
+    let start = this.state.selectedCategoryIndex;
+    let end = start + 1;
+    const maxLength = this.menuOptions.length;
+    while (start >= -1 || end < maxLength) {
+      if (start >= -1 && this.checkRange(start, yPos)) {
+        if (this.state.selectedCategoryIndex !== start) {
+          this.setState({ selectedCategoryIndex: start });
+        }
+        break;
+      }
+      start--;
+      if (end < maxLength && this.checkRange(end, yPos)) {
+        if (this.state.selectedCategoryIndex !== end) {
+          this.setState({ selectedCategoryIndex: end });
+        }
+        break;
+      }
+      end++;
+    }
+  };
+
+  checkRange(index, yPos) {
+    if (index === -1) {
+      const ref = this.sectionRefs[this.menuOptions[0]];
+      const offsetTop = ref.current.offsetTop;
+      return yPos <= offsetTop;
+    }
+
+    const ref = this.sectionRefs[this.menuOptions[index]];
+    const offsetTop = ref.current.offsetTop;
+    const offsetBottom = offsetTop + ref.current.offsetHeight;
+    return offsetTop <= yPos && yPos <= offsetBottom;
+  }
+
+  generateSectionRefs = (menu) => {
+    const sectionRefs = {};
+    const keys = Object.keys(menu);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      sectionRefs[key] = createRef();
+    }
+    return sectionRefs;
   };
 
   renderMenu = () => {
@@ -28,7 +82,10 @@ export default class MenuScreen extends React.Component {
     if (keys.length === 0) return null;
     const section = keys.map((sectionTitle) => {
       const menuItems = this.state.menu[sectionTitle];
-      return <MenuSection key={sectionTitle} title={sectionTitle} menuItems={menuItems} />;
+      const ref = this.sectionRefs[sectionTitle];
+      return (
+        <MenuSection key={sectionTitle} title={sectionTitle} menuItems={menuItems} refProp={ref} />
+      );
     });
     return section;
   };
@@ -54,7 +111,16 @@ export default class MenuScreen extends React.Component {
             to love as we have.
           </p>
         </div>
-        <div className="menu-content">{menu}</div>
+        <div className="menu-content">
+          <div className="category-container">
+            <p>
+              {this.state.selectedCategoryIndex === -1
+                ? "Categories"
+                : this.menuOptions[this.state.selectedCategoryIndex]}
+            </p>
+          </div>
+          {menu}
+        </div>
       </div>
     );
   }

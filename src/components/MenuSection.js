@@ -28,7 +28,7 @@ export default class MenuSection extends React.Component {
     const icon = this.state.showItems ? faChevronDown : faChevronUp;
 
     return (
-      <div className="section-container" key={title}>
+      <div className="section-container" key={title} ref={this.props.refProp}>
         <div className="section-border" />
         <div className="section-title-container" onClick={this.handleClick}>
           <p className="section-title">{title}</p>

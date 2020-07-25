@@ -39,6 +39,24 @@
   width: 70%;
 }
 
+.category-container {
+  display: flex;
+  justify-content: flex-end;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 52px;
+  text-align: end;
+  z-index: 10;
+}
+
+.category-container p {
+  margin: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: white;
+
+}
+
 .section-container {
   text-align: start;
 }
@@ -80,6 +98,7 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-auto-rows: 140px;
 }
+
 
 .slide-transition {
   transition-duration: .3s;
