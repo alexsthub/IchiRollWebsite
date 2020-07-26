@@ -49,12 +49,9 @@
   z-index: 10;
 }
 
-.category-container p {
-  margin: 0px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  background-color: white;
-
+.category-dropdown {
+  width: 230px;
+  text-align: start;
 }
 
 .section-container {

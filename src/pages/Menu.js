@@ -1,12 +1,14 @@
 import React, { createRef } from "react";
 import { clients } from "wix-restaurants-js-sdk";
 import Loader from "react-loader-spinner";
+import Dropdown from "react-dropdown";
 
 import MenuSection from "../components/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "react-dropdown/style.css";
 
 // TODO: Style categories & Turn into a drop down
 export default class MenuScreen extends React.Component {
@@ -90,6 +92,13 @@ export default class MenuScreen extends React.Component {
     return section;
   };
 
+  handleDropdownClick = (option) => {
+    const sectionTitle = option.value;
+    const sectionRef = this.sectionRefs[sectionTitle];
+    const scrollLocation = sectionRef.current.offsetTop - 52;
+    window.scrollTo({ top: scrollLocation, behavior: "smooth" });
+  };
+
   render() {
     if (this.state.loading) {
       return (
@@ -113,11 +122,17 @@ export default class MenuScreen extends React.Component {
         </div>
         <div className="menu-content">
           <div className="category-container">
-            <p>
-              {this.state.selectedCategoryIndex === -1
-                ? "Categories"
-                : this.menuOptions[this.state.selectedCategoryIndex]}
-            </p>
+            <Dropdown
+              className="category-dropdown"
+              menuClassName="shit"
+              options={this.menuOptions}
+              onChange={this.handleDropdownClick}
+              value={
+                this.state.selectedCategoryIndex === -1
+                  ? "Categories"
+                  : this.menuOptions[this.state.selectedCategoryIndex]
+              }
+            />
           </div>
           {menu}
         </div>
