@@ -4,6 +4,8 @@
   align-items: center;
   text-align: center;
   padding: 2em;
+  padding-bottom: 0px;
+  margin-bottom: 2em;
 }
 
 .title {
