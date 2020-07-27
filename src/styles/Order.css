@@ -1,0 +1,74 @@
+:root {
+  --order-margin: 40px;
+  --order-padding: 20px;
+}
+
+.order-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-inner {
+  width: 60%;
+  margin: var(--order-margin) 0px var(--order-margin) 0px;
+  padding: var(--order-padding) 0px var(--order-padding) 0px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+}
+
+.order-header {
+  padding: 0px var(--order-padding) 0px var(--order-padding);
+}
+
+.order-header p {
+  margin: 0px;
+}
+
+.order-header p:first-child {
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+.order-location {
+  display: flex;
+  align-items: center;
+}
+
+.order-time-container {
+  display: flex;
+  align-items: center;
+  border-top: 1px lightgray solid;
+  border-bottom: 1px lightgray solid;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px var(--order-padding) 10px var(--order-padding);
+}
+
+.order-time-container p {
+  margin: 0px 10px 0px 10px;
+  color: #8c8c8c;
+}
+
+.oval {
+  padding: 5px 30px 5px 30px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+}
+
+.pickup {
+  background-color: #13AA6D;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+}
+
+.switch {
+  /* padding: 5px 30px 5px 30px; */
+  /* border-radius: 20px; */
+}
+
+.time {
+  padding: 5px 20px 5px 20px;
+  display: flex;
+  align-items: center;
+}
