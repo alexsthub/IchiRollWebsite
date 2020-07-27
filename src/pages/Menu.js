@@ -10,7 +10,6 @@ import "../styles/Menu.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-dropdown/style.css";
 
-// TODO: Style categories & Turn into a drop down
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -124,7 +123,6 @@ export default class MenuScreen extends React.Component {
           <div className="category-container">
             <Dropdown
               className="category-dropdown"
-              menuClassName="shit"
               options={this.menuOptions}
               onChange={this.handleDropdownClick}
               value={

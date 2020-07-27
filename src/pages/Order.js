@@ -1,16 +1,27 @@
 import React from "react";
 import "../styles/Order.css";
 
+import Dropdown from "../components/Dropdown";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default class OrderScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { type: "ASAP", date: null, time: null };
+  }
+
+  updateScheduledTime = (stuff) => {
+    // TODO:
+  };
+
   render() {
     return (
       <div className="order-outer">
         <div className="order-inner">
           <OrderHeader />
-          <OrderTime />
+          <OrderTime onSave={this.updateScheduledTime} />
         </div>
       </div>
     );
@@ -45,10 +56,7 @@ class OrderTime extends React.Component {
         <p>for</p>
         <div className="switch oval">ASAP / Scheduled Switch</div>
         <p>at</p>
-        <div className="time oval">
-          <FontAwesomeIcon style={{ marginRight: 5 }} icon={faCalendar} />
-          <div>Tue, July 28 @ 6:15 PM</div>
-        </div>
+        <Dropdown onSave={this.props.onSave} />
       </div>
     );
   }
