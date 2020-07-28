@@ -14,9 +14,10 @@ import OrderScreen from "./pages/Order";
 import "./styles/App.css";
 
 export default class App extends React.Component {
-  componentDidMount = async () => {
+  constructor(props) {
+    super(props);
     this.headerRef = createRef();
-  };
+  }
 
   render() {
     return (
