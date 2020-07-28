@@ -19,22 +19,24 @@ class Dropdown extends Component {
     this.mounted = true;
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.value) {
-      var selected = this.parseValue(newProps.value, newProps.options);
-      if (selected !== this.state.selected) {
-        this.setState({ selected: selected });
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      if (this.props.value) {
+        let selected = this.parseValue(this.props.value, this.props.options);
+        if (selected !== this.state.selected) {
+          this.setState({ selected });
+        }
+      } else {
+        this.setState({
+          selected: {
+            label:
+              typeof this.props.placeholder === "undefined"
+                ? DEFAULT_PLACEHOLDER_STRING
+                : this.props.placeholder,
+            value: "",
+          },
+        });
       }
-    } else {
-      this.setState({
-        selected: {
-          label:
-            typeof newProps.placeholder === "undefined"
-              ? DEFAULT_PLACEHOLDER_STRING
-              : newProps.placeholder,
-          value: "",
-        },
-      });
     }
   }
 
@@ -56,7 +58,6 @@ class Dropdown extends Component {
     if (event.type === "mousedown" && event.button !== 0) return;
     event.stopPropagation();
     event.preventDefault();
-
     if (!this.props.disabled) {
       this.setState({
         isOpen: !this.state.isOpen,
@@ -83,7 +84,7 @@ class Dropdown extends Component {
     return option || value;
   };
 
-  setValue = (value, label) => {
+  setValue = (value, label, e) => {
     let newState = {
       selected: {
         value,
@@ -91,6 +92,7 @@ class Dropdown extends Component {
       },
       isOpen: false,
     };
+    e.stopPropagation();
     this.fireChangeEvent(newState);
     this.setState(newState);
   };
@@ -121,8 +123,8 @@ class Dropdown extends Component {
       <div
         key={value}
         className={optionClass}
-        onMouseDown={this.setValue.bind(this, value, label)}
-        onClick={this.setValue.bind(this, value, label)}
+        onMouseDown={(e) => this.setValue(value, label, e)}
+        onClick={(e) => this.setValue(value, label, e)}
         role="option"
         aria-selected={isSelected ? "true" : "false"}
       >
@@ -213,8 +215,8 @@ class Dropdown extends Component {
       <div className={dropdownClass} ref={this.wrapperRef}>
         <div
           className={controlClass}
-          onMouseDown={this.handleMouseDown.bind(this)}
-          onTouchEnd={this.handleMouseDown.bind(this)}
+          onMouseDown={this.handleMouseDown}
+          onTouchEnd={this.handleMouseDown}
           aria-haspopup="listbox"
         >
           {value}
