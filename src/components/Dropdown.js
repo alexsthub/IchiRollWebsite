@@ -1,6 +1,7 @@
 import React, { createRef } from "react";
 
-import OptionsDropdown from "react-dropdown";
+// import OptionsDropdown from "react-dropdown";
+import DropdownOptions from "../components/DropDownOptions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
@@ -64,7 +65,7 @@ export default class Dropdown extends React.Component {
       <div className="dropdown-menu">
         <div className="dropdown-content">
           <p>Select Pickup Date</p>
-          <OptionsDropdown
+          <DropdownOptions
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleDateChange}
@@ -72,7 +73,7 @@ export default class Dropdown extends React.Component {
             value={"Test"}
           />
           <p>Select Pickup Time</p>
-          <OptionsDropdown
+          <DropdownOptions
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleTimeChange}

@@ -59,7 +59,7 @@ export default class OrderScreen extends React.Component {
   };
 
   updateScheduledTime = (stuff) => {
-    // TODO:
+    //
   };
 
   render() {
