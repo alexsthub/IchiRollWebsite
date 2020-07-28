@@ -1,14 +1,13 @@
 import React, { createRef } from "react";
 import { clients } from "wix-restaurants-js-sdk";
 import Loader from "react-loader-spinner";
-import Dropdown from "react-dropdown";
+import DropdownOptions from "../components/DropDownOptions";
 
 import MenuSection from "../components/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import "react-dropdown/style.css";
 
 export default class MenuScreen extends React.Component {
   constructor(props) {
@@ -121,7 +120,7 @@ export default class MenuScreen extends React.Component {
         </div>
         <div className="menu-content">
           <div className="category-container">
-            <Dropdown
+            <DropdownOptions
               className="category-dropdown"
               options={this.menuOptions}
               onChange={this.handleDropdownClick}
