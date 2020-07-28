@@ -14,8 +14,8 @@ export default class Dropdown extends React.Component {
     this.wrapperRef = createRef();
     this.state = {
       isOpen: false,
-      selectedDay: "",
-      selectedTime: "",
+      selectedDate: this.props.selectedDate,
+      selectedTime: this.props.selectedTime,
     };
   }
 
@@ -35,17 +35,17 @@ export default class Dropdown extends React.Component {
 
   handleDateChange = (dateOption) => {
     console.log(dateOption);
-    // TODO:
+    this.setState({ selectedDate: dateOption });
   };
 
   handleTimeChange = (timeOption) => {
     console.log(timeOption);
-    // TODO:
+    this.setState({ selectedTime: timeOption });
   };
 
   handleSave = (event) => {
     event.stopPropagation();
-    this.props.onSave();
+    this.props.onSave(this.state.selectedDate, this.state.selectedTime);
     this.setState({ isOpen: false });
   };
 

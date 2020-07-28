@@ -15,9 +15,6 @@ export default class OrderScreen extends React.Component {
     super(props);
     this.state = {
       type: "ASAP",
-      date: null,
-      time: null,
-      openHours: null,
       hourOptions: [],
       dateOptions: [],
       selectedDate: null,
@@ -60,7 +57,6 @@ export default class OrderScreen extends React.Component {
       selectedDate: dateOptions[0],
       selectedTime: hourOptions[0],
     });
-    // TODO: soonest
   };
 
   _getDateOptions(currentDate, openHours) {
@@ -114,8 +110,8 @@ export default class OrderScreen extends React.Component {
     );
   };
 
-  updateScheduledTime = (stuff) => {
-    //
+  updateScheduledTime = (selectedDate, selectedTime) => {
+    this.setState({ selectedDate: selectedDate, selectedTime: selectedTime });
   };
 
   render() {

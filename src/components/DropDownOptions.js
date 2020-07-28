@@ -135,7 +135,6 @@ class Dropdown extends Component {
   buildMenu = () => {
     let { options, baseClassName } = this.props;
     let ops = options.map((option) => {
-      console.log(option);
       if (option.type === "group") {
         let groupTitle = <div className={`${baseClassName}-title`}>{option.name}</div>;
         let _options = option.items.map((item) => this.renderOption(item));
