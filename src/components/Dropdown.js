@@ -49,15 +49,15 @@ export default class Dropdown extends React.Component {
     // 2.) Get 3 days out
   };
 
-  handleTimeChange = () => {
+  handleTimeChange = (option) => {
+    console.log(option);
     // TODO: Get current time to close in 15 minute incremenets
   };
 
   handleSave = (event) => {
     event.stopPropagation();
-    this.setState({ isOpen: false }, () => {
-      this.props.onSave();
-    });
+    this.props.onSave();
+    this.setState({ isOpen: false });
   };
 
   render() {
@@ -77,7 +77,7 @@ export default class Dropdown extends React.Component {
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleTimeChange}
-            options={[1, 2, 3]}
+            options={this.props.hourOptions}
             value={"Test"}
           />
           <div onClick={this.handleSave} className="update-button oval">

@@ -106,3 +106,11 @@ function isEquivalent(a, b) {
   }
   return true;
 }
+
+export function timeToString(hour, minute) {
+  let suffix = hour >= 12 ? "PM" : "AM";
+  const strMinute = minute < 10 ? "0" + minute : minute;
+  const strHour = hour > 12 ? hour - 12 : hour;
+  const timeString = `${strHour}:${strMinute} ${suffix}`;
+  return timeString;
+}

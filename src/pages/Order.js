@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Order.css";
 
 import { getRestaurantDetails, addDaysToDate } from "../helpers/utils";
-import { convertRawOpenHours } from "../helpers/hoursParser";
+import { convertRawOpenHours, timeToString } from "../helpers/hoursParser";
 
 import Dropdown from "../components/Dropdown";
 
@@ -12,7 +12,7 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { type: "ASAP", date: null, time: null, openHours: null };
+    this.state = { type: "ASAP", date: null, time: null, openHours: null, hourOptions: [] };
   }
 
   componentDidMount = async () => {
@@ -44,10 +44,37 @@ export default class OrderScreen extends React.Component {
         }
       }
     }
-    console.log(date);
-    // this.setState({ random: "blah" });
+    // console.log(date);
+    const hourOptions = this._getTimeRangesForDay(date, openHours[dayOfWeek]);
+    console.log(hourOptions);
+    this.setState({ hourOptions: hourOptions });
     // TODO: What to do with the date
   };
+
+  _getTimeRangesForDay(date, hours) {
+    let timeRanges = [];
+
+    let currentHour = date.getHours();
+    let currentMinute = date.getMinutes();
+    const endHour = hours.endHour;
+    const endMinute = hours.endMinute;
+    currentMinute = currentMinute + (15 - (currentMinute % 15));
+    while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
+      if (currentMinute >= 60) {
+        currentHour++;
+        currentMinute = 0;
+      }
+      const option = {
+        value: { hour: currentHour, minute: currentMinute },
+        label: timeToString(currentHour, currentMinute),
+      };
+      timeRanges.push(option);
+      currentMinute = currentMinute + 15;
+    }
+    timeRanges.pop();
+    timeRanges.shift();
+    return timeRanges;
+  }
 
   _withinTimeRange = (hours, currentHour, currentMinute) => {
     if (!hours) return false;
@@ -69,7 +96,11 @@ export default class OrderScreen extends React.Component {
       <div className="order-outer">
         <div className="order-inner">
           <OrderHeader />
-          <OrderTime openHours={this.state.openHours} onSave={this.updateScheduledTime} />
+          <OrderTime
+            openHours={this.state.openHours}
+            hourOptions={this.state.hourOptions}
+            onSave={this.updateScheduledTime}
+          />
         </div>
       </div>
     );
@@ -103,7 +134,11 @@ class OrderTime extends React.Component {
         <p>for</p>
         <div className="switch oval">ASAP / Scheduled Switch</div>
         <p>at</p>
-        <Dropdown openHours={this.props.openHours} onSave={this.props.onSave} />
+        <Dropdown
+          openHours={this.props.openHours}
+          hourOptions={this.props.hourOptions}
+          onSave={this.props.onSave}
+        />
       </div>
     );
   }
