@@ -20,6 +20,8 @@ export default class OrderScreen extends React.Component {
       openHours: null,
       hourOptions: [],
       dateOptions: [],
+      selectedDate: null,
+      selectedTime: null,
     };
   }
 
@@ -27,9 +29,7 @@ export default class OrderScreen extends React.Component {
     const restaurantDetails = await getRestaurantDetails();
     const openHours = convertRawOpenHours(restaurantDetails.openTimes);
 
-    const firstDay = this.selectFirstAvailableTime(openHours);
-    this.setState({ date: firstDay });
-    // this.setState({ openHours: openHours });
+    this.selectFirstAvailableTime(openHours);
   };
 
   selectFirstAvailableTime = (openHours) => {
@@ -52,11 +52,15 @@ export default class OrderScreen extends React.Component {
         }
       }
     }
-    // console.log(date);
     const dateOptions = this._getDateOptions(date, openHours);
     const hourOptions = this._getTimeRangesForDay(date, openHours[dayOfWeek]);
-    this.setState({ hourOptions: hourOptions, dateOptions: dateOptions });
-    // TODO: What to do with the date
+    this.setState({
+      hourOptions: hourOptions,
+      dateOptions: dateOptions,
+      selectedDate: dateOptions[0],
+      selectedTime: hourOptions[0],
+    });
+    // TODO: soonest
   };
 
   _getDateOptions(currentDate, openHours) {
@@ -115,7 +119,7 @@ export default class OrderScreen extends React.Component {
   };
 
   render() {
-    if (this.state.date === null) return null;
+    if (this.state.selectedDate === null) return null;
 
     return (
       <div className="order-outer">
@@ -125,6 +129,8 @@ export default class OrderScreen extends React.Component {
             openHours={this.state.openHours}
             dateOptions={this.state.dateOptions}
             hourOptions={this.state.hourOptions}
+            selectedDate={this.state.selectedDate}
+            selectedTime={this.state.selectedTime}
             onSave={this.updateScheduledTime}
           />
         </div>
@@ -164,6 +170,8 @@ class OrderTime extends React.Component {
           openHours={this.props.openHours}
           dateOptions={this.props.dateOptions}
           hourOptions={this.props.hourOptions}
+          selectedDate={this.props.selectedDate}
+          selectedTime={this.props.selectedTime}
           onSave={this.props.onSave}
         />
       </div>

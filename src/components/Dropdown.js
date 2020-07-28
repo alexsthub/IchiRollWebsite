@@ -1,6 +1,5 @@
 import React, { createRef } from "react";
 
-// import OptionsDropdown from "react-dropdown";
 import DropdownOptions from "../components/DropDownOptions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +8,6 @@ import "../styles/Order.css";
 import "../styles/components/Dropdown.css";
 
 // TODO: animate entry?
-// TODO: Change the dropdown package to get rid of outdated functions.
 export default class Dropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -20,14 +18,6 @@ export default class Dropdown extends React.Component {
       selectedTime: "",
     };
   }
-
-  getDayOptions = () => {
-    //
-  };
-
-  getTimeOptions = () => {
-    //
-  };
 
   componentDidMount() {
     window.addEventListener("mousedown", this.handleClickOutside);
@@ -43,15 +33,14 @@ export default class Dropdown extends React.Component {
     }
   };
 
-  handleDateChange = () => {
-    // TODO: Get days - 3 days out
-    // 1.) Get current day.
-    // 2.) Get 3 days out
+  handleDateChange = (dateOption) => {
+    console.log(dateOption);
+    // TODO:
   };
 
-  handleTimeChange = (option) => {
-    console.log(option);
-    // TODO: Get current time to close in 15 minute incremenets
+  handleTimeChange = (timeOption) => {
+    console.log(timeOption);
+    // TODO:
   };
 
   handleSave = (event) => {
@@ -70,7 +59,7 @@ export default class Dropdown extends React.Component {
             controlClassName="dd-picker-control"
             onChange={this.handleDateChange}
             options={this.props.dateOptions}
-            value={"Test"}
+            value={this.props.selectedDate}
           />
           <p>Select Pickup Time</p>
           <DropdownOptions
@@ -78,7 +67,7 @@ export default class Dropdown extends React.Component {
             controlClassName="dd-picker-control"
             onChange={this.handleTimeChange}
             options={this.props.hourOptions}
-            value={"Test"}
+            value={this.props.selectedTime}
           />
           <div onClick={this.handleSave} className="update-button oval">
             Update Time
@@ -91,7 +80,7 @@ export default class Dropdown extends React.Component {
       <div className="dropdown-container" ref={this.wrapperRef}>
         <div className="time oval" onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
           <FontAwesomeIcon style={{ marginRight: 5 }} icon={faCalendar} />
-          <div>Tue, Jul 28 @ 6:15 PM</div>
+          <div>{`${this.props.selectedDate.label} @ ${this.props.selectedTime.label}`}</div>
           <FontAwesomeIcon
             style={{ marginLeft: 10, color: "gray" }}
             icon={this.state.isOpen ? faChevronUp : faChevronDown}

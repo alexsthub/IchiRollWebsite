@@ -1,5 +1,6 @@
 .dropdown-container {
   position: relative;
+  user-select: none;
 }
 
 .dropdown-menu {
