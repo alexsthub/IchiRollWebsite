@@ -9,14 +9,15 @@ import Dropdown from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
+// TODO: Disable ASAP if current time is not open hour
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       type: "ASAP",
-      hourOptions: [],
       dateOptions: [],
+      hourOptions: [],
       selectedDate: null,
       selectedTime: null,
     };
@@ -24,9 +25,9 @@ export default class OrderScreen extends React.Component {
 
   componentDidMount = async () => {
     const restaurantDetails = await getRestaurantDetails();
-    const openHours = convertRawOpenHours(restaurantDetails.openTimes);
+    this.openHours = convertRawOpenHours(restaurantDetails.openTimes);
 
-    this.selectFirstAvailableTime(openHours);
+    this.selectFirstAvailableTime(this.openHours);
   };
 
   selectFirstAvailableTime = (openHours) => {
@@ -37,18 +38,26 @@ export default class OrderScreen extends React.Component {
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
     if (!this._withinTimeRange(hours, currentHour, currentMinute)) {
-      let daysAdded = 0;
-      while (true) {
-        dayOfWeek = dayOfWeek === 6 ? 1 : dayOfWeek + 1;
-        hours = openHours[dayOfWeek];
-        daysAdded = daysAdded + 1;
-        if (hours) {
-          date = addDaysToDate(date, daysAdded);
-          date.setHours(hours.startHour, hours.startMinute);
-          break;
+      if (
+        currentHour < hours.startHour ||
+        (currentHour === hours.startHour && currentMinute < hours.startHour)
+      ) {
+        date.setHours(hours.startHour, hours.startMinute);
+      } else {
+        let daysAdded = 0;
+        while (true) {
+          dayOfWeek = dayOfWeek === 6 ? 1 : dayOfWeek + 1;
+          hours = openHours[dayOfWeek];
+          daysAdded = daysAdded + 1;
+          if (hours) {
+            date = addDaysToDate(date, daysAdded);
+            date.setHours(hours.startHour, hours.startMinute);
+            break;
+          }
         }
       }
     }
+
     const dateOptions = this._getDateOptions(date, openHours);
     const hourOptions = this._getTimeRangesForDay(date, openHours[dayOfWeek]);
     this.setState({
@@ -83,7 +92,18 @@ export default class OrderScreen extends React.Component {
     let currentMinute = date.getMinutes();
     const endHour = hours.endHour;
     const endMinute = hours.endMinute;
-    currentMinute = currentMinute + (15 - (currentMinute % 15));
+
+    if (
+      currentHour < hours.startHour ||
+      (currentHour === hours.startHour && currentMinute < hours.startMinute)
+    ) {
+      currentHour = hours.startHour;
+      currentMinute = hours.startMinute;
+    }
+
+    const difference = currentMinute % 15;
+    currentMinute = difference !== 0 ? currentMinute + 15 - difference : currentMinute;
+
     while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
       if (currentMinute >= 60) {
         currentHour++;
@@ -114,6 +134,29 @@ export default class OrderScreen extends React.Component {
     this.setState({ selectedDate: selectedDate, selectedTime: selectedTime });
   };
 
+  updateHourOptions = (selectedDate) => {
+    const currentDate = new Date();
+    if (this._isGreaterDate(selectedDate, currentDate)) {
+      const hours = this.openHours[selectedDate.getDay() - 1];
+      selectedDate.setHours(hours.startHour, hours.startMinute);
+    } else {
+      selectedDate = new Date();
+    }
+    const newHours = this._getTimeRangesForDay(
+      selectedDate,
+      this.openHours[selectedDate.getDay() - 1]
+    );
+    this.setState({ hourOptions: newHours });
+  };
+
+  _isGreaterDate = (selectedDate, currentDate) => {
+    return (
+      selectedDate.getMonth() > currentDate.getMonth() ||
+      (selectedDate.getMonth() === currentDate.getMonth() &&
+        selectedDate.getDate() > currentDate.getDate())
+    );
+  };
+
   render() {
     if (this.state.selectedDate === null) return null;
 
@@ -127,6 +170,7 @@ export default class OrderScreen extends React.Component {
             hourOptions={this.state.hourOptions}
             selectedDate={this.state.selectedDate}
             selectedTime={this.state.selectedTime}
+            updateHourOptions={this.updateHourOptions}
             onSave={this.updateScheduledTime}
           />
         </div>
@@ -168,6 +212,7 @@ class OrderTime extends React.Component {
           hourOptions={this.props.hourOptions}
           selectedDate={this.props.selectedDate}
           selectedTime={this.props.selectedTime}
+          updateHourOptions={this.props.updateHourOptions}
           onSave={this.props.onSave}
         />
       </div>

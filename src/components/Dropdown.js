@@ -34,17 +34,18 @@ export default class Dropdown extends React.Component {
   };
 
   handleDateChange = (dateOption) => {
-    console.log(dateOption);
-    this.setState({ selectedDate: dateOption });
+    this.props.updateHourOptions(dateOption.value);
+    this.setState({ selectedDate: dateOption, selectedTime: null });
   };
 
   handleTimeChange = (timeOption) => {
-    console.log(timeOption);
     this.setState({ selectedTime: timeOption });
   };
 
   handleSave = (event) => {
     event.stopPropagation();
+    if (!this.state.selectedTime) return;
+
     this.props.onSave(this.state.selectedDate, this.state.selectedTime);
     this.setState({ isOpen: false });
   };
@@ -60,6 +61,7 @@ export default class Dropdown extends React.Component {
             onChange={this.handleDateChange}
             options={this.props.dateOptions}
             value={this.props.selectedDate}
+            placeholder={"Select a date"}
           />
           <p>Select Pickup Time</p>
           <DropdownOptions
@@ -67,9 +69,13 @@ export default class Dropdown extends React.Component {
             controlClassName="dd-picker-control"
             onChange={this.handleTimeChange}
             options={this.props.hourOptions}
-            value={this.props.selectedTime}
+            value={this.state.selectedTime}
+            placeholder={"Select a time"}
           />
-          <div onClick={this.handleSave} className="update-button oval">
+          <div
+            onClick={this.handleSave}
+            className={`${!this.state.selectedTime ? "disabled " : ""}update-button oval`}
+          >
             Update Time
           </div>
         </div>

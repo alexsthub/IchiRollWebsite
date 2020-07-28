@@ -46,6 +46,12 @@
   opacity: 0.8;
 }
 
+.disabled,
+.disabled:hover {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .dd-picker {
   margin: 10px 0px;
 }
