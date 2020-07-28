@@ -9,10 +9,18 @@ import Dropdown from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
+const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { type: "ASAP", date: null, time: null, openHours: null, hourOptions: [] };
+    this.state = {
+      type: "ASAP",
+      date: null,
+      time: null,
+      openHours: null,
+      hourOptions: [],
+      dateOptions: [],
+    };
   }
 
   componentDidMount = async () => {
@@ -45,11 +53,28 @@ export default class OrderScreen extends React.Component {
       }
     }
     // console.log(date);
+    const dateOptions = this._getDateOptions(date, openHours);
     const hourOptions = this._getTimeRangesForDay(date, openHours[dayOfWeek]);
-    console.log(hourOptions);
-    this.setState({ hourOptions: hourOptions });
+    this.setState({ hourOptions: hourOptions, dateOptions: dateOptions });
     // TODO: What to do with the date
   };
+
+  _getDateOptions(currentDate, openHours) {
+    let dateOptions = [];
+    for (let i = 0; i < NUM_DAYS_FUTURE; i++) {
+      const dayOfWeek = currentDate.getDay() - 1;
+      if (openHours[dayOfWeek]) {
+        const month = currentDate.toLocaleString("default", { month: "short" });
+        const dayName = currentDate.toString().split(" ")[0];
+        const day = currentDate.getDate();
+        const dateString = `${dayName}, ${month} ${day}`;
+        const option = { label: dateString, value: currentDate };
+        dateOptions.push(option);
+      }
+      currentDate = addDaysToDate(currentDate, 1);
+    }
+    return dateOptions;
+  }
 
   _getTimeRangesForDay(date, hours) {
     let timeRanges = [];
@@ -98,6 +123,7 @@ export default class OrderScreen extends React.Component {
           <OrderHeader />
           <OrderTime
             openHours={this.state.openHours}
+            dateOptions={this.state.dateOptions}
             hourOptions={this.state.hourOptions}
             onSave={this.updateScheduledTime}
           />
@@ -136,6 +162,7 @@ class OrderTime extends React.Component {
         <p>at</p>
         <Dropdown
           openHours={this.props.openHours}
+          dateOptions={this.props.dateOptions}
           hourOptions={this.props.hourOptions}
           onSave={this.props.onSave}
         />

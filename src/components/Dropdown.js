@@ -69,7 +69,7 @@ export default class Dropdown extends React.Component {
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleDateChange}
-            options={[1, 2, 3]}
+            options={this.props.dateOptions}
             value={"Test"}
           />
           <p>Select Pickup Time</p>
