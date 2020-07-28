@@ -8,6 +8,7 @@ import "../styles/Order.css";
 import "../styles/components/Dropdown.css";
 
 // TODO: animate entry?
+// TODO: Change the dropdown package to get rid of outdated functions.
 export default class Dropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +44,8 @@ export default class Dropdown extends React.Component {
 
   handleDateChange = () => {
     // TODO: Get days - 3 days out
+    // 1.) Get current day.
+    // 2.) Get 3 days out
   };
 
   handleTimeChange = () => {
