@@ -1,8 +1,9 @@
 import React from "react";
 import "../styles/Order.css";
 
-import { getRestaurantDetails, addDaysToDate } from "../helpers/utils";
+import { getRestaurantDetails, getMenuDetails, addDaysToDate } from "../helpers/utils";
 import { convertRawOpenHours, timeToString } from "../helpers/hoursParser";
+import constructMenu from "../helpers/menuQuery";
 
 import Dropdown from "../components/Dropdown";
 
@@ -20,13 +21,19 @@ export default class OrderScreen extends React.Component {
       hourOptions: [],
       selectedDate: null,
       selectedTime: null,
+      selectedMenuCategory: null,
     };
   }
 
   componentDidMount = async () => {
     const restaurantDetails = await getRestaurantDetails();
+    const rawMenu = await getMenuDetails();
     this.openHours = convertRawOpenHours(restaurantDetails.openTimes);
+    this.menu = constructMenu(rawMenu);
+    console.log(this.menu);
 
+    const selectedMenuCategory = Object.keys(this.menu)[0];
+    this.setState({ selectedMenuCategory: selectedMenuCategory });
     this.selectFirstAvailableTime(this.openHours);
   };
 
@@ -157,9 +164,15 @@ export default class OrderScreen extends React.Component {
     );
   };
 
+  onCategoryClick = (e, category) => {
+    e.preventDefault();
+    if (category !== this.state.selectedMenuCategory) {
+      this.setState({ selectedMenuCategory: category });
+    }
+  };
+
   render() {
     if (this.state.selectedDate === null) return null;
-
     return (
       <div className="order-outer">
         <div className="order-inner">
@@ -173,7 +186,59 @@ export default class OrderScreen extends React.Component {
             updateHourOptions={this.updateHourOptions}
             onSave={this.updateScheduledTime}
           />
+          <OrderMenu
+            menu={this.menu}
+            selectedCategory={this.state.selectedMenuCategory}
+            onCategoryClick={this.onCategoryClick}
+          />
         </div>
+      </div>
+    );
+  }
+}
+
+// TODO: Lets render out the categories
+class OrderMenu extends React.Component {
+  render() {
+    const categories = Object.keys(this.props.menu).map((category) => {
+      return (
+        <OrderCategory
+          key={category}
+          title={category}
+          onCategoryClick={this.props.onCategoryClick}
+          selected={this.props.selectedCategory === category}
+        />
+      );
+    });
+
+    const categoryItems = this.props.menu[this.props.selectedCategory];
+    const renderedItems = categoryItems.map((item) => {
+      return <p key={item.id}>{item.title.en_US}</p>;
+    });
+
+    return (
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div className="col order-category">
+          <p style={{ fontWeight: "bold", marginLeft: 15 }}>Categories</p>
+          {categories}
+        </div>
+        <div className="col">{renderedItems}</div>
+        <div className="col">
+          <p>Hello</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+class OrderCategory extends React.Component {
+  render() {
+    return (
+      <div
+        className={`oc-option${this.props.selected ? " oc-selected" : ""}`}
+        onClick={(e) => this.props.onCategoryClick(e, this.props.title)}
+      >
+        <p>{this.props.title}</p>
       </div>
     );
   }

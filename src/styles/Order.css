@@ -12,7 +12,7 @@
 .order-inner {
   width: 60%;
   margin: var(--order-margin) 0px var(--order-margin) 0px;
-  padding: var(--order-padding) 0px var(--order-padding) 0px;
+  padding: var(--order-padding) 0px 0px 0px;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
 }
@@ -41,7 +41,6 @@
   border-top: 1px lightgray solid;
   border-bottom: 1px lightgray solid;
   margin-top: 15px;
-  margin-bottom: 15px;
   padding: 10px var(--order-padding) 10px var(--order-padding);
 }
 
@@ -76,4 +75,43 @@
 
 .time:hover {
   cursor: pointer;
+}
+
+
+/* Menu */
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Order Category */
+.order-category {
+  text-align: start;
+  border-right: 1px solid lightgray;
+  max-width: 150px;
+}
+
+.oc-option {
+  padding: 0px 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+.oc-option:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
+.oc-selected {
+  position: relative;
+  background-color: lightgray;
+}
+
+.oc-selected:before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
 }

@@ -11,6 +11,13 @@ export async function getRestaurantDetails() {
   return restaurantDetails;
 }
 
+export async function getMenuDetails() {
+  const organizationId = "258553461683418";
+  const rest = clients.createRestClient();
+  const menu = await rest(`/organizations/${organizationId}/menu`);
+  return menu;
+}
+
 export function addDaysToDate(currentDate, days) {
   const date = new Date(currentDate.valueOf());
   date.setDate(date.getDate() + days);
