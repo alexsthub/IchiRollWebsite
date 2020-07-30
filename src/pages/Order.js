@@ -15,6 +15,7 @@ import {
 import OrderHeader from "../components/order/OrderHeader";
 import OrderTime from "../components/order/OrderTime";
 import OrderMenu from "../components/order/OrderMenu";
+import AddItemModal from "../components/order/AddItemModal";
 
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
@@ -29,6 +30,7 @@ export default class OrderScreen extends React.Component {
       selectedDate: null,
       selectedTime: null,
       selectedMenuCategory: null,
+      selectedItem: null,
     };
   }
 
@@ -94,10 +96,7 @@ export default class OrderScreen extends React.Component {
     } else {
       selectedDate = new Date();
     }
-    const newHours = this._getTimeRangesForDay(
-      selectedDate,
-      this.openHours[selectedDate.getDay() - 1]
-    );
+    const newHours = getTimeRangesForDay(selectedDate, this.openHours[selectedDate.getDay() - 1]);
     this.setState({ hourOptions: newHours });
   };
 
@@ -111,7 +110,18 @@ export default class OrderScreen extends React.Component {
   onItemClick = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
+    this.setState({ selectedItem: item });
+  };
+
+  closeModal = () => {
+    this.setState({ selectedItem: null });
+  };
+
+  handleAdd = (item, quantity, specialInstruction) => {
     console.log(item);
+    console.log(quantity);
+    console.log(specialInstruction);
+    this.closeModal();
   };
 
   render() {
@@ -136,6 +146,11 @@ export default class OrderScreen extends React.Component {
             onItemClick={this.onItemClick}
           />
         </div>
+        <AddItemModal
+          item={this.state.selectedItem}
+          closeModal={() => this.setState({ selectedItem: null })}
+          onAdd={this.handleAdd}
+        />
       </div>
     );
   }

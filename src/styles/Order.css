@@ -215,3 +215,139 @@
   cursor: pointer;
   opacity: 0.8;
 }
+
+/* Modal */
+.ReactModal__Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.2s ease-in-out;
+  z-index: 15;
+  opacity: 0;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.m-title {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-bottom: 3px;
+  margin: 0px;
+}
+
+.m-title::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+}
+
+.m-instructions {
+  padding-bottom: 15px;
+  border-bottom: 1px solid gray;
+}
+
+.m-content-container {
+  padding: 15px;
+  max-width: 350px;
+}
+
+.m-details {
+  position: relative;
+  padding-bottom: 15px;
+  border-bottom: 1px solid gray;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.m-text {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 80px;
+  padding: 8px 16px;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.m-text:focus {
+  outline: none;
+}
+
+.m-text::placeholder {
+  user-select: none;
+}
+
+.textarea-counter {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  font-weight: bold;
+  font-size: 10px;
+  user-select: none;
+}
+
+.quantity-container {
+  display: flex;
+  height: 45px;
+  padding: 0px 15px;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+.quantity {
+  width: 35px;
+  text-align: center;
+  user-select: none;
+}
+
+.clickable {
+  padding: 3px;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.m-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 45px;
+  padding: 0px 20px;
+  margin-left: 15px;
+  width: 100%;
+  color: white;
+  background-color: #13AA6D;
+  user-select: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.m-add p {
+  margin: 0px;
+}
+
+.m-add:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
