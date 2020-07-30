@@ -5,12 +5,14 @@ import { getRestaurantDetails, getMenuDetails, addDaysToDate } from "../helpers/
 import { convertRawOpenHours, timeToString } from "../helpers/hoursParser";
 import constructMenu from "../helpers/menuQuery";
 
+import MenuItem from "../components/MenuItem";
 import Dropdown from "../components/Dropdown";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 // TODO: Disable ASAP if current time is not open hour
+// TODO: Width 70% does not really work.
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -197,7 +199,6 @@ export default class OrderScreen extends React.Component {
   }
 }
 
-// TODO: Lets render out the categories
 class OrderMenu extends React.Component {
   render() {
     const categories = Object.keys(this.props.menu).map((category) => {
@@ -213,18 +214,37 @@ class OrderMenu extends React.Component {
 
     const categoryItems = this.props.menu[this.props.selectedCategory];
     const renderedItems = categoryItems.map((item) => {
-      return <p key={item.id}>{item.title.en_US}</p>;
+      return <MenuItem key={item.title.en_US} item={item} />;
     });
 
     return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className="order-menu">
         <div className="col order-category">
           <p style={{ fontWeight: "bold", marginLeft: 15 }}>Categories</p>
           {categories}
         </div>
-        <div className="col">{renderedItems}</div>
-        <div className="col">
-          <p>Hello</p>
+        <div className="col order-items">{renderedItems}</div>
+        <div className="col order-basket">
+          <div className="ob-header">
+            <p>Order Summary</p>
+            <p>(0 items)</p>
+          </div>
+          <div className="ob-summary">
+            <FontAwesomeIcon className="shopping-icon" icon={faShoppingBag} size="4x" />
+            <p>Choose an item from the menu to get started.</p>
+          </div>
+          <div className="ob-border" />
+          <div className="ob-line-container">
+            <div className="ob-summary-line">
+              <p>Subtotal</p>
+              <p>$13.00</p>
+            </div>
+            <div className="ob-summary-line">
+              <p>Tax:</p>
+              <p>$1.00</p>
+            </div>
+          </div>
+          <div>Checkout</div>
         </div>
       </div>
     );
