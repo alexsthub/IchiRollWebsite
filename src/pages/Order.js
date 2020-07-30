@@ -2,8 +2,14 @@ import React from "react";
 import "../styles/Order.css";
 
 import { getRestaurantDetails, getMenuDetails, addDaysToDate } from "../helpers/utils";
-import { convertRawOpenHours, timeToString } from "../helpers/hoursParser";
+import { convertRawOpenHours } from "../helpers/hoursParser";
 import constructMenu from "../helpers/menuQuery";
+import {
+  getDateOptions,
+  getTimeRangesForDay,
+  withinTimeRange,
+  isGreaterDate,
+} from "../helpers/dateHelpers";
 
 import MenuItem from "../components/MenuItem";
 import Dropdown from "../components/Dropdown";
@@ -46,7 +52,7 @@ export default class OrderScreen extends React.Component {
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
-    if (!this._withinTimeRange(hours, currentHour, currentMinute)) {
+    if (!withinTimeRange(hours, currentHour, currentMinute)) {
       if (
         currentHour < hours.startHour ||
         (currentHour === hours.startHour && currentMinute < hours.startHour)
@@ -67,8 +73,8 @@ export default class OrderScreen extends React.Component {
       }
     }
 
-    const dateOptions = this._getDateOptions(date, openHours);
-    const hourOptions = this._getTimeRangesForDay(date, openHours[dayOfWeek]);
+    const dateOptions = getDateOptions(date, openHours, NUM_DAYS_FUTURE);
+    const hourOptions = getTimeRangesForDay(date, openHours[dayOfWeek]);
     this.setState({
       hourOptions: hourOptions,
       dateOptions: dateOptions,
@@ -77,75 +83,13 @@ export default class OrderScreen extends React.Component {
     });
   };
 
-  _getDateOptions(currentDate, openHours) {
-    let dateOptions = [];
-    for (let i = 0; i < NUM_DAYS_FUTURE; i++) {
-      const dayOfWeek = currentDate.getDay() - 1;
-      if (openHours[dayOfWeek]) {
-        const month = currentDate.toLocaleString("default", { month: "short" });
-        const dayName = currentDate.toString().split(" ")[0];
-        const day = currentDate.getDate();
-        const dateString = `${dayName}, ${month} ${day}`;
-        const option = { label: dateString, value: currentDate };
-        dateOptions.push(option);
-      }
-      currentDate = addDaysToDate(currentDate, 1);
-    }
-    return dateOptions;
-  }
-
-  _getTimeRangesForDay(date, hours) {
-    let timeRanges = [];
-
-    let currentHour = date.getHours();
-    let currentMinute = date.getMinutes();
-    const endHour = hours.endHour;
-    const endMinute = hours.endMinute;
-
-    if (
-      currentHour < hours.startHour ||
-      (currentHour === hours.startHour && currentMinute < hours.startMinute)
-    ) {
-      currentHour = hours.startHour;
-      currentMinute = hours.startMinute;
-    }
-
-    const difference = currentMinute % 15;
-    currentMinute = difference !== 0 ? currentMinute + 15 - difference : currentMinute;
-
-    while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
-      if (currentMinute >= 60) {
-        currentHour++;
-        currentMinute = 0;
-      }
-      const option = {
-        value: { hour: currentHour, minute: currentMinute },
-        label: timeToString(currentHour, currentMinute),
-      };
-      timeRanges.push(option);
-      currentMinute = currentMinute + 15;
-    }
-    timeRanges.pop();
-    timeRanges.shift();
-    return timeRanges;
-  }
-
-  _withinTimeRange = (hours, currentHour, currentMinute) => {
-    if (!hours) return false;
-    return (
-      (hours.startHour < currentHour && currentHour < hours.endHour) ||
-      (currentHour === hours.startHour && currentMinute >= hours.startMinute) ||
-      (currentHour === hours.endHour && currentMinute < hours.endMinute)
-    );
-  };
-
   updateScheduledTime = (selectedDate, selectedTime) => {
     this.setState({ selectedDate: selectedDate, selectedTime: selectedTime });
   };
 
   updateHourOptions = (selectedDate) => {
     const currentDate = new Date();
-    if (this._isGreaterDate(selectedDate, currentDate)) {
+    if (isGreaterDate(selectedDate, currentDate)) {
       const hours = this.openHours[selectedDate.getDay() - 1];
       selectedDate.setHours(hours.startHour, hours.startMinute);
     } else {
@@ -158,19 +102,17 @@ export default class OrderScreen extends React.Component {
     this.setState({ hourOptions: newHours });
   };
 
-  _isGreaterDate = (selectedDate, currentDate) => {
-    return (
-      selectedDate.getMonth() > currentDate.getMonth() ||
-      (selectedDate.getMonth() === currentDate.getMonth() &&
-        selectedDate.getDate() > currentDate.getDate())
-    );
-  };
-
   onCategoryClick = (e, category) => {
     e.preventDefault();
     if (category !== this.state.selectedMenuCategory) {
       this.setState({ selectedMenuCategory: category });
     }
+  };
+
+  onItemClick = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(item);
   };
 
   render() {
@@ -192,6 +134,7 @@ export default class OrderScreen extends React.Component {
             menu={this.menu}
             selectedCategory={this.state.selectedMenuCategory}
             onCategoryClick={this.onCategoryClick}
+            onItemClick={this.onItemClick}
           />
         </div>
       </div>
@@ -214,7 +157,14 @@ class OrderMenu extends React.Component {
 
     const categoryItems = this.props.menu[this.props.selectedCategory];
     const renderedItems = categoryItems.map((item) => {
-      return <MenuItem key={item.title.en_US} item={item} />;
+      return (
+        <MenuItem
+          key={item.title.en_US}
+          item={item}
+          className={"order-item"}
+          onClick={this.props.onItemClick}
+        />
+      );
     });
 
     return (
@@ -244,7 +194,9 @@ class OrderMenu extends React.Component {
               <p>$1.00</p>
             </div>
           </div>
-          <div>Checkout</div>
+          <div className="checkout-container">
+            <div className="checkout">Checkout</div>
+          </div>
         </div>
       </div>
     );

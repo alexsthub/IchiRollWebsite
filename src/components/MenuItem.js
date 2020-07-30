@@ -18,8 +18,12 @@ export default class MenuItem extends React.Component {
       </div>
     ) : null;
 
+    const containerClass = this.props.className
+      ? `${this.props.className} item-container`
+      : "item-container";
+
     return (
-      <div className="item-container">
+      <div className={containerClass} onClick={(e) => this.props.onClick(e, item)}>
         <div className="item-details">
           <div id="details-container">
             <p className="item-title">{item.title.en_US}</p>
