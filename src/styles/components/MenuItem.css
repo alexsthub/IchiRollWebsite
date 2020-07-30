@@ -49,6 +49,11 @@
 }
 
 /* Order Item */
+.order-item {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
 .order-item:hover {
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 3px 10px 0px, rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 0px 5px 0px;
 }

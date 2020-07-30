@@ -11,11 +11,10 @@ import {
   isGreaterDate,
 } from "../helpers/dateHelpers";
 
-import MenuItem from "../components/MenuItem";
-import Dropdown from "../components/Dropdown";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+// Components
+import OrderHeader from "../components/order/OrderHeader";
+import OrderTime from "../components/order/OrderTime";
+import OrderMenu from "../components/order/OrderMenu";
 
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
@@ -137,121 +136,6 @@ export default class OrderScreen extends React.Component {
             onItemClick={this.onItemClick}
           />
         </div>
-      </div>
-    );
-  }
-}
-
-class OrderMenu extends React.Component {
-  render() {
-    const categories = Object.keys(this.props.menu).map((category) => {
-      return (
-        <OrderCategory
-          key={category}
-          title={category}
-          onCategoryClick={this.props.onCategoryClick}
-          selected={this.props.selectedCategory === category}
-        />
-      );
-    });
-
-    const categoryItems = this.props.menu[this.props.selectedCategory];
-    const renderedItems = categoryItems.map((item) => {
-      return (
-        <MenuItem
-          key={item.title.en_US}
-          item={item}
-          className={"order-item"}
-          onClick={this.props.onItemClick}
-        />
-      );
-    });
-
-    return (
-      <div className="order-menu">
-        <div className="col order-category">
-          <p style={{ fontWeight: "bold", marginLeft: 15 }}>Categories</p>
-          {categories}
-        </div>
-        <div className="col order-items">{renderedItems}</div>
-        <div className="col order-basket">
-          <div className="ob-header">
-            <p>Order Summary</p>
-            <p>(0 items)</p>
-          </div>
-          <div className="ob-summary">
-            <FontAwesomeIcon className="shopping-icon" icon={faShoppingBag} size="4x" />
-            <p>Choose an item from the menu to get started.</p>
-          </div>
-          <div className="ob-border" />
-          <div className="ob-line-container">
-            <div className="ob-summary-line">
-              <p>Subtotal</p>
-              <p>$13.00</p>
-            </div>
-            <div className="ob-summary-line">
-              <p>Tax:</p>
-              <p>$1.00</p>
-            </div>
-          </div>
-          <div className="checkout-container">
-            <div className="checkout">Checkout</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-class OrderCategory extends React.Component {
-  render() {
-    return (
-      <div
-        className={`oc-option${this.props.selected ? " oc-selected" : ""}`}
-        onClick={(e) => this.props.onCategoryClick(e, this.props.title)}
-      >
-        <p>{this.props.title}</p>
-      </div>
-    );
-  }
-}
-
-class OrderHeader extends React.Component {
-  render() {
-    return (
-      <div className="order-header">
-        <p>{"Ichi Roll Wok & Teriyaki"}</p>
-        <div className="order-location">
-          <FontAwesomeIcon
-            style={{ color: "#13AA6D", marginRight: 10 }}
-            icon={faMapMarkerAlt}
-            size="sm"
-          />
-          <p>306 N 125th St, Seattle, WA 98133</p>
-        </div>
-      </div>
-    );
-  }
-}
-
-// TODO: How the fuck do i make a switch here
-class OrderTime extends React.Component {
-  render() {
-    return (
-      <div className="order-time-container">
-        <div className="pickup oval">Pickup</div>
-        <p>for</p>
-        <div className="switch oval">ASAP / Scheduled Switch</div>
-        <p>at</p>
-        <Dropdown
-          openHours={this.props.openHours}
-          dateOptions={this.props.dateOptions}
-          hourOptions={this.props.hourOptions}
-          selectedDate={this.props.selectedDate}
-          selectedTime={this.props.selectedTime}
-          updateHourOptions={this.props.updateHourOptions}
-          onSave={this.props.onSave}
-        />
       </div>
     );
   }
