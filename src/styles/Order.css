@@ -157,7 +157,7 @@
   font-weight: bold;
 }
 
-.ob-summary {
+.ob-summary-empty {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -216,6 +216,50 @@
   opacity: 0.8;
 }
 
+/* Line Item */
+.li-container {
+  display: flex;
+}
+
+.li-container p {
+  margin: 0px;
+}
+
+.li-quant-c {
+  display: flex;
+  flex-basis: 30px;
+  align-content: flex-start;
+}
+
+.li-desc-c {
+  display: flex;
+  flex-direction: column;
+  flex: 2 1 0%;
+}
+
+.li-instruction {
+  width: 100%;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  color: #696970;
+}
+
+.li-options {
+  display: flex;
+  margin-top: 8px;
+}
+
+.li-options p:hover {
+  cursor: pointer;
+}
+
+.li-options p:first-child {
+  margin-right: 15px;
+}
+
+
+
 /* Modal */
 .ReactModal__Overlay {
   position: fixed;
@@ -235,6 +279,17 @@
 
 .ReactModal__Overlay--before-close {
   opacity: 0;
+}
+
+.m-image {
+  display: block;
+  width: 400px;
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: cover;
+  left: 0;
+  position: relative;
 }
 
 .m-title {
@@ -261,14 +316,17 @@
 }
 
 .m-content-container {
-  padding: 15px;
+  padding: 25px;
   max-width: 350px;
 }
 
 .m-details {
   position: relative;
-  padding-bottom: 15px;
   border-bottom: 1px solid gray;
+}
+
+.m-request-header {
+  margin-bottom: 5px;
 }
 
 .textarea-wrapper {

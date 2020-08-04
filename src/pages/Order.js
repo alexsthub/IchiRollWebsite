@@ -31,6 +31,7 @@ export default class OrderScreen extends React.Component {
       selectedTime: null,
       selectedMenuCategory: null,
       selectedItem: null,
+      cart: [],
     };
   }
 
@@ -118,10 +119,25 @@ export default class OrderScreen extends React.Component {
   };
 
   handleAdd = (item, quantity, specialInstruction) => {
-    console.log(item);
-    console.log(quantity);
-    console.log(specialInstruction);
+    const newItem = {
+      item: item,
+      quantity: quantity,
+      specialInstruction: specialInstruction,
+    };
+    const cart = this.state.cart;
+    cart.push(newItem);
+    this.setState({ cart: cart });
     this.closeModal();
+  };
+
+  handleEdit = () => {
+    // TODO
+  };
+
+  handleRemove = (index) => {
+    const currentCart = this.state.cart;
+    currentCart.splice(index, 1);
+    this.setState({ cart: currentCart });
   };
 
   render() {
@@ -141,9 +157,12 @@ export default class OrderScreen extends React.Component {
           />
           <OrderMenu
             menu={this.menu}
+            cart={this.state.cart}
             selectedCategory={this.state.selectedMenuCategory}
             onCategoryClick={this.onCategoryClick}
             onItemClick={this.onItemClick}
+            handleListItemEdit={this.handleEdit}
+            handleListItemRemove={this.handleRemove}
           />
         </div>
         <AddItemModal

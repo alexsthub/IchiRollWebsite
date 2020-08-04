@@ -40,46 +40,57 @@ export default class AddItemModal extends React.Component {
 
   render() {
     const { item } = this.props;
+    if (!item) return null;
+
+    const image = item.media.logo ? (
+      <img className="m-image" src={item.media.logo} alt={item.title.en_US} />
+    ) : null;
+
     const content = item ? (
-      <div className="m-content-container">
-        <div className="m-details">
-          <div style={{ display: "flex" }}>
-            <p className="m-title">{item.title.en_US}</p>
-          </div>
-          {item.description.en_US !== "" ? <p>{item.description.en_US}</p> : null}
-          <p>{priceToString(item.price)}</p>
-        </div>
-
-        <div className="m-instructions">
-          <p className="m-request-header">Special requests?</p>
-          <div className="textarea-wrapper">
-            <textarea
-              className="m-text"
-              value={this.state.specialInstructions}
-              onChange={this.handleChange}
-              maxLength={MAX_LENGTH}
-              placeholder={"Add them here. We will do our best to make it happen."}
-            />
-            <div className="textarea-counter">
-              {MAX_LENGTH - this.state.specialInstructions.length}
+      <div>
+        {image}
+        <div className="m-content-container">
+          <div className="m-details">
+            <div style={{ display: "flex" }}>
+              <p className="m-title">{item.title.en_US}</p>
             </div>
+            {item.description.en_US !== "" ? <p>{item.description.en_US}</p> : null}
+            <p>{priceToString(item.price)}</p>
           </div>
-        </div>
 
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-          <div className="quantity-container oval">
-            <div className="clickable" onClick={() => this.handleQuantity(-1)}>
-              <FontAwesomeIcon style={{ color: "white" }} icon={faMinus} size="sm" />
-            </div>
-            <span className="quantity">{this.state.quantity}</span>
-            <div className="clickable" onClick={() => this.handleQuantity(1)}>
-              <FontAwesomeIcon style={{ color: "white" }} icon={faPlus} size="sm" />
+          <div className="m-instructions">
+            <p className="m-request-header">Special Instructions</p>
+            <div className="textarea-wrapper">
+              <textarea
+                className="m-text"
+                value={this.state.specialInstructions}
+                onChange={this.handleChange}
+                maxLength={MAX_LENGTH}
+                placeholder={"Add them here. We will do our best to make it happen."}
+              />
+              <div className="textarea-counter">
+                {MAX_LENGTH - this.state.specialInstructions.length}
+              </div>
             </div>
           </div>
 
-          <div onClick={this.handleAdd} className="m-add oval">
-            <span>Add to Order</span>
-            <span>{priceToString(item.price * this.state.quantity)}</span>
+          <div
+            style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}
+          >
+            <div className="quantity-container oval">
+              <div className="clickable" onClick={() => this.handleQuantity(-1)}>
+                <FontAwesomeIcon style={{ color: "white" }} icon={faMinus} size="sm" />
+              </div>
+              <span className="quantity">{this.state.quantity}</span>
+              <div className="clickable" onClick={() => this.handleQuantity(1)}>
+                <FontAwesomeIcon style={{ color: "white" }} icon={faPlus} size="sm" />
+              </div>
+            </div>
+
+            <div onClick={this.handleAdd} className="m-add oval">
+              <span>Add to Order</span>
+              <span>{priceToString(item.price * this.state.quantity)}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -109,5 +120,6 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    padding: 0,
   },
 };
