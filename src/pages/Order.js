@@ -123,6 +123,7 @@ export default class OrderScreen extends React.Component {
       item: item,
       quantity: quantity,
       specialInstruction: specialInstruction,
+      timestamp: new Date().getTime(),
     };
     const cart = this.state.cart;
     cart.push(newItem);

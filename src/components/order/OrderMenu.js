@@ -83,10 +83,9 @@ export default class OrderMenu extends React.Component {
       ) : (
         <div style={{ marginLeft: 15, marginRight: 15 }}>
           {this.props.cart.map((orderObject, i) => {
-            // TODO: Same key problem
             return (
               <LineItem
-                key={orderObject.item.id + orderObject.quantity + orderObject.specialInstruction}
+                key={orderObject.item.id + orderObject.timestamp}
                 item={orderObject.item}
                 quantity={orderObject.quantity}
                 instruction={orderObject.specialInstruction}

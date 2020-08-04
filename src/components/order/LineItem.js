@@ -13,8 +13,6 @@ export default class LineItem extends React.Component {
       </div>
     ) : null;
 
-    console.log(last);
-
     return (
       <div className={`${!last ? "li-spacing " : ""}line-item`}>
         <div className="li-container">
