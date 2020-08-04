@@ -91,7 +91,7 @@ export default class OrderMenu extends React.Component {
                 instruction={orderObject.specialInstruction}
                 index={i}
                 last={i === this.props.cart.length - 1}
-                handleEdit={this.props.handleListItemEdit}
+                handleEdit={() => this.props.handleListItemEdit(i)}
                 handleRemove={() => this.props.handleListItemRemove(i)}
               />
             );

@@ -33,6 +33,8 @@ export default class OrderScreen extends React.Component {
       selectedItem: null,
       cart: [],
     };
+
+    this.editIndex = null;
   }
 
   componentDidMount = async () => {
@@ -111,14 +113,16 @@ export default class OrderScreen extends React.Component {
   onItemClick = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ selectedItem: item });
+    const selectedItem = {
+      item: item,
+      quantity: 1,
+      specialInstruction: "",
+    };
+    this.editIndex = null;
+    this.setState({ selectedItem: selectedItem });
   };
 
-  closeModal = () => {
-    this.setState({ selectedItem: null });
-  };
-
-  handleAdd = (item, quantity, specialInstruction) => {
+  completeAdd = (item, quantity, specialInstruction) => {
     const newItem = {
       item: item,
       quantity: quantity,
@@ -131,14 +135,33 @@ export default class OrderScreen extends React.Component {
     this.closeModal();
   };
 
-  handleEdit = () => {
-    // TODO
+  completeEdit = (item, quantity, specialInstruction, index) => {
+    const editItem = {
+      item: item,
+      quantity: quantity,
+      specialInstruction: specialInstruction,
+      timestamp: item.timestamp,
+    };
+    const cart = this.state.cart;
+    cart[index] = editItem;
+    this.setState({ cart: cart });
+    this.closeModal();
+  };
+
+  handleEdit = (index) => {
+    const item = this.state.cart[index];
+    this.editIndex = index;
+    this.setState({ selectedItem: item });
   };
 
   handleRemove = (index) => {
     const currentCart = this.state.cart;
     currentCart.splice(index, 1);
     this.setState({ cart: currentCart });
+  };
+
+  closeModal = () => {
+    this.setState({ selectedItem: null });
   };
 
   render() {
@@ -166,11 +189,15 @@ export default class OrderScreen extends React.Component {
             handleListItemRemove={this.handleRemove}
           />
         </div>
-        <AddItemModal
-          item={this.state.selectedItem}
-          closeModal={() => this.setState({ selectedItem: null })}
-          onAdd={this.handleAdd}
-        />
+        {this.state.selectedItem ? (
+          <AddItemModal
+            itemObj={this.state.selectedItem}
+            editIndex={this.editIndex}
+            closeModal={() => this.setState({ selectedItem: null })}
+            onAdd={this.completeAdd}
+            onEdit={this.completeEdit}
+          />
+        ) : null}
       </div>
     );
   }

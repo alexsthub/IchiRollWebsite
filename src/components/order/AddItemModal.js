@@ -13,14 +13,10 @@ const MAX_LENGTH = 80;
 export default class AddItemModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { quantity: 1, specialInstructions: "" };
-  }
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.item === null) {
-      return { quantity: 1, specialInstructions: "" };
-    }
-    return null;
+    this.state = {
+      quantity: this.props.itemObj.quantity,
+      specialInstructions: this.props.itemObj.specialInstruction,
+    };
   }
 
   handleChange = (e) => {
@@ -33,15 +29,29 @@ export default class AddItemModal extends React.Component {
       this.setState({ quantity: this.state.quantity - 1 });
   };
 
-  handleAdd = (e) => {
+  handleContinue = (e) => {
     e.preventDefault();
-    this.props.onAdd(this.props.item, this.state.quantity, this.state.specialInstructions);
+    if (this.props.editIndex === null) {
+      this.props.onAdd(
+        this.props.itemObj.item,
+        this.state.quantity,
+        this.state.specialInstructions
+      );
+    } else {
+      this.props.onEdit(
+        this.props.itemObj.item,
+        this.state.quantity,
+        this.state.specialInstructions,
+        this.props.editIndex
+      );
+    }
   };
 
   render() {
-    const { item } = this.props;
-    if (!item) return null;
+    const { itemObj } = this.props;
+    if (!itemObj) return null;
 
+    const { item } = itemObj;
     const image = item.media.logo ? (
       <img className="m-image" src={item.media.logo} alt={item.title.en_US} />
     ) : null;
@@ -94,8 +104,8 @@ export default class AddItemModal extends React.Component {
               </div>
             </div>
 
-            <div onClick={this.handleAdd} className="m-add oval">
-              <span>Add to Order</span>
+            <div onClick={this.handleContinue} className="m-add oval">
+              <span>{this.props.editIndex === null ? "Add to Order" : "Update Item"}</span>
               <span>{priceToString(item.price * this.state.quantity)}</span>
             </div>
           </div>
@@ -105,12 +115,12 @@ export default class AddItemModal extends React.Component {
 
     return (
       <Modal
-        isOpen={item !== null}
+        isOpen={itemObj !== null}
         onRequestClose={this.props.closeModal}
         style={customStyles}
         contentLabel="add item modal"
         shouldCloseOnOverlayClick={true}
-        closeTimeoutMS={0}
+        closeTimeoutMS={200}
         overlayClassName={"ReactModal__Overlay"}
       >
         {content}

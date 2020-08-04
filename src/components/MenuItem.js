@@ -4,6 +4,10 @@ import "../styles/components/MenuItem.css";
 import { priceToString } from "../helpers/utils";
 
 export default class MenuItem extends React.Component {
+  handleClick = (e) => {
+    this.props.onClick(e, this.props.item);
+  };
+
   render() {
     const { item } = this.props;
 
@@ -23,7 +27,7 @@ export default class MenuItem extends React.Component {
       : "item-container";
 
     return (
-      <div className={containerClass} onClick={(e) => this.props.onClick(e, item)}>
+      <div className={containerClass} onClick={this.handleClick}>
         <div className="item-details">
           <div id="details-container">
             <p className="item-title">{item.title.en_US}</p>
