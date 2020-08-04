@@ -5,7 +5,7 @@ import { priceToString } from "../../helpers/utils";
 
 // 3P Components
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
@@ -46,8 +46,15 @@ export default class AddItemModal extends React.Component {
       <img className="m-image" src={item.media.logo} alt={item.title.en_US} />
     ) : null;
 
+    const closeButton = (
+      <div className="close-button" onClick={this.props.closeModal}>
+        <FontAwesomeIcon style={{ color: "white" }} icon={faTimes} size="sm" />
+      </div>
+    );
+
     const content = item ? (
-      <div>
+      <div style={{ position: "relative" }}>
+        {closeButton}
         {image}
         <div className="m-content-container">
           <div className="m-details">
