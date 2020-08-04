@@ -81,16 +81,17 @@ export default class OrderMenu extends React.Component {
           <p>Choose an item from the menu to get started.</p>
         </div>
       ) : (
-        <div style={{ margin: 15 }}>
+        <div style={{ marginLeft: 15, marginRight: 15 }}>
           {this.props.cart.map((orderObject, i) => {
-            console.log(orderObject);
+            // TODO: Same key problem
             return (
               <LineItem
-                key={orderObject.item.id}
+                key={orderObject.item.id + orderObject.quantity + orderObject.specialInstruction}
                 item={orderObject.item}
                 quantity={orderObject.quantity}
                 instruction={orderObject.specialInstruction}
                 index={i}
+                last={i === this.props.cart.length - 1}
                 handleEdit={this.props.handleListItemEdit}
                 handleRemove={() => this.props.handleListItemRemove(i)}
               />

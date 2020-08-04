@@ -3,10 +3,9 @@ import "../../styles/Order.css";
 
 import { priceToString } from "../../helpers/utils";
 
-// TODO: Spacing between line items
 export default class LineItem extends React.Component {
   render() {
-    const { instruction, quantity, item } = this.props;
+    const { instruction, quantity, item, last } = this.props;
 
     const instructionElement = instruction ? (
       <div className="li-instruction-container">
@@ -14,8 +13,10 @@ export default class LineItem extends React.Component {
       </div>
     ) : null;
 
+    console.log(last);
+
     return (
-      <div>
+      <div className={`${!last ? "li-spacing " : ""}line-item`}>
         <div className="li-container">
           <div className="li-quant-c">
             <p className="li-quantity">{`${quantity}x`}</p>

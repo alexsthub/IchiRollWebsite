@@ -217,6 +217,15 @@
 }
 
 /* Line Item */
+.li-spacing {
+  border-bottom: 1px solid black
+}
+
+.line-item {
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
 .li-container {
   display: flex;
 }
@@ -248,11 +257,12 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-height: 1em;
-  max-height: 2em;
+  line-height: normal;
+  max-height: normal * 2;
 }
 
 .li-instruction {
+  font-size: .85em;
   color: #696970;
   margin: 0px;
 }
