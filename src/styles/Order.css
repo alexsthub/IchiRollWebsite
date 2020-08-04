@@ -237,12 +237,24 @@
   flex: 2 1 0%;
 }
 
-.li-instruction {
-  width: 100%;
-  text-overflow: ellipsis;
-  /* white-space: nowrap; */
+.li-details {
+  margin-left: 30px;
+  margin-top: 5px;
+}
+
+.li-instruction-container {
   overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1em;
+  max-height: 2em;
+}
+
+.li-instruction {
   color: #696970;
+  margin: 0px;
 }
 
 .li-options {
@@ -250,12 +262,17 @@
   margin-top: 8px;
 }
 
+.li-options p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .li-options p:hover {
   cursor: pointer;
 }
 
 .li-options p:first-child {
-  margin-right: 15px;
+  margin-right: 18px;
 }
 
 
