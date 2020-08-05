@@ -15,7 +15,9 @@ export default class OrderTime extends React.Component {
     const transformLocation = this.props.isNow ? "translateX(0%)" : "translateX(calc(100% - 10px))";
     return (
       <div className="order-time-container">
-        <div className="pickup oval">Pickup</div>
+        <div className="oval-exterior">
+          <div className="pickup oval">Pickup</div>
+        </div>
         <p>for</p>
         <div className="switch">
           <div className="switch-background" style={{ transform: transformLocation }} />

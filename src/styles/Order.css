@@ -41,7 +41,7 @@
   border-top: 1px lightgray solid;
   border-bottom: 1px lightgray solid;
   margin-top: 15px;
-  padding: 10px var(--order-padding) 10px var(--order-padding);
+  padding: 12px var(--order-padding) 12px var(--order-padding);
 }
 
 .order-time-container p {
@@ -53,6 +53,12 @@
   padding: 5px 30px 5px 30px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+}
+
+.oval-exterior {
+  padding: 5px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
 }
 
 .pickup {
@@ -71,10 +77,10 @@
 }
 
 .switch-background {
+  position: absolute;
   background-color: rgb(19, 170, 109);
   border-radius: 20px;
-  height: 30px;
-  position: absolute;
+  height: 29px;
   width: 50%;
   z-index: 1;
   box-sizing: border-box;
@@ -97,7 +103,7 @@
 }
 
 .time {
-  padding: 5px 20px 5px 20px;
+  padding: 10px 20px 10px 20px;
   display: flex;
   align-items: center;
   position: relative;

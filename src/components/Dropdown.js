@@ -7,7 +7,6 @@ import { faCalendar, faChevronDown, faChevronUp } from "@fortawesome/free-solid-
 import "../styles/Order.css";
 import "../styles/components/Dropdown.css";
 
-// TODO: animate entry?
 export default class Dropdown extends React.Component {
   constructor(props) {
     super(props);
