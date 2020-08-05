@@ -24,7 +24,7 @@ export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: "ASAP",
+      isNow: true,
       dateOptions: [],
       hourOptions: [],
       selectedDate: null,
@@ -172,6 +172,8 @@ export default class OrderScreen extends React.Component {
           <OrderHeader />
           <OrderTime
             openHours={this.state.openHours}
+            isNow={this.state.isNow}
+            handleTimeTypeChange={(isNow) => this.setState({ isNow: isNow })}
             dateOptions={this.state.dateOptions}
             hourOptions={this.state.hourOptions}
             selectedDate={this.state.selectedDate}

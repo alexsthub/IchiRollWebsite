@@ -62,8 +62,38 @@
 }
 
 .switch {
-  /* padding: 5px 30px 5px 30px; */
-  /* border-radius: 20px; */
+  position: relative;
+  display: flex;
+  padding: 5px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+  background-color: #f8f8f8;
+}
+
+.switch-background {
+  background-color: rgb(19, 170, 109);
+  border-radius: 20px;
+  height: 30px;
+  position: absolute;
+  width: 50%;
+  z-index: 1;
+  box-sizing: border-box;
+  transition: transform 0.2s ease-in-out;
+}
+
+.switch-option {
+  width: 50px;
+  text-align: center;
+  padding: 5px 30px 5px 30px;
+  border-radius: 20px;
+  z-index: 2;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease-in-out
+}
+
+.switch-select {
+  color: white;
 }
 
 .time {
