@@ -110,6 +110,13 @@
 .switch-disabled {
   color: #bbbbbb;
   cursor: default;
+  font-size: 12px;
+  padding: 0px 30px 0px 30px;
+  border-radius: 0px;
+}
+
+.switch-disabled span:last-child {
+  font-size: 10px;
 }
 
 .later-container {

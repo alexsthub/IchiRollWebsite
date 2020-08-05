@@ -30,7 +30,8 @@ export default class OrderTime extends React.Component {
             }`}
             onClick={(e) => this.handleClick(e, true)}
           >
-            Now
+            <span>Now</span>
+            {!this.props.isNowAvailable ? <span>Unavailable</span> : null}
           </div>
           <div
             className={`switch-option${!this.props.isNow ? " switch-select" : ""}`}

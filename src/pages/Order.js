@@ -20,7 +20,7 @@ import AddItemModal from "../components/order/AddItemModal";
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
 
-// TODO: Flag if ASAP needs to be disabled. Needs to be an openHour and needs to be 30 minutes before close
+// TODO: Better logic to see if isNowAvailable
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -54,15 +54,14 @@ export default class OrderScreen extends React.Component {
   selectFirstAvailableTime = (openHours) => {
     let date = new Date();
 
+    const initDayofWeek = date.getDay() - 1;
     let dayOfWeek = date.getDay() - 1;
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
 
-    this.setState({ isNow: false });
-    this.isNowAvailable = false;
-
     if (!withinTimeRange(hours, currentHour, currentMinute)) {
+      console.log("NOT WITHIN");
       this.setState({ isNow: false });
       this.isNowAvailable = false;
       if (
@@ -84,9 +83,14 @@ export default class OrderScreen extends React.Component {
         }
       }
     }
-
     const dateOptions = getDateOptions(date, openHours, NUM_DAYS_FUTURE);
     const hourOptions = getTimeRangesForDay(date, openHours[dayOfWeek]);
+
+    if (this.isNowAvailable && dateOptions[0].value.getDay() - 1 !== initDayofWeek) {
+      this.setState({ isNow: false });
+      this.isNowAvailable = false;
+    }
+
     this.setState({
       hourOptions: hourOptions,
       dateOptions: dateOptions,

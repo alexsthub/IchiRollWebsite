@@ -56,10 +56,18 @@ export function getTimeRangesForDay(date, hours) {
 
 export function withinTimeRange(hours, currentHour, currentMinute) {
   if (!hours) return false;
+  let endHours = hours.endHour;
+  let endMinutes = hours.endMinute - 15;
+  if (endMinutes < 0) {
+    endHours -= 1;
+    endMinutes += 60;
+  }
+  const difference = currentMinute % 15;
+  currentMinute = difference !== 0 ? currentMinute + 15 - difference : currentMinute;
   return (
-    (hours.startHour < currentHour && currentHour < hours.endHour) ||
+    (currentHour > hours.startHour && currentHour < endHours) ||
     (currentHour === hours.startHour && currentMinute >= hours.startMinute) ||
-    (currentHour === hours.endHour && currentMinute < hours.endMinute)
+    (currentHour === endHours && currentMinute < endMinutes)
   );
 }
 
