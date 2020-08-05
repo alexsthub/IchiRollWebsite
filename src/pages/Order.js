@@ -19,6 +19,8 @@ import AddItemModal from "../components/order/AddItemModal";
 
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
+
+// TODO: Flag if ASAP needs to be disabled. Needs to be an openHour and needs to be 30 minutes before close
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -35,6 +37,7 @@ export default class OrderScreen extends React.Component {
     };
 
     this.editIndex = null;
+    this.isNowAvailable = true;
   }
 
   componentDidMount = async () => {
@@ -42,7 +45,6 @@ export default class OrderScreen extends React.Component {
     const rawMenu = await getMenuDetails();
     this.openHours = convertRawOpenHours(restaurantDetails.openTimes);
     this.menu = constructMenu(rawMenu);
-    console.log(this.menu);
 
     const selectedMenuCategory = Object.keys(this.menu)[0];
     this.setState({ selectedMenuCategory: selectedMenuCategory });
@@ -56,7 +58,13 @@ export default class OrderScreen extends React.Component {
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
+
+    this.setState({ isNow: false });
+    this.isNowAvailable = false;
+
     if (!withinTimeRange(hours, currentHour, currentMinute)) {
+      this.setState({ isNow: false });
+      this.isNowAvailable = false;
       if (
         currentHour < hours.startHour ||
         (currentHour === hours.startHour && currentMinute < hours.startHour)
@@ -160,6 +168,12 @@ export default class OrderScreen extends React.Component {
     this.setState({ cart: currentCart });
   };
 
+  handleCheckout = (e) => {
+    e.preventDefault();
+    if (this.state.cart.length === 0) return;
+    console.log("CHECKING OUT");
+  };
+
   closeModal = () => {
     this.setState({ selectedItem: null });
   };
@@ -173,6 +187,7 @@ export default class OrderScreen extends React.Component {
           <OrderTime
             openHours={this.state.openHours}
             isNow={this.state.isNow}
+            isNowAvailable={this.isNowAvailable}
             handleTimeTypeChange={(isNow) => this.setState({ isNow: isNow })}
             dateOptions={this.state.dateOptions}
             hourOptions={this.state.hourOptions}
@@ -189,6 +204,7 @@ export default class OrderScreen extends React.Component {
             onItemClick={this.onItemClick}
             handleListItemEdit={this.handleEdit}
             handleListItemRemove={this.handleRemove}
+            handleCheckout={this.handleCheckout}
           />
         </div>
         {this.state.selectedItem ? (

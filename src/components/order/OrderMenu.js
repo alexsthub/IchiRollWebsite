@@ -133,8 +133,10 @@ export default class OrderMenu extends React.Component {
               <p>{pricingObject.total}</p>
             </div>
           </div>
-          <div className="checkout-container">
-            <div className="checkout">Checkout</div>
+          <div className="checkout-container" onClick={this.props.handleCheckout}>
+            <div className={`checkout${this.props.cart.length === 0 ? " checkout-disabled" : ""}`}>
+              Checkout
+            </div>
           </div>
         </div>
       </div>

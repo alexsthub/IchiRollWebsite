@@ -95,11 +95,37 @@
   z-index: 2;
   cursor: pointer;
   user-select: none;
-  transition: color 0.2s ease-in-out
+  transition: color 0.2s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .switch-select {
   color: white;
+}
+
+.switch-disabled {
+  color: #bbbbbb;
+  cursor: default;
+}
+
+.later-container {
+  display: flex;
+  align-items: center;
+  animation: fadein 0.3s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .time {
@@ -112,6 +138,7 @@
 .time:hover {
   cursor: pointer;
 }
+
 
 
 /* Menu */
@@ -245,11 +272,20 @@
 
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+  cursor: pointer;
 }
 
 .checkout:hover {
-  cursor: pointer;
   opacity: 0.8;
+}
+
+.checkout-disabled {
+  background-color: gray;
+  cursor: default;
+}
+
+.checkout-disabled:hover {
+  opacity: 1;
 }
 
 /* Line Item */

@@ -6,6 +6,8 @@ import Dropdown from "../Dropdown";
 export default class OrderTime extends React.Component {
   handleClick = (e, isNow) => {
     e.preventDefault();
+    if (!this.props.isNowAvailable && isNow) return;
+
     if (this.props.isNow !== isNow) {
       this.props.handleTimeTypeChange(isNow);
     }
@@ -13,6 +15,7 @@ export default class OrderTime extends React.Component {
 
   render() {
     const transformLocation = this.props.isNow ? "translateX(0%)" : "translateX(calc(100% - 10px))";
+
     return (
       <div className="order-time-container">
         <div className="oval-exterior">
@@ -22,7 +25,9 @@ export default class OrderTime extends React.Component {
         <div className="switch">
           <div className="switch-background" style={{ transform: transformLocation }} />
           <div
-            className={`switch-option${this.props.isNow ? " switch-select" : ""}`}
+            className={`switch-option${this.props.isNow ? " switch-select" : ""}${
+              this.props.isNowAvailable ? "" : " switch-disabled"
+            }`}
             onClick={(e) => this.handleClick(e, true)}
           >
             Now
@@ -34,16 +39,21 @@ export default class OrderTime extends React.Component {
             Later
           </div>
         </div>
-        <p>at</p>
-        <Dropdown
-          openHours={this.props.openHours}
-          dateOptions={this.props.dateOptions}
-          hourOptions={this.props.hourOptions}
-          selectedDate={this.props.selectedDate}
-          selectedTime={this.props.selectedTime}
-          updateHourOptions={this.props.updateHourOptions}
-          onSave={this.props.onSave}
-        />
+
+        {!this.props.isNow ? (
+          <div className="later-container">
+            <p>at</p>
+            <Dropdown
+              openHours={this.props.openHours}
+              dateOptions={this.props.dateOptions}
+              hourOptions={this.props.hourOptions}
+              selectedDate={this.props.selectedDate}
+              selectedTime={this.props.selectedTime}
+              updateHourOptions={this.props.updateHourOptions}
+              onSave={this.props.onSave}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
