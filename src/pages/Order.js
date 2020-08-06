@@ -22,6 +22,8 @@ import OrderTime from "../components/order/OrderTime";
 import OrderMenu from "../components/order/OrderMenu";
 import AddItemModal from "../components/order/AddItemModal";
 
+import { Redirect } from "react-router-dom";
+
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
 const NUM_DAYS_FUTURE = 3;
@@ -37,6 +39,7 @@ export default class OrderScreen extends React.Component {
       selectedMenuCategory: null,
       selectedItem: null,
       cart: [],
+      shouldRedirect: false,
     };
 
     this.editIndex = null;
@@ -178,6 +181,7 @@ export default class OrderScreen extends React.Component {
   handleCheckout = (e) => {
     e.preventDefault();
     if (this.state.cart.length === 0) return;
+    this.setState({ shouldRedirect: true });
   };
 
   closeModal = () => {
@@ -186,6 +190,7 @@ export default class OrderScreen extends React.Component {
 
   render() {
     if (this.state.selectedDate === null) return null;
+    if (this.state.shouldRedirect) return <Redirect to={"/order/checkout"} />;
     return (
       <div className="order-outer">
         <div className="order-inner">

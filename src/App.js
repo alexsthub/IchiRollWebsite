@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import HomeScreen from "./pages/Home";
 import MenuScreen from "./pages/Menu";
 import OrderScreen from "./pages/Order";
+import CheckoutScreen from "./pages/Checkout";
 
 import "./styles/App.css";
 
@@ -27,6 +28,7 @@ export default class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomeScreen} />
           <Route path="/menu" component={MenuScreen} />
+          <Route exact path="/order/checkout" component={CheckoutScreen} />
           <Route path="/order" component={OrderScreen} />
           <Redirect to="/" />
         </Switch>
