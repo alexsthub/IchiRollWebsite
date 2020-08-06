@@ -2,11 +2,23 @@ import React from "react";
 import "../styles/Details.css";
 import MapContainer from "../components/MapContainer.js";
 
-import { groupHours } from "../helpers/hoursParser";
+import { getRestaurantDetails } from "../helpers/utils";
+import { convertRawOpenHours, groupHours } from "../helpers/hoursParser";
 
 // TODO: Add an image of the building next to the hours?
 const phoneNumber = "(206) 363-5100";
 export default class Details extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { openHours: {} };
+  }
+
+  componentDidMount = async () => {
+    const restaurantDetails = await getRestaurantDetails();
+    const openHours = convertRawOpenHours(restaurantDetails.openTimes);
+    this.setState({ openHours: openHours });
+  };
+
   createHoursTable = (openHours) => {
     if (Object.keys(openHours).length === 0 && openHours.constructor === Object) return null;
 
@@ -40,8 +52,7 @@ export default class Details extends React.Component {
   };
 
   render() {
-    const openHours = this.props.openHours;
-    const hoursTable = this.createHoursTable(openHours);
+    const hoursTable = this.createHoursTable(this.state.openHours);
 
     return (
       <section id="details" className="details-container">
