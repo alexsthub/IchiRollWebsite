@@ -1,10 +1,10 @@
 import { timeToString } from "./hoursParser";
-import { addDaysToDate } from "../helpers/utils";
+import { addDaysToDate, getDayOfWeek } from "../helpers/utils";
 
 export function getDateOptions(currentDate, openHours, NUM_DAYS_FUTURE) {
   let dateOptions = [];
   for (let i = 0; i < NUM_DAYS_FUTURE; i++) {
-    const dayOfWeek = currentDate.getDay() - 1;
+    const dayOfWeek = getDayOfWeek(currentDate);
     if (openHours[dayOfWeek]) {
       const month = currentDate.toLocaleString("default", { month: "short" });
       const dayName = currentDate.toString().split(" ")[0];

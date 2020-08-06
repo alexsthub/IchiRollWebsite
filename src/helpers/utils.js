@@ -23,3 +23,9 @@ export function addDaysToDate(currentDate, days) {
   date.setDate(date.getDate() + days);
   return date;
 }
+
+export function getDayOfWeek(date) {
+  let dayOfWeek = date.getDay() - 1;
+  if (dayOfWeek < 0) dayOfWeek = 6;
+  return dayOfWeek;
+}

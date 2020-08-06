@@ -1,7 +1,12 @@
 import React from "react";
 import "../styles/Order.css";
 
-import { getRestaurantDetails, getMenuDetails, addDaysToDate } from "../helpers/utils";
+import {
+  getRestaurantDetails,
+  getMenuDetails,
+  addDaysToDate,
+  getDayOfWeek,
+} from "../helpers/utils";
 import { convertRawOpenHours } from "../helpers/hoursParser";
 import constructMenu from "../helpers/menuQuery";
 import {
@@ -19,8 +24,6 @@ import AddItemModal from "../components/order/AddItemModal";
 
 // TODO: Disable ASAP if current time is not open hour
 // TODO: Width 70% does not really work.
-
-// TODO: Better logic to see if isNowAvailable
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -54,14 +57,13 @@ export default class OrderScreen extends React.Component {
   selectFirstAvailableTime = (openHours) => {
     let date = new Date();
 
-    const initDayofWeek = date.getDay() - 1;
-    let dayOfWeek = date.getDay() - 1;
+    const initDayofWeek = getDayOfWeek(date);
+    let dayOfWeek = getDayOfWeek(date);
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
 
     if (!withinTimeRange(hours, currentHour, currentMinute)) {
-      console.log("NOT WITHIN");
       this.setState({ isNow: false });
       this.isNowAvailable = false;
       if (
@@ -86,7 +88,7 @@ export default class OrderScreen extends React.Component {
     const dateOptions = getDateOptions(date, openHours, NUM_DAYS_FUTURE);
     const hourOptions = getTimeRangesForDay(date, openHours[dayOfWeek]);
 
-    if (this.isNowAvailable && dateOptions[0].value.getDay() - 1 !== initDayofWeek) {
+    if (this.isNowAvailable && getDayOfWeek(dateOptions[0].value) !== initDayofWeek) {
       this.setState({ isNow: false });
       this.isNowAvailable = false;
     }
@@ -106,12 +108,12 @@ export default class OrderScreen extends React.Component {
   updateHourOptions = (selectedDate) => {
     const currentDate = new Date();
     if (isGreaterDate(selectedDate, currentDate)) {
-      const hours = this.openHours[selectedDate.getDay() - 1];
+      const hours = this.openHours[getDayOfWeek(selectedDate)];
       selectedDate.setHours(hours.startHour, hours.startMinute);
     } else {
       selectedDate = new Date();
     }
-    const newHours = getTimeRangesForDay(selectedDate, this.openHours[selectedDate.getDay() - 1]);
+    const newHours = getTimeRangesForDay(selectedDate, this.openHours[getDayOfWeek(selectedDate)]);
     this.setState({ hourOptions: newHours });
   };
 
@@ -172,10 +174,10 @@ export default class OrderScreen extends React.Component {
     this.setState({ cart: currentCart });
   };
 
+  // TODO: Go to a new page?
   handleCheckout = (e) => {
     e.preventDefault();
     if (this.state.cart.length === 0) return;
-    console.log("CHECKING OUT");
   };
 
   closeModal = () => {
