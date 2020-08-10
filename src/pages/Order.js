@@ -53,7 +53,6 @@ export default class OrderScreen extends React.Component {
 
     const selectedMenuCategory = Object.keys(this.menu)[0];
     const storageCart = localStorage.getItem("cart");
-    console.log(storageCart);
     if (storageCart) this.setState({ cart: JSON.parse(storageCart) });
     this.setState({ selectedMenuCategory: selectedMenuCategory });
     this.selectFirstAvailableTime(this.openHours);

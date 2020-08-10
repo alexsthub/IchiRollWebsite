@@ -1,7 +1,10 @@
 import React from "react";
 import "../styles/Checkout.css";
 
+// import { priceToString } from "../helpers/utils";
+
 import TextareaAutosize from "react-textarea-autosize";
+import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
 
 // TODO: How to get this so that the header doesn't show?
@@ -16,7 +19,8 @@ export default class Checkout extends React.Component {
       notes: "",
       textareaHeight: 54,
       selectedTipIndex: 4,
-      customTip: "",
+      renderedTip: "$0.00",
+      customTip: null,
     };
   }
 
@@ -31,13 +35,24 @@ export default class Checkout extends React.Component {
     this.setState({ notes: e.target.value });
   };
 
+  // TODO: Will need to change renderedTip as well
   handleTipClick = (e, index) => {
     e.preventDefault();
     if (this.state.selectedTipIndex !== index) this.setState({ selectedTipIndex: index });
   };
 
-  handleCustomTipChange = (e) => {
-    this.setState({ customTip: e.target.value });
+  // TODO: Whitespace in the beginning
+  onTipValueChange = (value) => {
+    if (value !== undefined) value = value.replace(/\s/g, "");
+    if (value === undefined || !Number.isNaN(Number(value))) {
+      this.setState({ customTip: value });
+    }
+  };
+
+  applyTip = (e) => {
+    e.preventDefault();
+    const tip = Number.parseFloat(this.state.customTip).toFixed(2);
+    this.setState({ renderedTip: tip === "NaN" ? "$0.00" : `$${tip}` });
   };
 
   render() {
@@ -56,14 +71,19 @@ export default class Checkout extends React.Component {
     const customTip =
       this.state.selectedTipIndex === 4 ? (
         <div className="custom-tip">
-          <input
+          <CurrencyInput
             id="custom-tip"
-            type="text"
+            name="custom-tip"
             placeholder="$0.00"
             value={this.state.customTip}
-            onChange={this.handleCustomTipChange}
+            allowDecimals={true}
+            decimalsLimit={2}
+            maxLength={8}
+            prefix={"$"}
+            onChange={this.onTipValueChange}
+            onBlur={() => {}}
           />
-          <button>Apply</button>
+          <button onClick={this.applyTip}>Apply</button>
         </div>
       ) : null;
 
@@ -145,7 +165,7 @@ export default class Checkout extends React.Component {
               </div>
               <div className="os-details-row">
                 <p>Tip Amount</p>
-                <p>$0.00</p>
+                <p>{this.state.renderedTip}</p>
               </div>
               <div className="os-details-row">
                 <p>Tax</p>
