@@ -24,8 +24,7 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
-// TODO: Disable ASAP if current time is not open hour
-// TODO: Width 70% does not really work.
+// TODO: Add local storage
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -53,6 +52,9 @@ export default class OrderScreen extends React.Component {
     this.menu = constructMenu(rawMenu);
 
     const selectedMenuCategory = Object.keys(this.menu)[0];
+    const storageCart = localStorage.getItem("cart");
+    console.log(storageCart);
+    if (storageCart) this.setState({ cart: JSON.parse(storageCart) });
     this.setState({ selectedMenuCategory: selectedMenuCategory });
     this.selectFirstAvailableTime(this.openHours);
   };
@@ -148,6 +150,7 @@ export default class OrderScreen extends React.Component {
     };
     const cart = this.state.cart;
     cart.push(newItem);
+    localStorage.setItem("cart", JSON.stringify(cart));
     this.setState({ cart: cart });
     this.closeModal();
   };
@@ -161,6 +164,8 @@ export default class OrderScreen extends React.Component {
     };
     const cart = this.state.cart;
     cart[index] = editItem;
+
+    localStorage.setItem("cart", JSON.stringify(cart));
     this.setState({ cart: cart });
     this.closeModal();
   };
@@ -174,6 +179,7 @@ export default class OrderScreen extends React.Component {
   handleRemove = (index) => {
     const currentCart = this.state.cart;
     currentCart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(currentCart));
     this.setState({ cart: currentCart });
   };
 

@@ -1,6 +1,10 @@
+h2 {
+  margin: 0px;
+}
+
 .row {
   display: flex;
-  max-width: 1140px;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
@@ -11,4 +15,45 @@
 .column {
   flex: 1;
   padding: 0 60px;
+}
+
+.pickup-details {
+  padding: 15px 0;
+}
+
+.pickup-details p {
+  margin: 0px;
+}
+
+.pickup-details p:first-child {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.contact-form p:first-child {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin: 0;
+}
+
+button {
+  height: 50px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  background-color: #656565;
+  border-radius: 3px;
+  padding: 12px 24px;
+  font-size: 24px;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0px solid #c2c2c2;
+  margin: 30px 0px;
+
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: black;
 }
