@@ -1,14 +1,14 @@
 import React from "react";
 import "../styles/Checkout.css";
 
-// import { priceToString } from "../helpers/utils";
+import { priceToString, calculateSubtotal, calculateTax } from "../helpers/utils";
 
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
 
 // TODO: How to get this so that the header doesn't show?
-// TODO: Custom tip amount
+const TAX_RATE = 0.101;
 export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
@@ -18,11 +18,17 @@ export default class Checkout extends React.Component {
       phone: "",
       notes: "",
       textareaHeight: 54,
-      selectedTipIndex: 4,
-      renderedTip: "$0.00",
+      selectedTipIndex: 0,
+      appliedTip: "$0.00",
       customTip: null,
+      cart: [],
     };
   }
+
+  componentDidMount = () => {
+    const storageCart = localStorage.getItem("cart");
+    if (storageCart) this.setState({ cart: JSON.parse(storageCart) });
+  };
 
   updateInput = (key, e) => {
     this.setState({ [key]: e.target.value });
@@ -38,7 +44,8 @@ export default class Checkout extends React.Component {
   // TODO: Will need to change renderedTip as well
   handleTipClick = (e, index) => {
     e.preventDefault();
-    if (this.state.selectedTipIndex !== index) this.setState({ selectedTipIndex: index });
+    if (this.state.selectedTipIndex !== index)
+      this.setState({ selectedTipIndex: index, appliedTip: "$0.00" });
   };
 
   // TODO: Whitespace in the beginning
@@ -52,10 +59,27 @@ export default class Checkout extends React.Component {
   applyTip = (e) => {
     e.preventDefault();
     const tip = Number.parseFloat(this.state.customTip).toFixed(2);
-    this.setState({ renderedTip: tip === "NaN" ? "$0.00" : `$${tip}` });
+    this.setState({ appliedTip: tip === "NaN" ? "$0.00" : `$${tip}` });
+  };
+
+  // TODO: Need to add the tip into the total amount
+  calculatePrices = () => {
+    const subtotal = calculateSubtotal(this.state.cart);
+    const tax = calculateTax(subtotal, TAX_RATE);
+    const total = subtotal + tax;
+
+    const priceObject = {
+      subtotal: priceToString(subtotal),
+      tax: priceToString(tax),
+      total: priceToString(total),
+    };
+    return priceObject;
   };
 
   render() {
+    const pricingObject = this.calculatePrices();
+    console.log(pricingObject);
+
     const tipButtons = tipValues.map((tip, index) => {
       return (
         <button
@@ -161,21 +185,21 @@ export default class Checkout extends React.Component {
             <div className="os-details">
               <div className="os-details-row">
                 <p>Subtotal</p>
-                <p>$0.00</p>
+                <p>{pricingObject.subtotal}</p>
               </div>
               <div className="os-details-row">
                 <p>Tip Amount</p>
-                <p>{this.state.renderedTip}</p>
+                <p>{this.state.appliedTip}</p>
               </div>
               <div className="os-details-row">
                 <p>Tax</p>
-                <p>$0.00</p>
+                <p>{pricingObject.tax}</p>
               </div>
             </div>
             <div className="os-total">
               <div className="os-details-row">
                 <p>Total</p>
-                <p>$0.00</p>
+                <p>{pricingObject.total}</p>
               </div>
             </div>
           </section>

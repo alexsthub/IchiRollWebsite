@@ -24,7 +24,6 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
-// TODO: Add local storage
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {

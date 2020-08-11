@@ -29,3 +29,19 @@ export function getDayOfWeek(date) {
   if (dayOfWeek < 0) dayOfWeek = 6;
   return dayOfWeek;
 }
+
+export function calculateSubtotal(cart) {
+  if (cart.length === 0) return 0;
+  let subtotal = 0;
+  cart.forEach((itemObj) => {
+    const price = itemObj.item.price;
+    const quantity = itemObj.quantity;
+    const itemTotal = price * quantity;
+    subtotal += itemTotal;
+  });
+  return subtotal;
+}
+
+export function calculateTax(subtotal, TAX_RATE) {
+  return subtotal * TAX_RATE;
+}

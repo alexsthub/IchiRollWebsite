@@ -8,7 +8,7 @@ import LineItem from "../order/LineItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
-import { priceToString } from "../../helpers/utils";
+import { priceToString, calculateSubtotal, calculateTax } from "../../helpers/utils";
 
 const TAX_RATE = 0.101;
 export default class OrderMenu extends React.Component {
@@ -22,8 +22,8 @@ export default class OrderMenu extends React.Component {
   };
 
   calculatePrices = () => {
-    const subtotal = this.calculateSubtotal();
-    const tax = this.calculateTax(subtotal);
+    const subtotal = calculateSubtotal(this.props.cart);
+    const tax = calculateTax(subtotal, TAX_RATE);
     const total = subtotal + tax;
 
     const priceObject = {
@@ -32,22 +32,6 @@ export default class OrderMenu extends React.Component {
       total: priceToString(total),
     };
     return priceObject;
-  };
-
-  calculateSubtotal = () => {
-    if (this.props.cart.length === 0) return 0;
-    let subtotal = 0;
-    this.props.cart.forEach((itemObj) => {
-      const price = itemObj.item.price;
-      const quantity = itemObj.quantity;
-      const itemTotal = price * quantity;
-      subtotal += itemTotal;
-    });
-    return subtotal;
-  };
-
-  calculateTax = (subtotal) => {
-    return subtotal * TAX_RATE;
   };
 
   render() {
