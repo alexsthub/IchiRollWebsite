@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Checkout.css";
 
-import { priceToString, calculateSubtotal, calculateTax } from "../helpers/utils";
+import { priceToString, calculateSubtotal, calculateTax, calculateTip } from "../helpers/utils";
 
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
@@ -19,33 +19,37 @@ export default class Checkout extends React.Component {
       notes: "",
       textareaHeight: 54,
       selectedTipIndex: 0,
-      appliedTip: "$0.00",
+      appliedTip: 0,
       customTip: null,
       cart: [],
+      priceObject: null,
     };
   }
 
   componentDidMount = () => {
     const storageCart = localStorage.getItem("cart");
-    if (storageCart) this.setState({ cart: JSON.parse(storageCart) });
+    if (storageCart) {
+      const cart = JSON.parse(storageCart);
+      this.calculatePrices(cart);
+      this.setState({ cart: cart });
+    }
   };
 
   updateInput = (key, e) => {
     this.setState({ [key]: e.target.value });
   };
 
-  handleChange = (e) => {
+  handleNoteChange = (e) => {
     const scrollHeight = e.target.scrollHeight;
-    console.log(scrollHeight);
     if (scrollHeight > 54) this.setState({ textareaHeight: scrollHeight });
     this.setState({ notes: e.target.value });
   };
 
-  // TODO: Will need to change renderedTip as well
   handleTipClick = (e, index) => {
     e.preventDefault();
-    if (this.state.selectedTipIndex !== index)
-      this.setState({ selectedTipIndex: index, appliedTip: "$0.00" });
+    if (this.state.selectedTipIndex !== index) this.calculatePrices(null, index);
+    if (index === 4) this.setState({ customTip: null });
+    this.setState({ selectedTipIndex: index, appliedTip: 0 });
   };
 
   // TODO: Whitespace in the beginning
@@ -56,30 +60,35 @@ export default class Checkout extends React.Component {
     }
   };
 
+  // TODO: On apply, can we add decimal points to value if customTip string if currently does not exist?
   applyTip = (e) => {
     e.preventDefault();
-    const tip = Number.parseFloat(this.state.customTip).toFixed(2);
-    this.setState({ appliedTip: tip === "NaN" ? "$0.00" : `$${tip}` });
+    const tip = Number.parseFloat(this.state.customTip) * 100;
+    const appliedTip = isNaN(tip) ? 0 : tip;
+    this.calculatePrices(null, null, appliedTip);
+    this.setState({ appliedTip: appliedTip });
   };
 
-  // TODO: Need to add the tip into the total amount
-  calculatePrices = () => {
-    const subtotal = calculateSubtotal(this.state.cart);
+  calculatePrices = (cart = null, tipIndex = null, appliedTip = null) => {
+    const subtotal = calculateSubtotal(cart || this.state.cart);
     const tax = calculateTax(subtotal, TAX_RATE);
-    const total = subtotal + tax;
+    const tip = calculateTip(
+      subtotal,
+      tipValues[tipIndex !== null ? tipIndex : this.state.selectedTipIndex],
+      appliedTip !== null ? appliedTip : this.state.appliedTip
+    );
+    const total = subtotal + tax + tip;
 
     const priceObject = {
       subtotal: priceToString(subtotal),
       tax: priceToString(tax),
+      tip: priceToString(tip),
       total: priceToString(total),
     };
-    return priceObject;
+    this.setState({ priceObject: priceObject });
   };
 
   render() {
-    const pricingObject = this.calculatePrices();
-    console.log(pricingObject);
-
     const tipButtons = tipValues.map((tip, index) => {
       return (
         <button
@@ -110,6 +119,8 @@ export default class Checkout extends React.Component {
           <button onClick={this.applyTip}>Apply</button>
         </div>
       ) : null;
+
+    if (!this.state.priceObject) return null;
 
     return (
       <div className="row">
@@ -165,7 +176,7 @@ export default class Checkout extends React.Component {
             <TextareaAutosize
               placeholder={"Add details for your order pickup here."}
               value={this.state.notes}
-              onChange={this.handleChange}
+              onChange={this.handleNoteChange}
             />
           </div>
 
@@ -185,21 +196,21 @@ export default class Checkout extends React.Component {
             <div className="os-details">
               <div className="os-details-row">
                 <p>Subtotal</p>
-                <p>{pricingObject.subtotal}</p>
+                <p>{this.state.priceObject.subtotal}</p>
               </div>
               <div className="os-details-row">
                 <p>Tip Amount</p>
-                <p>{this.state.appliedTip}</p>
+                <p>{this.state.priceObject.tip}</p>
               </div>
               <div className="os-details-row">
                 <p>Tax</p>
-                <p>{pricingObject.tax}</p>
+                <p>{this.state.priceObject.tax}</p>
               </div>
             </div>
             <div className="os-total">
               <div className="os-details-row">
                 <p>Total</p>
-                <p>{pricingObject.total}</p>
+                <p>{this.state.priceObject.total}</p>
               </div>
             </div>
           </section>
@@ -213,6 +224,6 @@ const tipValues = [
   { label: "15%", value: 0.15 },
   { label: "18%", value: 0.18 },
   { label: "20%", value: 0.2 },
-  { label: "No Tip", value: 0.0 },
+  { label: "No Tip", value: 0 },
   { label: "Custom", value: null },
 ];

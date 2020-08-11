@@ -45,3 +45,11 @@ export function calculateSubtotal(cart) {
 export function calculateTax(subtotal, TAX_RATE) {
   return subtotal * TAX_RATE;
 }
+
+export function calculateTip(subtotal, tipObject, appliedTip) {
+  const tipRate = tipObject.value;
+  if (tipRate !== null) {
+    return subtotal * tipRate;
+  }
+  return appliedTip;
+}
