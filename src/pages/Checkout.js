@@ -132,6 +132,17 @@ export default class Checkout extends React.Component {
         </div>
       ) : null;
 
+    const lineItems = this.state.cart.map((itemObj) => {
+      return (
+        <SummaryLineItem
+          key={itemObj.item.id + itemObj.timestamp}
+          item={itemObj.item}
+          quantity={itemObj.quantity}
+          instruction={itemObj.specialInstruction}
+        />
+      );
+    });
+
     return (
       <div style={{ marginTop: 60 }} className="row">
         <div className="column">
@@ -198,12 +209,14 @@ export default class Checkout extends React.Component {
           <section className="order-summary">
             <div className="os-items-container">
               <div className="os-details-row">
-                <p>My Order</p>
+                <h4>My Order</h4>
                 <p>{`(${calculateNumberItems(this.state.cart)} items)`}</p>
               </div>
+              {lineItems}
+              <a>Edit Order</a>
             </div>
             <div className="tip-container">
-              <p>Tip Amount</p>
+              <h4>Tip Amount</h4>
               <div className="tip-row">{tipButtons.slice(0, 3)}</div>
               <div className="tip-row">{tipButtons.slice(3)}</div>
               {customTip}
@@ -242,3 +255,31 @@ const tipValues = [
   { label: "No Tip", value: 0 },
   { label: "Custom", value: null },
 ];
+
+class SummaryLineItem extends React.Component {
+  render() {
+    const { instruction, quantity, item } = this.props;
+    const instructionElement = instruction ? (
+      <div className="li-instruction-container">
+        <p className="li-instruction">{instruction}</p>
+      </div>
+    ) : null;
+    return (
+      <div style={{ marginTop: 10, marginBottom: 10 }}>
+        <div className="li-container">
+          <div className="li-quant-c">
+            <p className="li-quantity">{`${quantity}x`}</p>
+          </div>
+          <div className="li-desc-c">
+            <p className="li-title">{item.title.en_US}</p>
+          </div>
+          <div>
+            <p>{priceToString(item.price * quantity)}</p>
+          </div>
+        </div>
+
+        <div className="li-details">{instructionElement}</div>
+      </div>
+    );
+  }
+}
