@@ -24,6 +24,7 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
+// TODO: Maybe I should read scheduledtime for localstorage but if it is not valid anymore then just reset
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -181,10 +182,15 @@ export default class OrderScreen extends React.Component {
     this.setState({ cart: currentCart });
   };
 
-  // TODO: Go to a new page?
   handleCheckout = (e) => {
     e.preventDefault();
     if (this.state.cart.length === 0) return;
+    const setTime = {
+      isNow: this.state.isNow,
+      selectedDate: this.state.selectedDate,
+      selectedTime: this.state.selectedTime,
+    };
+    localStorage.setItem("time", JSON.stringify(setTime));
     this.setState({ shouldRedirect: true });
   };
 

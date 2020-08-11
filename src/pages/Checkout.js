@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import "../styles/Checkout.css";
 
 import {
@@ -9,10 +9,15 @@ import {
   calculateNumberItems,
 } from "../helpers/utils";
 
+import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
-import LineItem from "../components/order/LineItem";
+
+// TODO: Editing
+
+// TODO: The text inputs render half then another half for choppiness
+// TODO: Height does not transition the first time unless width style is already applied
 
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
@@ -30,15 +35,25 @@ export default class Checkout extends React.Component {
       customTip: null,
       cart: [],
       priceObject: null,
+      scheduledTime: {},
+      activeSection: "primary",
+      transitionHeight: null,
     };
+
+    this.transitionDiv = createRef();
   }
 
   componentDidMount = () => {
     const storageCart = localStorage.getItem("cart");
+    const scheduledTimeStr = localStorage.getItem("time");
     if (storageCart) {
       const cart = JSON.parse(storageCart);
       this.calculatePrices(cart);
       this.setState({ cart: cart });
+    }
+    if (scheduledTimeStr) {
+      const scheduledTime = JSON.parse(scheduledTimeStr);
+      this.setState({ scheduledTime: scheduledTime });
     }
   };
 
@@ -59,7 +74,6 @@ export default class Checkout extends React.Component {
     this.setState({ selectedTipIndex: index, appliedTip: 0 });
   };
 
-  // TODO: Whitespace in the beginning
   onTipValueChange = (value) => {
     if (value !== undefined) value = value.replace(/\s/g, "");
     if (value === undefined || !Number.isNaN(Number(value))) {
@@ -98,8 +112,29 @@ export default class Checkout extends React.Component {
     this.setState({ priceObject: priceObject });
   };
 
+  handleContinue = (e) => {
+    e.preventDefault();
+    if (this.state.activeSection === "primary") {
+      console.log("ye");
+      this.setState({ activeSection: "secondary" });
+    } else {
+      this.setState({ activeSection: "primary" });
+    }
+    // this.setState({ activeSection: "secondary" });
+  };
+
+  calcHeight = (el) => {
+    const height = el.offsetHeight;
+    console.log(height);
+    this.setState({ transitionHeight: height });
+  };
+
   render() {
     if (!this.state.priceObject) return null;
+    const { scheduledTime } = this.state;
+    const timeContent = scheduledTime.isNow
+      ? "ASAP (Estimated 20 minutes)"
+      : `${scheduledTime.selectedDate.label} @ ${scheduledTime.selectedTime.label}`;
 
     const tipButtons = tipValues.map((tip, index) => {
       return (
@@ -155,53 +190,81 @@ export default class Checkout extends React.Component {
 
           <div className="pickup-details" id="time">
             <p>Time</p>
-            <p>ASAP (Estimated 20 minutes)</p>
+            <p>{timeContent}</p>
           </div>
 
-          <div className="f-section">
-            <p>Contact</p>
+          <div
+            className="trans-div"
+            style={{ height: this.state.transitionHeight }}
+            ref={this.transitionDiv}
+          >
+            <CSSTransition
+              in={this.state.activeSection === "primary"}
+              timeout={400}
+              classNames="primary"
+              unmountOnExit
+              onEnter={this.calcHeight}
+            >
+              <div>
+                <div className="f-section">
+                  <p>Contact</p>
 
-            <FloatingInput
-              label={"Name"}
-              name={"contact-name"}
-              placeholder={"Name"}
-              autocomplete={"name"}
-              value={this.state.name}
-              onChange={this.updateInput}
-              stateKey={"name"}
-            />
+                  <FloatingInput
+                    label={"Name"}
+                    name={"contact-name"}
+                    placeholder={"Name"}
+                    autocomplete={"name"}
+                    value={this.state.name}
+                    onChange={this.updateInput}
+                    stateKey={"name"}
+                  />
 
-            <FloatingInput
-              label={"Email"}
-              name={"contact-email"}
-              placeholder={"Email Address"}
-              autocomplete={"email"}
-              value={this.state.email}
-              onChange={this.updateInput}
-              stateKey={"email"}
-            />
+                  <FloatingInput
+                    label={"Email"}
+                    name={"contact-email"}
+                    placeholder={"Email Address"}
+                    autocomplete={"email"}
+                    value={this.state.email}
+                    onChange={this.updateInput}
+                    stateKey={"email"}
+                  />
 
-            <FloatingInput
-              label={"Phone Number"}
-              name={"contact-phone"}
-              placeholder={"Phone Number"}
-              autocomplete={"tel"}
-              value={this.state.phone}
-              onChange={this.updateInput}
-              stateKey={"phone"}
-            />
+                  <FloatingInput
+                    label={"Phone Number"}
+                    name={"contact-phone"}
+                    placeholder={"Phone Number"}
+                    autocomplete={"tel"}
+                    value={this.state.phone}
+                    onChange={this.updateInput}
+                    stateKey={"phone"}
+                  />
+                </div>
+
+                <div className="f-section">
+                  <p>Notes for Restaurant</p>
+                  <TextareaAutosize
+                    placeholder={"Add details for your order pickup here."}
+                    value={this.state.notes}
+                    onChange={this.handleNoteChange}
+                  />
+                </div>
+              </div>
+            </CSSTransition>
+
+            <CSSTransition
+              in={this.state.activeSection === "secondary"}
+              timeout={400}
+              classNames="secondary"
+              unmountOnExit
+              onEnter={this.calcHeight}
+            >
+              <div>Hello senpai add some stuff here</div>
+            </CSSTransition>
           </div>
 
-          <div className="f-section">
-            <p>Notes for Restaurant</p>
-            <TextareaAutosize
-              placeholder={"Add details for your order pickup here."}
-              value={this.state.notes}
-              onChange={this.handleNoteChange}
-            />
-          </div>
-
-          <button className="continue">Continue</button>
+          <button className="continue" onClick={this.handleContinue}>
+            Continue
+          </button>
         </div>
 
         <div className="column">

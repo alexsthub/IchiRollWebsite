@@ -18,9 +18,10 @@
     "react-loader-spinner": "^3.1.14",
     "react-modal": "^3.11.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.2",
     "react-slidedown": "^2.4.5",
     "react-textarea-autosize": "^8.2.0",
+    "react-transition-group": "^4.4.1",
     "wix-restaurants-js-sdk": "^1.0.717"
   },
   "scripts": {

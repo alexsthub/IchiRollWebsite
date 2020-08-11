@@ -180,3 +180,45 @@ h4 {
   font-weight: 700;
   font-size: 18px;
 }
+
+/* Transition */
+.trans-div {
+  position: relative;
+  overflow: hidden;
+  transition: height 400ms ease;
+  padding: 0px 2px;
+}
+
+.primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+
+.primary-enter-active {
+  transform: translateX(0%);
+  transition: all 400ms ease;
+}
+
+.primary-exit {
+  position: absolute;
+}
+
+.primary-exit-active {
+  transform: translateX(-110%);
+  transition: all 400ms ease;
+}
+
+
+.secondary-enter {
+  transform: translateX(110%);
+}
+
+.secondary-enter-active {
+  transform: translateX(0%);
+  transition: all 400ms ease;
+}
+
+.secondary-exit-active {
+  transform: translateX(110%);
+  transition: all 400ms ease;
+}
