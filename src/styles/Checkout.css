@@ -87,6 +87,20 @@ h2 {
   background-color: #eeeeee;
 }
 
+.os-items-container {
+  padding: 20px 30px;
+}
+
+.os-items-container p {
+  margin: 0px;
+}
+
+.os-items-container p:first-child {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+
 .tip-container {
   border-top: 2px solid rgba(0, 0, 0, .05);
   padding: 30px 30px 25px;

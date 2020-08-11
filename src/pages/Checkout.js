@@ -1,11 +1,18 @@
 import React from "react";
 import "../styles/Checkout.css";
 
-import { priceToString, calculateSubtotal, calculateTax, calculateTip } from "../helpers/utils";
+import {
+  priceToString,
+  calculateSubtotal,
+  calculateTax,
+  calculateTip,
+  calculateNumberItems,
+} from "../helpers/utils";
 
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
+import LineItem from "../components/order/LineItem";
 
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
@@ -60,11 +67,14 @@ export default class Checkout extends React.Component {
     }
   };
 
-  // TODO: On apply, can we add decimal points to value if customTip string if currently does not exist?
   applyTip = (e) => {
     e.preventDefault();
     const tip = Number.parseFloat(this.state.customTip) * 100;
     const appliedTip = isNaN(tip) ? 0 : tip;
+    if (appliedTip) {
+      const tipStr = (appliedTip / 100).toFixed(2).toString();
+      this.setState({ customTip: tipStr });
+    }
     this.calculatePrices(null, null, appliedTip);
     this.setState({ appliedTip: appliedTip });
   };
@@ -89,6 +99,8 @@ export default class Checkout extends React.Component {
   };
 
   render() {
+    if (!this.state.priceObject) return null;
+
     const tipButtons = tipValues.map((tip, index) => {
       return (
         <button
@@ -120,10 +132,8 @@ export default class Checkout extends React.Component {
         </div>
       ) : null;
 
-    if (!this.state.priceObject) return null;
-
     return (
-      <div className="row">
+      <div style={{ marginTop: 60 }} className="row">
         <div className="column">
           <h2>Pickup Information</h2>
           <div className="pickup-details" id="address">
@@ -186,7 +196,12 @@ export default class Checkout extends React.Component {
         <div className="column">
           <h2>Order Summary</h2>
           <section className="order-summary">
-            <div>Menu shit here</div>
+            <div className="os-items-container">
+              <div className="os-details-row">
+                <p>My Order</p>
+                <p>{`(${calculateNumberItems(this.state.cart)} items)`}</p>
+              </div>
+            </div>
             <div className="tip-container">
               <p>Tip Amount</p>
               <div className="tip-row">{tipButtons.slice(0, 3)}</div>

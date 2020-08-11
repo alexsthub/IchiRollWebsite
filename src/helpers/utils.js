@@ -53,3 +53,12 @@ export function calculateTip(subtotal, tipObject, appliedTip) {
   }
   return appliedTip;
 }
+
+export function calculateNumberItems(cart) {
+  if (cart.length === 0) return 0;
+  let num = 0;
+  cart.forEach((itemObj) => {
+    num += itemObj.quantity;
+  });
+  return num;
+}
