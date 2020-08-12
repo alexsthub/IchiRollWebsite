@@ -25,10 +25,11 @@ export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
-      phone: "",
+      name: "Alex Tan",
+      email: "alextan785@gmail.com",
+      phone: "3605151765",
       notes: "",
+      cardNumber: "",
       textareaHeight: 54,
       selectedTipIndex: 0,
       appliedTip: 0,
@@ -36,7 +37,7 @@ export default class Checkout extends React.Component {
       cart: [],
       priceObject: null,
       scheduledTime: {},
-      activeSection: "primary",
+      activeSection: "secondary",
       transitionHeight: null,
     };
 
@@ -57,7 +58,7 @@ export default class Checkout extends React.Component {
     }
   };
 
-  updateInput = (key, e) => {
+  updateInput = (e, key) => {
     this.setState({ [key]: e.target.value });
   };
 
@@ -112,6 +113,7 @@ export default class Checkout extends React.Component {
     this.setState({ priceObject: priceObject });
   };
 
+  // TODO: Field verification
   handleContinue = (e) => {
     e.preventDefault();
     if (this.state.activeSection === "primary") {
@@ -125,7 +127,6 @@ export default class Checkout extends React.Component {
 
   calcHeight = (el) => {
     const height = el.offsetHeight;
-    console.log(height);
     this.setState({ transitionHeight: height });
   };
 
@@ -136,50 +137,8 @@ export default class Checkout extends React.Component {
       ? "ASAP (Estimated 20 minutes)"
       : `${scheduledTime.selectedDate.label} @ ${scheduledTime.selectedTime.label}`;
 
-    const tipButtons = tipValues.map((tip, index) => {
-      return (
-        <button
-          key={tip.label}
-          className={`tip-button${this.state.selectedTipIndex === index ? " tip-active" : ""}`}
-          onClick={(e) => this.handleTipClick(e, index)}
-        >
-          {tip.label}
-        </button>
-      );
-    });
-
-    const customTip =
-      this.state.selectedTipIndex === 4 ? (
-        <div className="custom-tip">
-          <CurrencyInput
-            id="custom-tip"
-            name="custom-tip"
-            placeholder="$0.00"
-            value={this.state.customTip}
-            allowDecimals={true}
-            decimalsLimit={2}
-            maxLength={8}
-            prefix={"$"}
-            onChange={this.onTipValueChange}
-            onBlur={() => {}}
-          />
-          <button onClick={this.applyTip}>Apply</button>
-        </div>
-      ) : null;
-
-    const lineItems = this.state.cart.map((itemObj) => {
-      return (
-        <SummaryLineItem
-          key={itemObj.item.id + itemObj.timestamp}
-          item={itemObj.item}
-          quantity={itemObj.quantity}
-          instruction={itemObj.specialInstruction}
-        />
-      );
-    });
-
     return (
-      <div style={{ marginTop: 60 }} className="row">
+      <div style={{ marginTop: 60 }} className="row" id="checkout">
         <div className="column">
           <h2>Pickup Information</h2>
           <div className="pickup-details" id="address">
@@ -258,7 +217,86 @@ export default class Checkout extends React.Component {
               unmountOnExit
               onEnter={this.calcHeight}
             >
-              <div>Hello senpai add some stuff here</div>
+              <div>
+                <div className="contact-container">
+                  <div className="os-details-row ci">
+                    <p>Contact Information</p>
+                    <button onClick={() => this.setState({ activeSection: "primary" })}>
+                      Edit
+                    </button>
+                  </div>
+                  <p>{this.state.name}</p>
+                  <p>{this.state.email}</p>
+                  <p>{this.state.phone}</p>
+                </div>
+                <div className="payment-container">
+                  <h2>Payment Information</h2>
+                  <FloatingInput
+                    label={"Card Number"}
+                    name={"card-number"}
+                    placeholder={"Card Number"}
+                    type={"tel"}
+                    autoComplete={"cc-number"}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="off"
+                    pattern="\d*"
+                    value={this.state.cardNumber}
+                    onChange={this.updateInput}
+                    stateKey={"cardNumber"}
+                    maxLength={18}
+                  />
+
+                  <div style={{ display: "flex" }}>
+                    <FloatingInput
+                      className="flex1 space-right"
+                      label={"Card Expiry Date"}
+                      name={"card-expiry"}
+                      placeholder={"MM/YY"}
+                      type={"tel"}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="off"
+                      pattern="\d*"
+                      value={this.state.cardNumber}
+                      onChange={this.updateInput}
+                      stateKey={"cardNumber"}
+                      maxLength={5}
+                    />
+                    <FloatingInput
+                      className="flex1 space-right"
+                      label={"Security Code"}
+                      name={"card-sc"}
+                      placeholder={"Security Code"}
+                      type={"tel"}
+                      autoComplete={"cc-number"}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="off"
+                      pattern="\d*"
+                      value={this.state.cardNumber}
+                      onChange={this.updateInput}
+                      stateKey={"cardNumber"}
+                      maxLength={4}
+                    />
+                    <FloatingInput
+                      className="flex1"
+                      label={"Zip Code"}
+                      name={"card-zip"}
+                      placeholder={"Zip Code"}
+                      type={"text"}
+                      autoComplete={"shipping postal-code"}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="off"
+                      value={this.state.cardNumber}
+                      onChange={this.updateInput}
+                      stateKey={"cardNumber"}
+                      maxLength={10}
+                    />
+                  </div>
+                </div>
+              </div>
             </CSSTransition>
           </div>
 
@@ -267,45 +305,15 @@ export default class Checkout extends React.Component {
           </button>
         </div>
 
-        <div className="column">
-          <h2>Order Summary</h2>
-          <section className="order-summary">
-            <div className="os-items-container">
-              <div className="os-details-row">
-                <h4>My Order</h4>
-                <p>{`(${calculateNumberItems(this.state.cart)} items)`}</p>
-              </div>
-              {lineItems}
-              <a>Edit Order</a>
-            </div>
-            <div className="tip-container">
-              <h4>Tip Amount</h4>
-              <div className="tip-row">{tipButtons.slice(0, 3)}</div>
-              <div className="tip-row">{tipButtons.slice(3)}</div>
-              {customTip}
-            </div>
-            <div className="os-details">
-              <div className="os-details-row">
-                <p>Subtotal</p>
-                <p>{this.state.priceObject.subtotal}</p>
-              </div>
-              <div className="os-details-row">
-                <p>Tip Amount</p>
-                <p>{this.state.priceObject.tip}</p>
-              </div>
-              <div className="os-details-row">
-                <p>Tax</p>
-                <p>{this.state.priceObject.tax}</p>
-              </div>
-            </div>
-            <div className="os-total">
-              <div className="os-details-row">
-                <p>Total</p>
-                <p>{this.state.priceObject.total}</p>
-              </div>
-            </div>
-          </section>
-        </div>
+        <OrderSummary
+          cart={this.state.cart}
+          priceObject={this.state.priceObject}
+          selectedTipIndex={this.state.selectedTipIndex}
+          handleTipClick={this.handleTipClick}
+          onTipValueChange={this.onTipValueChange}
+          customTip={this.state.customTip}
+          applyTip={this.applyTip}
+        />
       </div>
     );
   }
@@ -318,6 +326,94 @@ const tipValues = [
   { label: "No Tip", value: 0 },
   { label: "Custom", value: null },
 ];
+
+class OrderSummary extends React.Component {
+  render() {
+    const tipButtons = tipValues.map((tip, index) => {
+      return (
+        <button
+          key={tip.label}
+          className={`tip-button${this.props.selectedTipIndex === index ? " tip-active" : ""}`}
+          onClick={(e) => this.props.handleTipClick(e, index)}
+        >
+          {tip.label}
+        </button>
+      );
+    });
+
+    const customTip =
+      this.props.selectedTipIndex === 4 ? (
+        <div className="custom-tip">
+          <CurrencyInput
+            id="custom-tip"
+            name="custom-tip"
+            placeholder="$0.00"
+            value={this.props.customTip}
+            allowDecimals={true}
+            decimalsLimit={2}
+            maxLength={8}
+            prefix={"$"}
+            onChange={this.props.onTipValueChange}
+            onBlur={() => {}}
+          />
+          <button onClick={this.props.applyTip}>Apply</button>
+        </div>
+      ) : null;
+
+    const lineItems = this.props.cart.map((itemObj) => {
+      return (
+        <SummaryLineItem
+          key={itemObj.item.id + itemObj.timestamp}
+          item={itemObj.item}
+          quantity={itemObj.quantity}
+          instruction={itemObj.specialInstruction}
+        />
+      );
+    });
+
+    return (
+      <div className="column">
+        <h2>Order Summary</h2>
+        <section className="order-summary">
+          <div className="os-items-container">
+            <div className="os-details-row">
+              <h4>My Order</h4>
+              <p>{`(${calculateNumberItems(this.props.cart)} items)`}</p>
+            </div>
+            {lineItems}
+            <a>Edit Order</a>
+          </div>
+          <div className="tip-container">
+            <h4>Tip Amount</h4>
+            <div className="tip-row">{tipButtons.slice(0, 3)}</div>
+            <div className="tip-row">{tipButtons.slice(3)}</div>
+            {customTip}
+          </div>
+          <div className="os-details">
+            <div className="os-details-row">
+              <p>Subtotal</p>
+              <p>{this.props.priceObject.subtotal}</p>
+            </div>
+            <div className="os-details-row">
+              <p>Tip Amount</p>
+              <p>{this.props.priceObject.tip}</p>
+            </div>
+            <div className="os-details-row">
+              <p>Tax</p>
+              <p>{this.props.priceObject.tax}</p>
+            </div>
+          </div>
+          <div className="os-total">
+            <div className="os-details-row">
+              <p>Total</p>
+              <p>{this.props.priceObject.total}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+}
 
 class SummaryLineItem extends React.Component {
   render() {

@@ -2,20 +2,37 @@ import React from "react";
 import "../../styles/components/FloatingInput.css";
 
 export default class FloatingInput extends React.Component {
+  handleChange = (e) => {
+    if (this.props.stateKey) {
+      this.props.onChange(e, this.props.stateKey);
+    } else {
+      this.props.onChange(e);
+    }
+  };
+
   render() {
+    const className = this.props.className
+      ? "input-container " + this.props.className
+      : "input-container";
+
     return (
-      <div className="input-container">
+      <div className={className}>
         <label className={this.props.value !== "" ? "label-show" : ""} htmlFor={this.props.name}>
           {this.props.label}
         </label>
         <input
           id={this.props.name}
-          type="text"
+          type={this.props.type ? this.props.type : "text"}
           name={this.props.name}
           placeholder={this.props.placeholder}
           autoComplete={this.props.autocomplete}
           value={this.props.value}
-          onChange={(e) => this.props.onChange(this.props.stateKey, e)}
+          onChange={this.handleChange}
+          maxLength={this.props.maxLength}
+          autoCapitalize={this.props.autoCapitalize}
+          autoCorrect={this.props.autoCorrect}
+          spellCheck={this.props.spellCheck}
+          pattern={this.props.pattern}
         />
       </div>
     );

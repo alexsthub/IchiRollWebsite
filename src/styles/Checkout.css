@@ -1,6 +1,18 @@
+#checkout p {
+  margin: 0px;
+}
+
 h2,
 h4 {
   margin: 0px;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex2 {
+  flex: 2;
 }
 
 .row {
@@ -16,12 +28,9 @@ h4 {
   padding: 0 60px;
 }
 
+/* Pickup information */
 .pickup-details {
   padding: 15px 0;
-}
-
-.pickup-details p {
-  margin: 0px;
 }
 
 .pickup-details p:first-child {
@@ -36,7 +45,6 @@ h4 {
 .f-section p:first-child {
   font-weight: bold;
   font-size: 1.3em;
-  margin: 0;
 }
 
 .f-section textarea {
@@ -60,6 +68,38 @@ h4 {
 .f-section textarea:focus {
   outline: none;
 }
+
+/* Secondary Page */
+.contact-container {
+  padding: 10px 15px;
+  background-color: #f7f7f7;
+  font-size: .8em;
+}
+
+.ci p {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.ci button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.payment-container {
+  margin: 10px 0px;
+}
+
+.space-right {
+  border-right: 15px solid #fff;
+}
+
+/* Button */
 
 .continue {
   height: 50px;
@@ -90,10 +130,6 @@ h4 {
 
 .os-items-container {
   padding: 20px 30px;
-}
-
-.os-items-container p {
-  margin: 0px;
 }
 
 .tip-container {
@@ -160,7 +196,6 @@ h4 {
 }
 
 .os-details p {
-  margin: 0;
   font-weight: 700;
   font-size: 15px;
 }
@@ -176,7 +211,6 @@ h4 {
 }
 
 .os-total p {
-  margin: 0;
   font-weight: 700;
   font-size: 18px;
 }
