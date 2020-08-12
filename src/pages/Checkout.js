@@ -9,6 +9,8 @@ import {
   calculateNumberItems,
 } from "../helpers/utils";
 
+import { ccFormat, cleanValue } from "../helpers/ccHelpers";
+
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
@@ -30,13 +32,18 @@ export default class Checkout extends React.Component {
       phone: "3605151765",
       notes: "",
       cardNumber: "",
+      cardExpiry: "",
+      cardSecurity: "",
+      cardZip: "",
+
+      cart: [],
+      scheduledTime: {},
       textareaHeight: 54,
       selectedTipIndex: 0,
-      appliedTip: 0,
       customTip: null,
-      cart: [],
+      appliedTip: 0,
+
       priceObject: null,
-      scheduledTime: {},
       activeSection: "secondary",
       transitionHeight: null,
     };
@@ -60,6 +67,16 @@ export default class Checkout extends React.Component {
 
   updateInput = (e, key) => {
     this.setState({ [key]: e.target.value });
+  };
+
+  handleCCNumber = (e) => {
+    const value = ccFormat(e.target.value);
+    this.setState({ cardNumber: value });
+  };
+
+  handlePaymentChange = (e, key) => {
+    const value = cleanValue(e.target.value);
+    if (value !== this.state[key]) this.setState({ [key]: value });
   };
 
   handleNoteChange = (e) => {
@@ -136,7 +153,6 @@ export default class Checkout extends React.Component {
     const timeContent = scheduledTime.isNow
       ? "ASAP (Estimated 20 minutes)"
       : `${scheduledTime.selectedDate.label} @ ${scheduledTime.selectedTime.label}`;
-
     return (
       <div style={{ marginTop: 60 }} className="row" id="checkout">
         <div className="column">
@@ -172,7 +188,7 @@ export default class Checkout extends React.Component {
                     label={"Name"}
                     name={"contact-name"}
                     placeholder={"Name"}
-                    autocomplete={"name"}
+                    autoComplete={"name"}
                     value={this.state.name}
                     onChange={this.updateInput}
                     stateKey={"name"}
@@ -182,7 +198,7 @@ export default class Checkout extends React.Component {
                     label={"Email"}
                     name={"contact-email"}
                     placeholder={"Email Address"}
-                    autocomplete={"email"}
+                    autoComplete={"email"}
                     value={this.state.email}
                     onChange={this.updateInput}
                     stateKey={"email"}
@@ -192,7 +208,7 @@ export default class Checkout extends React.Component {
                     label={"Phone Number"}
                     name={"contact-phone"}
                     placeholder={"Phone Number"}
-                    autocomplete={"tel"}
+                    autoComplete={"tel"}
                     value={this.state.phone}
                     onChange={this.updateInput}
                     stateKey={"phone"}
@@ -235,16 +251,15 @@ export default class Checkout extends React.Component {
                     label={"Card Number"}
                     name={"card-number"}
                     placeholder={"Card Number"}
-                    type={"tel"}
+                    type={"text"}
+                    pattern="\d*"
                     autoComplete={"cc-number"}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="off"
-                    pattern="\d*"
                     value={this.state.cardNumber}
-                    onChange={this.updateInput}
-                    stateKey={"cardNumber"}
-                    maxLength={18}
+                    onChange={(e) => this.setState({ cardNumber: ccFormat(e.target.value) })}
+                    maxLength={20}
                   />
 
                   <div style={{ display: "flex" }}>
@@ -253,14 +268,14 @@ export default class Checkout extends React.Component {
                       label={"Card Expiry Date"}
                       name={"card-expiry"}
                       placeholder={"MM/YY"}
-                      type={"tel"}
+                      type={"text"}
+                      pattern="\d*"
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="off"
-                      pattern="\d*"
-                      value={this.state.cardNumber}
-                      onChange={this.updateInput}
-                      stateKey={"cardNumber"}
+                      value={this.state.cardExpiry}
+                      onChange={(e) => this.setState({ cardExpiry: cleanValue(e.target.value) })}
+                      stateKey={"cardExpiry"}
                       maxLength={5}
                     />
                     <FloatingInput
@@ -268,15 +283,15 @@ export default class Checkout extends React.Component {
                       label={"Security Code"}
                       name={"card-sc"}
                       placeholder={"Security Code"}
-                      type={"tel"}
-                      autoComplete={"cc-number"}
+                      type={"text"}
+                      pattern="\d*"
+                      autoComplete={"cc-csc"}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="off"
-                      pattern="\d*"
-                      value={this.state.cardNumber}
-                      onChange={this.updateInput}
-                      stateKey={"cardNumber"}
+                      value={this.state.cardSecurity}
+                      onChange={this.handlePaymentChange}
+                      stateKey={"cardSecurity"}
                       maxLength={4}
                     />
                     <FloatingInput
@@ -285,14 +300,15 @@ export default class Checkout extends React.Component {
                       name={"card-zip"}
                       placeholder={"Zip Code"}
                       type={"text"}
+                      pattern="\d*"
                       autoComplete={"shipping postal-code"}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="off"
-                      value={this.state.cardNumber}
-                      onChange={this.updateInput}
-                      stateKey={"cardNumber"}
-                      maxLength={10}
+                      value={this.state.cardZip}
+                      onChange={(e) => this.setState({ cardZip: cleanValue(e.target.value) })}
+                      stateKey={"cardZip"}
+                      maxLength={6}
                     />
                   </div>
                 </div>
@@ -301,7 +317,7 @@ export default class Checkout extends React.Component {
           </div>
 
           <button className="continue" onClick={this.handleContinue}>
-            Continue
+            {this.state.activeSection === "primary" ? "Continue" : "Complete Purchase"}
           </button>
         </div>
 
@@ -381,7 +397,9 @@ class OrderSummary extends React.Component {
               <p>{`(${calculateNumberItems(this.props.cart)} items)`}</p>
             </div>
             {lineItems}
-            <a>Edit Order</a>
+            <div className="ci">
+              <button onClick={() => console.log("TODO")}>Edit Order</button>
+            </div>
           </div>
           <div className="tip-container">
             <h4>Tip Amount</h4>
