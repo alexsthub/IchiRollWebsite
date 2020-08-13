@@ -2,6 +2,11 @@ import React from "react";
 import "../../styles/components/FloatingInput.css";
 
 export default class FloatingInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { focused: false };
+  }
+
   handleChange = (e) => {
     if (!this.props.onChange) return;
 
@@ -13,23 +18,33 @@ export default class FloatingInput extends React.Component {
   };
 
   render() {
-    const className = this.props.className
-      ? "input-container " + this.props.className
-      : "input-container";
+    const { errorText, icon, className } = this.props;
 
-    const icon = this.props.icon ? (
+    const cName = className ? "input-container " + className : "input-container";
+
+    const iconElement = icon ? (
       <div style={{ position: "absolute", right: 10, bottom: 0, transform: "translateY(-90%)" }}>
-        {this.props.icon}
+        {icon}
       </div>
     ) : null;
 
+    const invalidStyle =
+      errorText && !this.state.focused
+        ? {
+            paddingLeft: 12,
+            borderLeft: "4px solid #c7254e",
+          }
+        : null;
+    const errorElement = errorText ? <div className="error-text">{errorText}</div> : null;
+
     return (
-      <div className={className}>
+      <div className={cName}>
         <label className={this.props.value !== "" ? "label-show" : ""} htmlFor={this.props.name}>
           {this.props.label}
         </label>
         <div style={{ position: "relative" }}>
           <input
+            style={invalidStyle}
             id={this.props.name}
             type={this.props.type ? this.props.type : "text"}
             name={this.props.name}
@@ -43,9 +58,12 @@ export default class FloatingInput extends React.Component {
             autoCorrect={this.props.autoCorrect}
             spellCheck={this.props.spellCheck}
             pattern={this.props.pattern}
+            onFocus={() => this.setState({ focused: true })}
+            onBlur={() => this.setState({ focused: false })}
           />
-          {icon}
+          {iconElement}
         </div>
+        {errorElement}
       </div>
     );
   }

@@ -8,20 +8,19 @@ import {
   calculateTip,
   calculateNumberItems,
 } from "../helpers/utils";
-
+import { validateContactInformation } from "../helpers/validation";
 import { ccFormat, cleanValue } from "../helpers/ccHelpers";
 
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: Editing
-
 // TODO: The text inputs render half then another half for choppiness
-// TODO: Height does not transition the first time unless width style is already applied
+// TODO: Validate payment
 
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
@@ -29,14 +28,15 @@ export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Alex Tan",
-      email: "alextan785@gmail.com",
-      phone: "3605151765",
+      name: "",
+      email: "",
+      phone: "",
       notes: "",
       cardNumber: "",
       cardExpiry: "",
       cardSecurity: "",
       cardZip: "",
+      inputErrors: {},
 
       cart: [],
       scheduledTime: {},
@@ -46,7 +46,7 @@ export default class Checkout extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "secondary",
+      activeSection: "primary",
       transitionHeight: null,
     };
 
@@ -68,6 +68,11 @@ export default class Checkout extends React.Component {
   };
 
   updateInput = (e, key) => {
+    const errors = this.state.inputErrors;
+    if (errors[key]) {
+      errors[key] = null;
+      this.setState({ errors: errors });
+    }
     this.setState({ [key]: e.target.value });
   };
 
@@ -155,16 +160,25 @@ export default class Checkout extends React.Component {
     this.setState({ priceObject: priceObject });
   };
 
-  // TODO: Field verification
   handleContinue = (e) => {
     e.preventDefault();
     if (this.state.activeSection === "primary") {
-      console.log("ye");
-      this.setState({ activeSection: "secondary" });
+      const errors = validateContactInformation(
+        this.state.name,
+        this.state.email,
+        this.state.phone
+      );
+      if (Object.keys(errors).length > 0) {
+        const updatedErrors = { ...this.state.inputErrors, ...errors };
+        console.log(updatedErrors);
+        this.setState({ inputErrors: updatedErrors });
+      } else {
+        this.setState({ activeSection: "secondary" });
+      }
     } else {
+      // TODO: Validate all payment
       this.setState({ activeSection: "primary" });
     }
-    // this.setState({ activeSection: "secondary" });
   };
 
   calcHeight = (el) => {
@@ -189,7 +203,12 @@ export default class Checkout extends React.Component {
           </div>
 
           <div className="pickup-details" id="time">
-            <p>Time</p>
+            <div className="os-details-row">
+              <p>Time</p>
+              <Link to="/order" className="checkout-button" style={{ fontSize: 12 }}>
+                Edit
+              </Link>
+            </div>
             <p>{timeContent}</p>
           </div>
 
@@ -217,6 +236,7 @@ export default class Checkout extends React.Component {
                     value={this.state.name}
                     onChange={this.updateInput}
                     stateKey={"name"}
+                    errorText={this.state.inputErrors.name}
                   />
 
                   <FloatingInput
@@ -227,6 +247,7 @@ export default class Checkout extends React.Component {
                     value={this.state.email}
                     onChange={this.updateInput}
                     stateKey={"email"}
+                    errorText={this.state.inputErrors.email}
                   />
 
                   <FloatingInput
@@ -337,6 +358,7 @@ export default class Checkout extends React.Component {
                       maxLength={6}
                     />
                   </div>
+                  <p style={{ color: "#aaa" }}>All payments are secure and encrypted.</p>
                 </div>
               </div>
             </CSSTransition>
@@ -424,7 +446,9 @@ class OrderSummary extends React.Component {
             </div>
             {lineItems}
             <div className="ci">
-              <button onClick={() => console.log("TODO")}>Edit Order</button>
+              <Link to="/order" className="checkout-button">
+                Edit Order
+              </Link>
             </div>
           </div>
           <div className="tip-container">

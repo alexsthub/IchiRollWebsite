@@ -1,7 +1,7 @@
 .input-container {
   position: relative;
-  margin-bottom: 5px;
-  padding-top: 20px;
+  padding-top: 16px;
+  padding-bottom: 20px;
 }
 
 label {
@@ -13,7 +13,7 @@ label {
   opacity: 0;
 
   font-weight: bold;
-  font-size: 0.8em;
+  font-size: 12px;
 }
 
 .label-show {
@@ -28,9 +28,21 @@ input {
   background: #F7F7F7;
   box-sizing: border-box;
   border: none;
-  margin-bottom: 5px;
 }
 
 input:focus {
   outline: 2px solid black;
+}
+
+.invalid-field {
+  padding-left: 12px;
+  border-left: 4px solid #c7254e;
+}
+
+.error-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: #c7254e;
+  font-size: 14px;
 }
