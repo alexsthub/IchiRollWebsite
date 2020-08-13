@@ -8,7 +8,7 @@ import {
   calculateTip,
   calculateNumberItems,
 } from "../helpers/utils";
-import { validateContactInformation } from "../helpers/validation";
+import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
 import { ccFormat, cleanValue } from "../helpers/ccHelpers";
 
 import { CSSTransition } from "react-transition-group";
@@ -20,17 +20,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 // TODO: The text inputs render half then another half for choppiness
-// TODO: Validate payment
-
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
 export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
-      phone: "",
+      name: "Alex Tan",
+      email: "alextan785@gmail.com",
+      phone: "3605151765",
       notes: "",
       cardNumber: "",
       cardExpiry: "",
@@ -46,7 +44,7 @@ export default class Checkout extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "primary",
+      activeSection: "secondary",
       transitionHeight: null,
     };
 
@@ -68,12 +66,10 @@ export default class Checkout extends React.Component {
   };
 
   updateInput = (e, key) => {
-    const errors = this.state.inputErrors;
-    if (errors[key]) {
-      errors[key] = null;
-      this.setState({ errors: errors });
+    if (e.target.value !== this.state[key]) {
+      this.updateErrors(key);
+      this.setState({ [key]: e.target.value });
     }
-    this.setState({ [key]: e.target.value });
   };
 
   handleExpirationChange = (e) => {
@@ -101,12 +97,24 @@ export default class Checkout extends React.Component {
       .replace(/[^\d/]|^[/]*$/g, "")
       .replace(/\/\//g, "/");
 
+    this.updateErrors("cardExpiry");
     this.setState({ cardExpiry: formattedValue });
   };
 
   handlePaymentChange = (e, key) => {
     const value = cleanValue(e.target.value);
-    if (value !== this.state[key]) this.setState({ [key]: value });
+    if (value !== this.state[key]) {
+      this.updateErrors(key);
+      this.setState({ [key]: value });
+    }
+  };
+
+  updateErrors = (key) => {
+    const errors = this.state.inputErrors;
+    if (errors[key]) {
+      errors[key] = null;
+      this.setState({ errors: errors });
+    }
   };
 
   handleNoteChange = (e) => {
@@ -176,8 +184,20 @@ export default class Checkout extends React.Component {
         this.setState({ activeSection: "secondary" });
       }
     } else {
-      // TODO: Validate all payment
-      this.setState({ activeSection: "primary" });
+      const errors = validatePaymentInformation(
+        this.state.cardNumber,
+        this.state.cardExpiry,
+        this.state.cardSecurity,
+        this.state.cardZip
+      );
+      console.log(errors);
+      if (Object.keys(errors).length > 0) {
+        const updatedErrors = { ...this.state.inputErrors, ...errors };
+        console.log(updatedErrors);
+        this.setState({ inputErrors: updatedErrors });
+      } else {
+        alert("Checkout!");
+      }
     }
   };
 
@@ -324,6 +344,7 @@ export default class Checkout extends React.Component {
                       onKeyDown={this.handleExpirationChange}
                       stateKey={"cardExpiry"}
                       maxLength={5}
+                      errorText={this.state.inputErrors.cardExpiry}
                     />
                     <FloatingInput
                       className="flex1 space-right"
@@ -340,6 +361,7 @@ export default class Checkout extends React.Component {
                       onChange={this.handlePaymentChange}
                       stateKey={"cardSecurity"}
                       maxLength={4}
+                      errorText={this.state.inputErrors.cardSecurity}
                     />
                     <FloatingInput
                       className="flex1"
@@ -355,10 +377,13 @@ export default class Checkout extends React.Component {
                       value={this.state.cardZip}
                       onChange={this.handlePaymentChange}
                       stateKey={"cardZip"}
-                      maxLength={6}
+                      maxLength={5}
+                      errorText={this.state.inputErrors.cardZip}
                     />
                   </div>
-                  <p style={{ color: "#aaa" }}>All payments are secure and encrypted.</p>
+                  <p style={{ color: "#aaa", marginTop: 15 }}>
+                    All payments are secure and encrypted.
+                  </p>
                 </div>
               </div>
             </CSSTransition>

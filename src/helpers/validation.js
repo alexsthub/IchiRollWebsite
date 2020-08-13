@@ -23,3 +23,54 @@ function validateEmail(email) {
 // function validatePhone(phone) {
 //   return null;
 // }
+
+export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip) {
+  let errorObject = {};
+  const numberValidated = validateCCNumber(ccNumber);
+  const expiryValidated = validateCCExpiry(ccExpiry);
+  const securityValidated = validateCCSecurity(ccSecurity);
+  const zipValidated = validateCCZip(ccZip);
+
+  if (!numberValidated) errorObject["cardNumber"] = "Invalid credit card number";
+  if (!expiryValidated) errorObject["cardExpiry"] = "Invalid expiry";
+  if (!securityValidated) errorObject["cardSecurity"] = "Invalid CVV";
+  if (!zipValidated) errorObject["cardZip"] = "Invalid zipcode";
+  return errorObject;
+}
+
+// TODO:
+function validateCCNumber(ccNumber) {
+  return true;
+}
+
+function validateCCExpiry(ccExpiry) {
+  const splitStr = ccExpiry.split("/");
+  console.log(splitStr);
+  if (splitStr.length < 2 || splitStr[1].length < 2) return false;
+  const expression = /^[0-9]+$/;
+  splitStr.forEach((s) => {
+    if (!expression.test(s)) return false;
+  });
+
+  const month = Number(splitStr[0]);
+  const year = Number(splitStr[1]);
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = Number(currentDate.getFullYear().toString().substr(2));
+
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return false;
+  }
+
+  return true;
+}
+
+function validateCCSecurity(ccSecurity) {
+  const expression = /^[0-9]+$/;
+  return expression.test(ccSecurity) && ccSecurity.length > 2;
+}
+
+function validateCCZip(ccZip) {
+  const expression = /^[0-9]+$/;
+  return expression.test(ccZip) && ccZip.length === 5;
+}
