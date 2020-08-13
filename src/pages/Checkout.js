@@ -15,6 +15,8 @@ import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
 import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 // TODO: Editing
 
@@ -72,6 +74,10 @@ export default class Checkout extends React.Component {
   handleCCNumber = (e) => {
     const value = ccFormat(e.target.value);
     this.setState({ cardNumber: value });
+  };
+
+  handleExpirationChange = (e) => {
+    const value = cleanValue(e.target.value);
   };
 
   handlePaymentChange = (e, key) => {
@@ -260,6 +266,7 @@ export default class Checkout extends React.Component {
                     value={this.state.cardNumber}
                     onChange={(e) => this.setState({ cardNumber: ccFormat(e.target.value) })}
                     maxLength={20}
+                    icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
                   />
 
                   <div style={{ display: "flex" }}>
@@ -274,7 +281,7 @@ export default class Checkout extends React.Component {
                       autoCorrect="off"
                       spellCheck="off"
                       value={this.state.cardExpiry}
-                      onChange={(e) => this.setState({ cardExpiry: cleanValue(e.target.value) })}
+                      onChange={this.handleExpirationChange}
                       stateKey={"cardExpiry"}
                       maxLength={5}
                     />
@@ -306,7 +313,7 @@ export default class Checkout extends React.Component {
                       autoCorrect="off"
                       spellCheck="off"
                       value={this.state.cardZip}
-                      onChange={(e) => this.setState({ cardZip: cleanValue(e.target.value) })}
+                      onChange={this.handlePaymentChange}
                       stateKey={"cardZip"}
                       maxLength={6}
                     />
