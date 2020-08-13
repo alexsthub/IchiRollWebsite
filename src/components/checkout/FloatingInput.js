@@ -3,6 +3,8 @@ import "../../styles/components/FloatingInput.css";
 
 export default class FloatingInput extends React.Component {
   handleChange = (e) => {
+    if (!this.props.onChange) return;
+
     if (this.props.stateKey) {
       this.props.onChange(e, this.props.stateKey);
     } else {

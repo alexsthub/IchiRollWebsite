@@ -71,13 +71,32 @@ export default class Checkout extends React.Component {
     this.setState({ [key]: e.target.value });
   };
 
-  handleCCNumber = (e) => {
-    const value = ccFormat(e.target.value);
-    this.setState({ cardNumber: value });
-  };
-
   handleExpirationChange = (e) => {
-    const value = cleanValue(e.target.value);
+    const expiry = this.state.cardExpiry;
+    const maxLength = Number(e.target.getAttribute("maxlength"));
+    if (e.keyCode === 8 && expiry.length === 0) {
+      e.preventDefault();
+      return;
+    }
+    if (e.keyCode === 8 && expiry.length > 0) {
+      const trimCount = expiry.charAt(expiry.length - 1) === "/" ? 2 : 1;
+      this.setState({ cardExpiry: expiry.substr(0, expiry.length - trimCount) });
+      return;
+    }
+    const inputChar = String.fromCharCode(e.keyCode);
+    const value = expiry + inputChar;
+    if (value.length > maxLength) return;
+
+    const formattedValue = value
+      .replace(/^([1-9]\/|[2-9])$/g, "0$1/")
+      .replace(/^(0[1-9]|1[0-2])$/g, "$1/")
+      .replace(/^([0-1])([3-9])$/g, "0$1/$2")
+      .replace(/^(0?[1-9]|1[0-2])([0-9]{2})$/g, "$1/$2")
+      .replace(/^([0]+)\/|[0]+$/g, "0")
+      .replace(/[^\d/]|^[/]*$/g, "")
+      .replace(/\/\//g, "/");
+
+    this.setState({ cardExpiry: formattedValue });
   };
 
   handlePaymentChange = (e, key) => {
@@ -281,7 +300,7 @@ export default class Checkout extends React.Component {
                       autoCorrect="off"
                       spellCheck="off"
                       value={this.state.cardExpiry}
-                      onChange={this.handleExpirationChange}
+                      onKeyDown={this.handleExpirationChange}
                       stateKey={"cardExpiry"}
                       maxLength={5}
                     />
