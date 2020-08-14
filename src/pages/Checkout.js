@@ -22,7 +22,6 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 import { ccData } from "../constants/ccData";
 
-// TODO: The text inputs render half then another half for choppiness
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
 export default class Checkout extends React.Component {
@@ -261,7 +260,7 @@ export default class Checkout extends React.Component {
               unmountOnExit
               onEnter={this.calcHeight}
             >
-              <div>
+              <div style={{ width: "100%", marginRight: "auto" }}>
                 <form id="contact-form">
                   <div className="f-section">
                     <p>Contact</p>
