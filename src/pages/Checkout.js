@@ -50,6 +50,7 @@ export default class Checkout extends React.Component {
 
     this.transitionDiv = createRef();
     this.cvvInput = createRef();
+    this.isBackspace = false;
   }
 
   componentDidMount = () => {
@@ -74,30 +75,20 @@ export default class Checkout extends React.Component {
   };
 
   handleExpirationChange = (e) => {
-    const expiry = this.state.cardExpiry;
-    const maxLength = Number(e.target.getAttribute("maxlength"));
-    if (e.keyCode === 8 && expiry.length === 0) {
-      e.preventDefault();
-      return;
+    let formattedValue;
+    const value = e.target.value;
+    if (this.isBackspace && value.charAt(value.length - 1) === "/") {
+      formattedValue = value.substr(0, value.length - 1);
+    } else {
+      formattedValue = value
+        .replace(/^([1-9]\/|[2-9])$/g, "0$1/")
+        .replace(/^(0[1-9]|1[0-2])$/g, "$1/")
+        .replace(/^([0-1])([3-9])$/g, "0$1/$2")
+        .replace(/^(0?[1-9]|1[0-2])([0-9]{2})$/g, "$1/$2")
+        .replace(/^([0]+)\/|[0]+$/g, "0")
+        .replace(/[^\d/]|^[/]*$/g, "")
+        .replace(/\/\//g, "/");
     }
-    if (e.keyCode === 8 && expiry.length > 0) {
-      const trimCount = expiry.charAt(expiry.length - 1) === "/" ? 2 : 1;
-      this.setState({ cardExpiry: expiry.substr(0, expiry.length - trimCount) });
-      return;
-    }
-    const inputChar = String.fromCharCode(e.keyCode);
-    const value = expiry + inputChar;
-    if (value.length > maxLength) return;
-
-    const formattedValue = value
-      .replace(/^([1-9]\/|[2-9])$/g, "0$1/")
-      .replace(/^(0[1-9]|1[0-2])$/g, "$1/")
-      .replace(/^([0-1])([3-9])$/g, "0$1/$2")
-      .replace(/^(0?[1-9]|1[0-2])([0-9]{2})$/g, "$1/$2")
-      .replace(/^([0]+)\/|[0]+$/g, "0")
-      .replace(/[^\d/]|^[/]*$/g, "")
-      .replace(/\/\//g, "/");
-
     this.updateErrors("cardExpiry");
     this.setState({ cardExpiry: formattedValue });
   };
@@ -341,7 +332,8 @@ export default class Checkout extends React.Component {
                       autoCorrect="off"
                       spellCheck="off"
                       value={this.state.cardExpiry}
-                      onKeyDown={this.handleExpirationChange}
+                      onKeyDown={(e) => (e.keyCode === 8 ? (this.isBackspace = true) : null)}
+                      onChange={this.handleExpirationChange}
                       stateKey={"cardExpiry"}
                       maxLength={5}
                       errorText={this.state.inputErrors.cardExpiry}

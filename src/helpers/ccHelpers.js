@@ -15,6 +15,18 @@ const app = {
         format: "xxxx xxxxxxx xxxx",
       },
     },
+    Discover: {
+      name: "Discover",
+      code: "ds",
+      max_length: 19,
+      security: 3,
+      pattern: /^6011/,
+      valid_length: [16],
+      formats: {
+        length: 16,
+        format: "xxxx xxxx xxxx xxxx",
+      },
+    },
     Visa: {
       name: "Visa",
       code: "vs",
@@ -54,8 +66,6 @@ const app = {
   },
 };
 
-// TODO: Add discover somehow
-// TODO: When you edit at the front, it will reset your cursor to the end. I don't want.
 export function monitorCCFormat(e, cvvInput) {
   const value = e.target.value;
   const ccNum = value.replace(/\D/g, "");
@@ -81,7 +91,6 @@ export function formatCardNumber(ccNum, cardType) {
 
   // if (!cardType) return ccNum;
   let cardFormatString = getCardFormatString(ccNum, cardType);
-  console.log(cardFormatString);
   for (let i = 0; i < ccNum.length; i++) {
     cardFormatIndex = i + numAppendedChars;
     if (!cardFormatString || cardFormatIndex >= cardFormatString.length) {
@@ -129,9 +138,10 @@ function addIdentifier(element, cardType, cvvInput) {
     element.classList.remove(...classes);
     element.classList.add(identifier);
     if (cardType) {
-      console.log(cvvInput.current.getAttribute("maxlength"));
       element.setAttribute("maxlength", cardType.max_length);
       cvvInput.current.setAttribute("maxlength", cardType.security);
+    } else {
+      element.setAttribute("maxlength", 19);
     }
   }
 }

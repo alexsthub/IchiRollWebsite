@@ -38,7 +38,7 @@ export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip
   return errorObject;
 }
 
-// TODO:
+// TODO: We need the number, identification, card type info to verify if it is the correct number of things
 function validateCCNumber(ccNumber) {
   return true;
 }
