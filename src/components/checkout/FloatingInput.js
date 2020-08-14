@@ -23,7 +23,7 @@ export default class FloatingInput extends React.Component {
     const cName = className ? "input-container " + className : "input-container";
 
     const iconElement = icon ? (
-      <div style={{ position: "absolute", right: 10, bottom: 0, transform: "translateY(-90%)" }}>
+      <div style={{ position: "absolute", right: 10, bottom: 0, transform: "translateY(-60%)" }}>
         {icon}
       </div>
     ) : null;

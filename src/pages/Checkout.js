@@ -9,7 +9,7 @@ import {
   calculateNumberItems,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
-import { ccFormat, cleanValue } from "../helpers/ccHelpers";
+import { cleanValue, monitorCCFormat } from "../helpers/ccHelpers";
 
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
@@ -324,7 +324,7 @@ export default class Checkout extends React.Component {
                     autoCorrect="off"
                     spellCheck="off"
                     value={this.state.cardNumber}
-                    onChange={(e) => this.setState({ cardNumber: ccFormat(e.target.value) })}
+                    onChange={(e) => this.setState({ cardNumber: monitorCCFormat(e) })}
                     maxLength={20}
                     icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
                   />
