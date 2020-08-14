@@ -7,6 +7,7 @@ import {
   calculateTax,
   calculateTip,
   calculateNumberItems,
+  areAllNullValues,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
 import { cleanValue, getCardType, formatCardNumber, addIdentifier } from "../helpers/ccHelpers";
@@ -46,7 +47,7 @@ export default class Checkout extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "secondary",
+      activeSection: "primary",
       transitionHeight: null,
     };
 
@@ -170,9 +171,18 @@ export default class Checkout extends React.Component {
     const ccNum = value.replace(/\D/g, "");
     const cardType = getCardType(ccNum, ccData);
     const formattedNumber = formatCardNumber(ccNum, cardType, ccData);
-
     this.addIdentifier(e.target, cardType);
+
+    if (!cardType && this.state.cardSecurity.length > 3) {
+      this.setState({ cardSecurity: this.state.cardSecurity.substr(0, 3) });
+    }
     return formattedNumber;
+  };
+
+  preventEnterSubmit = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
   };
 
   handleContinue = (e) => {
@@ -183,8 +193,9 @@ export default class Checkout extends React.Component {
         this.state.email,
         this.state.phone
       );
-      if (Object.keys(errors).length > 0) {
+      if (!areAllNullValues(errors)) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
+        console.log(updatedErrors);
         this.setState({ inputErrors: updatedErrors });
       } else {
         this.setState({ activeSection: "secondary" });
@@ -198,7 +209,7 @@ export default class Checkout extends React.Component {
         this.ccType,
         ccData
       );
-      if (Object.keys(errors).length > 0) {
+      if (!areAllNullValues(errors)) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
         this.setState({ inputErrors: updatedErrors });
       } else {
@@ -221,186 +232,203 @@ export default class Checkout extends React.Component {
     return (
       <div style={{ marginTop: 60 }} className="row" id="checkout">
         <div className="column">
-          <h2>Pickup Information</h2>
-          <div className="pickup-details" id="address">
-            <p>Address</p>
-            <p>{"Ichi Roll Wok & Teriyaki"}</p>
-            <p>{"306 N 125th St, Seattle, WA 98133"}</p>
-          </div>
-
-          <div className="pickup-details" id="time">
-            <div className="os-details-row">
-              <p>Time</p>
-              <Link to="/order" className="checkout-button" style={{ fontSize: 12 }}>
-                Edit
-              </Link>
+          <form id="billing-info">
+            <h2>Pickup Information</h2>
+            <div className="pickup-details" id="address">
+              <p>Address</p>
+              <p>{"Ichi Roll Wok & Teriyaki"}</p>
+              <p>{"306 N 125th St, Seattle, WA 98133"}</p>
             </div>
-            <p>{timeContent}</p>
-          </div>
 
-          <div
-            className="trans-div"
-            style={{ height: this.state.transitionHeight }}
-            ref={this.transitionDiv}
-          >
-            <CSSTransition
-              in={this.state.activeSection === "primary"}
-              timeout={400}
-              classNames="primary"
-              unmountOnExit
-              onEnter={this.calcHeight}
-            >
-              <div>
-                <div className="f-section">
-                  <p>Contact</p>
-
-                  <FloatingInput
-                    label={"Name"}
-                    name={"contact-name"}
-                    placeholder={"Name"}
-                    autoComplete={"name"}
-                    value={this.state.name}
-                    onChange={this.updateInput}
-                    stateKey={"name"}
-                    errorText={this.state.inputErrors.name}
-                  />
-
-                  <FloatingInput
-                    label={"Email"}
-                    name={"contact-email"}
-                    placeholder={"Email Address"}
-                    autoComplete={"email"}
-                    value={this.state.email}
-                    onChange={this.updateInput}
-                    stateKey={"email"}
-                    errorText={this.state.inputErrors.email}
-                  />
-
-                  <FloatingInput
-                    label={"Phone Number"}
-                    name={"contact-phone"}
-                    placeholder={"Phone Number"}
-                    autoComplete={"tel"}
-                    value={this.state.phone}
-                    onChange={this.updateInput}
-                    stateKey={"phone"}
-                  />
-                </div>
-
-                <div className="f-section">
-                  <p>Notes for Restaurant</p>
-                  <TextareaAutosize
-                    placeholder={"Add details for your order pickup here."}
-                    value={this.state.notes}
-                    onChange={this.handleNoteChange}
-                  />
-                </div>
+            <div className="pickup-details" id="time">
+              <div className="os-details-row">
+                <p>Time</p>
+                <Link to="/order" className="checkout-button" style={{ fontSize: 12 }}>
+                  Edit
+                </Link>
               </div>
-            </CSSTransition>
+              <p>{timeContent}</p>
+            </div>
 
-            <CSSTransition
-              in={this.state.activeSection === "secondary"}
-              timeout={400}
-              classNames="secondary"
-              unmountOnExit
-              onEnter={this.calcHeight}
+            <div
+              className="trans-div"
+              style={{ height: this.state.transitionHeight }}
+              ref={this.transitionDiv}
             >
-              <div>
-                <div className="contact-container">
-                  <div className="os-details-row ci">
-                    <p>Contact Information</p>
-                    <button onClick={() => this.setState({ activeSection: "primary" })}>
-                      Edit
-                    </button>
-                  </div>
-                  <p>{this.state.name}</p>
-                  <p>{this.state.email}</p>
-                  <p>{this.state.phone}</p>
-                </div>
-                <div className="payment-container">
-                  <h2>Payment Information</h2>
-                  <FloatingInput
-                    label={"Card Number"}
-                    name={"card-number"}
-                    placeholder={"Card Number"}
-                    type={"text"}
-                    pattern="\d*"
-                    autoComplete={"cc-number"}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="off"
-                    value={this.state.cardNumber}
-                    onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
-                    maxLength={19}
-                    icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
-                    errorText={this.state.inputErrors.cardNumber}
-                  />
+              <CSSTransition
+                in={this.state.activeSection === "primary"}
+                timeout={400}
+                classNames="primary"
+                unmountOnExit
+                onEnter={this.calcHeight}
+              >
+                <div>
+                  <div className="f-section">
+                    <p>Contact</p>
 
-                  <div style={{ display: "flex" }}>
-                    <FloatingInput
-                      className="flex1 space-right"
-                      label={"Card Expiry Date"}
-                      name={"card-expiry"}
-                      placeholder={"MM/YY"}
-                      type={"text"}
-                      pattern="\d*"
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="off"
-                      value={this.state.cardExpiry}
-                      onKeyDown={(e) => (e.keyCode === 8 ? (this.isBackspace = true) : null)}
-                      onChange={this.handleExpirationChange}
-                      stateKey={"cardExpiry"}
-                      maxLength={5}
-                      errorText={this.state.inputErrors.cardExpiry}
-                    />
-                    <FloatingInput
-                      refProp={this.cvvInput}
-                      className="flex1 space-right"
-                      label={"Security Code"}
-                      name={"card-sc"}
-                      placeholder={"Security Code"}
-                      type={"text"}
-                      pattern="\d*"
-                      autoComplete={"cc-csc"}
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="off"
-                      value={this.state.cardSecurity}
-                      onChange={this.handlePaymentChange}
-                      stateKey={"cardSecurity"}
-                      maxLength={4}
-                      errorText={this.state.inputErrors.cardSecurity}
-                    />
-                    <FloatingInput
-                      className="flex1"
-                      label={"Zip Code"}
-                      name={"card-zip"}
-                      placeholder={"Zip Code"}
-                      type={"text"}
-                      pattern="\d*"
-                      autoComplete={"shipping postal-code"}
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="off"
-                      value={this.state.cardZip}
-                      onChange={this.handlePaymentChange}
-                      stateKey={"cardZip"}
-                      maxLength={5}
-                      errorText={this.state.inputErrors.cardZip}
-                    />
-                  </div>
-                  <p style={{ color: "#aaa", marginTop: 15 }}>
-                    All payments are secure and encrypted.
-                  </p>
-                </div>
-              </div>
-            </CSSTransition>
-          </div>
+                    <fieldset>
+                      <FloatingInput
+                        label={"Name"}
+                        name={"contact-name"}
+                        placeholder={"Name"}
+                        autoComplete={"name"}
+                        value={this.state.name}
+                        onChange={this.updateInput}
+                        stateKey={"name"}
+                        errorText={this.state.inputErrors.name}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
 
-          <button className="continue" onClick={this.handleContinue}>
-            {this.state.activeSection === "primary" ? "Continue" : "Complete Purchase"}
-          </button>
+                      <FloatingInput
+                        label={"Email"}
+                        name={"contact-email"}
+                        placeholder={"Email Address"}
+                        autoComplete={"email"}
+                        value={this.state.email}
+                        onChange={this.updateInput}
+                        stateKey={"email"}
+                        errorText={this.state.inputErrors.email}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+
+                      <FloatingInput
+                        label={"Phone Number"}
+                        name={"contact-phone"}
+                        placeholder={"Phone Number"}
+                        autoComplete={"tel"}
+                        value={this.state.phone}
+                        onChange={this.updateInput}
+                        stateKey={"phone"}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="f-section">
+                    <p>Notes for Restaurant</p>
+                    <fieldset>
+                      <TextareaAutosize
+                        placeholder={"Add details for your order pickup here."}
+                        value={this.state.notes}
+                        onChange={this.handleNoteChange}
+                      />
+                    </fieldset>
+                  </div>
+                </div>
+              </CSSTransition>
+
+              <CSSTransition
+                in={this.state.activeSection === "secondary"}
+                timeout={400}
+                classNames="secondary"
+                unmountOnExit
+                onEnter={this.calcHeight}
+              >
+                <div>
+                  <div className="contact-container">
+                    <div className="os-details-row ci">
+                      <p>Contact Information</p>
+                      <button onClick={() => this.setState({ activeSection: "primary" })}>
+                        Edit
+                      </button>
+                    </div>
+                    <p>{this.state.name}</p>
+                    <p>{this.state.email}</p>
+                    <p>{this.state.phone}</p>
+                  </div>
+                  <div className="payment-container">
+                    <h2>Payment Information</h2>
+                    <fieldset>
+                      <FloatingInput
+                        label={"Card Number"}
+                        name={"card-number"}
+                        placeholder={"Card Number"}
+                        type={"text"}
+                        pattern="\d*"
+                        autoComplete={"cc-number"}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="off"
+                        value={this.state.cardNumber}
+                        onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
+                        onKeyDown={this.preventEnterSubmit}
+                        maxLength={19}
+                        icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
+                        errorText={this.state.inputErrors.cardNumber}
+                      />
+
+                      <div style={{ display: "flex" }}>
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"Card Expiry Date"}
+                          name={"card-expiry"}
+                          placeholder={"MM/YY"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardExpiry}
+                          onKeyDown={(e) => {
+                            if (e.keyCode === 8) this.isBackspace = true;
+                            if (e.keyCode === 13) e.preventDefault();
+                          }}
+                          onChange={this.handleExpirationChange}
+                          stateKey={"cardExpiry"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.cardExpiry}
+                        />
+                        <FloatingInput
+                          refProp={this.cvvInput}
+                          className="flex1 space-right"
+                          label={"Security Code"}
+                          name={"card-sc"}
+                          placeholder={"Security Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"cc-csc"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardSecurity}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"cardSecurity"}
+                          maxLength={3}
+                          errorText={this.state.inputErrors.cardSecurity}
+                        />
+                        <FloatingInput
+                          className="flex1"
+                          label={"Zip Code"}
+                          name={"card-zip"}
+                          placeholder={"Zip Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"shipping postal-code"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardZip}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"cardZip"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.cardZip}
+                        />
+                      </div>
+                    </fieldset>
+                    <p style={{ color: "#aaa", marginTop: 15 }}>
+                      All payments are secure and encrypted.
+                    </p>
+                  </div>
+                </div>
+              </CSSTransition>
+            </div>
+
+            <button className="continue" onClick={this.handleContinue} type="submit">
+              {this.state.activeSection === "primary" ? "Continue" : "Complete Purchase"}
+            </button>
+          </form>
         </div>
 
         <OrderSummary

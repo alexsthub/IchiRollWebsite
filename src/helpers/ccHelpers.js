@@ -40,6 +40,7 @@ export function addIdentifier(element, cardType) {
       this.cvvInput.current.setAttribute("maxlength", cardType.security);
     } else {
       element.setAttribute("maxlength", 19);
+      this.cvvInput.current.setAttribute("maxlength", 3);
     }
   }
 }

@@ -62,3 +62,12 @@ export function calculateNumberItems(cart) {
   });
   return num;
 }
+
+export function areAllNullValues(obj) {
+  for (let key in obj) {
+    if (obj[key] !== null) {
+      return false;
+    }
+  }
+  return true;
+}

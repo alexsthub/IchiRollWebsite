@@ -5,9 +5,9 @@ export function validateContactInformation(name, email, phone) {
   const nameValidated = validateName(name);
   const emailValidated = validateEmail(email);
   // const phoneValidated = validatePhone(phone);
-  if (!nameValidated) errorObject["name"] = "Please enter a name";
-  if (!emailValidated) errorObject["email"] = "Please enter a valid email";
-  // if (!phoneValidated) errorObject["phone"] = "Please enter a valid phone number";
+  errorObject["name"] = !nameValidated ? "Please enter a name" : null;
+  errorObject["email"] = !emailValidated ? "Please enter a valid email" : null;
+  // errorObject["phone"] = !phoneValidated ? "Please enter a valid phone number": null;
   return errorObject;
 }
 
@@ -27,15 +27,14 @@ function validateEmail(email) {
 export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip, ccType, ccData) {
   let errorObject = {};
   const numberValidated = validateCCNumber(ccNumber, ccType, ccData);
-  console.log(numberValidated);
   const expiryValidated = validateCCExpiry(ccExpiry);
   const securityValidated = validateCCSecurity(ccSecurity, ccType, ccData);
   const zipValidated = validateCCZip(ccZip);
 
-  if (!numberValidated) errorObject["cardNumber"] = "Invalid credit card number";
-  if (!expiryValidated) errorObject["cardExpiry"] = "Invalid expiry";
-  if (!securityValidated) errorObject["cardSecurity"] = "Invalid CVV";
-  if (!zipValidated) errorObject["cardZip"] = "Invalid zipcode";
+  errorObject["cardNumber"] = !numberValidated ? "Invalid credit card number" : null;
+  errorObject["cardExpiry"] = !expiryValidated ? "Invalid expiry" : null;
+  errorObject["cardSecurity"] = !securityValidated ? "Invalid CVV" : null;
+  errorObject["cardZip"] = !zipValidated ? "Invalid zipcode" : null;
   return errorObject;
 }
 
