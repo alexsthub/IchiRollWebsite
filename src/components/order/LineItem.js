@@ -38,7 +38,6 @@ export default class LineItem extends React.Component {
             </div>
           </div>
         </div>
-        {/*  */}
       </div>
     );
   }

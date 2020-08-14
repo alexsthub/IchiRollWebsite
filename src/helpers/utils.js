@@ -29,3 +29,45 @@ export function getDayOfWeek(date) {
   if (dayOfWeek < 0) dayOfWeek = 6;
   return dayOfWeek;
 }
+
+export function calculateSubtotal(cart) {
+  if (cart.length === 0) return 0;
+  let subtotal = 0;
+  cart.forEach((itemObj) => {
+    const price = itemObj.item.price;
+    const quantity = itemObj.quantity;
+    const itemTotal = price * quantity;
+    subtotal += itemTotal;
+  });
+  return subtotal;
+}
+
+export function calculateTax(subtotal, TAX_RATE) {
+  return subtotal * TAX_RATE;
+}
+
+export function calculateTip(subtotal, tipObject, appliedTip) {
+  const tipRate = tipObject.value;
+  if (tipRate !== null) {
+    return subtotal * tipRate;
+  }
+  return appliedTip;
+}
+
+export function calculateNumberItems(cart) {
+  if (cart.length === 0) return 0;
+  let num = 0;
+  cart.forEach((itemObj) => {
+    num += itemObj.quantity;
+  });
+  return num;
+}
+
+export function areAllNullValues(obj) {
+  for (let key in obj) {
+    if (obj[key] !== null) {
+      return false;
+    }
+  }
+  return true;
+}

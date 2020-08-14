@@ -1,0 +1,48 @@
+.input-container {
+  position: relative;
+  padding-top: 16px;
+  padding-bottom: 20px;
+}
+
+label {
+  position: absolute;
+  left: 0px;
+  top: 5px;
+
+  transition: all 0.1s linear;
+  opacity: 0;
+
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.label-show {
+  top: 0px;
+  opacity: 1;
+}
+
+input {
+  border-radius: 0px;
+  width: 100%;
+  padding: 14px 16px;
+  background: #F7F7F7;
+  box-sizing: border-box;
+  border: none;
+}
+
+input:focus {
+  outline: 2px solid black;
+}
+
+.invalid-field {
+  padding-left: 12px;
+  border-left: 4px solid #c7254e;
+}
+
+.error-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: #c7254e;
+  font-size: 14px;
+}

@@ -1,14 +1,273 @@
+#checkout p {
+  margin: 0px;
+}
+
+h2,
+h4 {
+  margin: 0px;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex2 {
+  flex: 2;
+}
+
 .row {
   display: flex;
-  max-width: 1140px;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-
-  background-color: lightgray;
 }
 
 .column {
   flex: 1;
   padding: 0 60px;
+}
+
+/* Pickup information */
+.pickup-details {
+  padding: 15px 0;
+}
+
+.pickup-details p:first-child {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.f-section {
+  margin: 15px 0px;
+}
+
+.f-section p:first-child {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.f-section textarea {
+  min-height: 54px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 18px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.f-section textarea:focus {
+  outline: none;
+}
+
+/* Secondary Page */
+.contact-container {
+  padding: 10px 15px;
+  background-color: #f7f7f7;
+  font-size: .8em;
+}
+
+.ci p {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.checkout-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1em;
+  color: black;
+}
+
+.ci button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.ci button:focus {
+  outline: none;
+}
+
+.payment-container {
+  margin: 10px 0px;
+}
+
+.space-right {
+  border-right: 15px solid #fff;
+}
+
+/* Button */
+
+.continue {
+  height: 50px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  background-color: #656565;
+  border-radius: 3px;
+  padding: 12px 24px;
+  font-size: 24px;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0px solid #c2c2c2;
+  margin: 30px 0px;
+
+  transition: all 0.3s ease-in-out;
+}
+
+.continue:hover {
+  background-color: black;
+}
+
+/* Order Summary */
+.order-summary {
+  background-color: #eeeeee;
+}
+
+.os-items-container {
+  padding: 20px 30px;
+}
+
+.tip-container {
+  border-top: 2px solid rgba(0, 0, 0, .05);
+  padding: 30px 30px 25px;
+}
+
+.tip-row {
+  display: flex;
+  margin: 5px 0px;
+}
+
+.tip-button {
+  flex: 1;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 14px 0px;
+  text-align: center;
+  background-color: #f7f7f7;
+  cursor: pointer;
+}
+
+.tip-button:focus {
+  outline: none;
+}
+
+.tip-active {
+  background-color: #dadada;
+}
+
+.custom-tip {
+  display: flex;
+}
+
+.custom-tip input {
+  flex: 3;
+  border-radius: 0px;
+  width: 100%;
+  padding: 14px 16px;
+  background: #F7F7F7;
+  box-sizing: border-box;
+  border: none;
+}
+
+.custom-tip input:focus {
+  box-shadow: none;
+}
+
+.custom-tip button {
+  flex: 1;
+  cursor: pointer;
+  color: #f7f7f7;
+  background-color: #aaaaaa;
+  font-weight: 700;
+  border: none;
+}
+
+.custom-tip button:focus {
+  outline: none;
+}
+
+.os-details {
+  border-top: 2px solid rgba(0, 0, 0, .05);
+  padding: 30px;
+}
+
+.os-details p {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.os-details-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.os-total {
+  border-top: 2px solid rgba(0, 0, 0, .05);
+  padding: 30px;
+}
+
+.os-total p {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Transition */
+.trans-div {
+  position: relative;
+  overflow: hidden;
+  height: auto;
+  transition: height 400ms ease;
+  padding: 0px 2px;
+}
+
+.primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+
+.primary-enter-active {
+  transform: translateX(0%);
+  transition: all 400ms ease;
+}
+
+.primary-exit {
+  position: absolute;
+}
+
+.primary-exit-active {
+  transform: translateX(-110%);
+  transition: all 400ms ease;
+}
+
+.secondary-enter {
+  transform: translateX(110%);
+}
+
+.secondary-enter-active {
+  transform: translateX(0%);
+  transition: all 400ms ease;
+}
+
+.secondary-exit-active {
+  transform: translateX(110%);
+  transition: all 400ms ease;
 }
