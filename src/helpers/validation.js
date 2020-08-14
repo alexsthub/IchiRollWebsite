@@ -24,9 +24,9 @@ function validateEmail(email) {
 //   return null;
 // }
 
-export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip) {
+export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip, ccType) {
   let errorObject = {};
-  const numberValidated = validateCCNumber(ccNumber);
+  const numberValidated = validateCCNumber(ccNumber, ccType);
   const expiryValidated = validateCCExpiry(ccExpiry);
   const securityValidated = validateCCSecurity(ccSecurity);
   const zipValidated = validateCCZip(ccZip);
@@ -39,7 +39,9 @@ export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip
 }
 
 // TODO: We need the number, identification, card type info to verify if it is the correct number of things
-function validateCCNumber(ccNumber) {
+function validateCCNumber(ccNumber, ccType) {
+  console.log(ccNumber);
+  console.log(ccType);
   return true;
 }
 

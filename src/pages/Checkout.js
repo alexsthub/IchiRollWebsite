@@ -9,7 +9,7 @@ import {
   calculateNumberItems,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
-import { cleanValue, monitorCCFormat } from "../helpers/ccHelpers";
+import { cleanValue, getCardType, formatCardNumber, addIdentifier } from "../helpers/ccHelpers";
 
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
@@ -51,6 +51,9 @@ export default class Checkout extends React.Component {
     this.transitionDiv = createRef();
     this.cvvInput = createRef();
     this.isBackspace = false;
+    this.ccType = null;
+
+    this.addIdentifier = addIdentifier.bind(this);
   }
 
   componentDidMount = () => {
@@ -160,6 +163,16 @@ export default class Checkout extends React.Component {
     this.setState({ priceObject: priceObject });
   };
 
+  monitorCCFormat = (e) => {
+    const value = e.target.value;
+    const ccNum = value.replace(/\D/g, "");
+    const cardType = getCardType(ccNum);
+    const formattedNumber = formatCardNumber(ccNum, cardType);
+
+    this.addIdentifier(e.target, cardType);
+    return formattedNumber;
+  };
+
   handleContinue = (e) => {
     e.preventDefault();
     if (this.state.activeSection === "primary") {
@@ -179,7 +192,8 @@ export default class Checkout extends React.Component {
         this.state.cardNumber,
         this.state.cardExpiry,
         this.state.cardSecurity,
-        this.state.cardZip
+        this.state.cardZip,
+        this.ccType
       );
       if (Object.keys(errors).length > 0) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
@@ -313,9 +327,7 @@ export default class Checkout extends React.Component {
                     autoCorrect="off"
                     spellCheck="off"
                     value={this.state.cardNumber}
-                    onChange={(e) =>
-                      this.setState({ cardNumber: monitorCCFormat(e, this.cvvInput) })
-                    }
+                    onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
                     maxLength={19}
                     icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
                   />

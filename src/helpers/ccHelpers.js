@@ -1,4 +1,4 @@
-const app = {
+const ccData = {
   el_ccUnknown: "cc_type_unknown",
   el_ccTypePrefix: "cc_type_",
   default_format: "xxxx xxxx xxxx xxxx",
@@ -66,18 +66,18 @@ const app = {
   },
 };
 
-export function monitorCCFormat(e, cvvInput) {
-  const value = e.target.value;
-  const ccNum = value.replace(/\D/g, "");
-  const cardType = getCardType(ccNum);
-  const formattedNumber = formatCardNumber(ccNum, cardType);
-  addIdentifier(e.target, cardType, cvvInput);
-  return formattedNumber;
-}
+// export function monitorCCFormat(e, cvvInput) {
+//   const value = e.target.value;
+//   const ccNum = value.replace(/\D/g, "");
+//   const cardType = getCardType(ccNum);
+//   const formattedNumber = formatCardNumber(ccNum, cardType);
+//   addIdentifier(e.target, cardType, cvvInput);
+//   return formattedNumber;
+// }
 
 export function getCardType(ccNum) {
-  for (let i in app.cardTypes) {
-    const cardType = app.cardTypes[i];
+  for (let i in ccData.cardTypes) {
+    const cardType = ccData.cardTypes[i];
     if (ccNum.match(cardType.pattern) && isValidLength(ccNum, cardType)) {
       return cardType;
     }
@@ -106,6 +106,21 @@ export function formatCardNumber(ccNum, cardType) {
   return formattedNumber;
 }
 
+export function addIdentifier(element, cardType) {
+  let identifier;
+  if (cardType) identifier = cardType.code;
+
+  if (this.ccType !== identifier) {
+    this.ccType = identifier;
+    if (cardType) {
+      element.setAttribute("maxlength", cardType.max_length);
+      this.cvvInput.current.setAttribute("maxlength", cardType.security);
+    } else {
+      element.setAttribute("maxlength", 19);
+    }
+  }
+}
+
 function isValidLength(ccNum, cardType) {
   for (let i in cardType.valid_length) {
     if (ccNum.length <= cardType.valid_length[i]) {
@@ -116,32 +131,11 @@ function isValidLength(ccNum, cardType) {
 }
 
 function getCardFormatString(ccNum, cardType) {
-  if (!cardType) return app.default_format;
+  if (!cardType) return ccData.default_format;
   for (let i in cardType.formats) {
     const format = cardType.formats[i];
     if (ccNum.length <= format.length) {
       return format;
-    }
-  }
-}
-
-function addIdentifier(element, cardType, cvvInput) {
-  let identifier = app.el_ccUnknown;
-  if (cardType) {
-    identifier = app.el_ccTypePrefix + cardType.code;
-  }
-  if (!element.classList.contains(identifier)) {
-    let classes = [app.el_ccUnknown];
-    for (let i in app.cardTypes) {
-      classes.push(app.el_ccTypePrefix + app.cardTypes[i].code);
-    }
-    element.classList.remove(...classes);
-    element.classList.add(identifier);
-    if (cardType) {
-      element.setAttribute("maxlength", cardType.max_length);
-      cvvInput.current.setAttribute("maxlength", cardType.security);
-    } else {
-      element.setAttribute("maxlength", 19);
     }
   }
 }
