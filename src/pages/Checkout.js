@@ -49,6 +49,7 @@ export default class Checkout extends React.Component {
     };
 
     this.transitionDiv = createRef();
+    this.cvvInput = createRef();
   }
 
   componentDidMount = () => {
@@ -178,7 +179,6 @@ export default class Checkout extends React.Component {
       );
       if (Object.keys(errors).length > 0) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
-        console.log(updatedErrors);
         this.setState({ inputErrors: updatedErrors });
       } else {
         this.setState({ activeSection: "secondary" });
@@ -190,10 +190,8 @@ export default class Checkout extends React.Component {
         this.state.cardSecurity,
         this.state.cardZip
       );
-      console.log(errors);
       if (Object.keys(errors).length > 0) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
-        console.log(updatedErrors);
         this.setState({ inputErrors: updatedErrors });
       } else {
         alert("Checkout!");
@@ -324,8 +322,10 @@ export default class Checkout extends React.Component {
                     autoCorrect="off"
                     spellCheck="off"
                     value={this.state.cardNumber}
-                    onChange={(e) => this.setState({ cardNumber: monitorCCFormat(e) })}
-                    maxLength={20}
+                    onChange={(e) =>
+                      this.setState({ cardNumber: monitorCCFormat(e, this.cvvInput) })
+                    }
+                    maxLength={19}
                     icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
                   />
 
@@ -347,6 +347,7 @@ export default class Checkout extends React.Component {
                       errorText={this.state.inputErrors.cardExpiry}
                     />
                     <FloatingInput
+                      refProp={this.cvvInput}
                       className="flex1 space-right"
                       label={"Security Code"}
                       name={"card-sc"}

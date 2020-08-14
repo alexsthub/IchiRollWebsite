@@ -44,6 +44,7 @@ export default class FloatingInput extends React.Component {
         </label>
         <div style={{ position: "relative" }}>
           <input
+            ref={this.props.refProp}
             style={invalidStyle}
             id={this.props.name}
             type={this.props.type ? this.props.type : "text"}

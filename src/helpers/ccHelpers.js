@@ -1,7 +1,7 @@
 const app = {
   el_ccUnknown: "cc_type_unknown",
   el_ccTypePrefix: "cc_type_",
-
+  default_format: "xxxx xxxx xxxx xxxx",
   cardTypes: {
     "American Express": {
       name: "American Express",
@@ -55,17 +55,17 @@ const app = {
 };
 
 // TODO: Add discover somehow
-// TODO: Change the max length of cvv
-export function monitorCCFormat(e) {
+// TODO: When you edit at the front, it will reset your cursor to the end. I don't want.
+export function monitorCCFormat(e, cvvInput) {
   const value = e.target.value;
   const ccNum = value.replace(/\D/g, "");
   const cardType = getCardType(ccNum);
   const formattedNumber = formatCardNumber(ccNum, cardType);
-  addIdentifier(e.target, cardType);
+  addIdentifier(e.target, cardType, cvvInput);
   return formattedNumber;
 }
 
-function getCardType(ccNum) {
+export function getCardType(ccNum) {
   for (let i in app.cardTypes) {
     const cardType = app.cardTypes[i];
     if (ccNum.match(cardType.pattern) && isValidLength(ccNum, cardType)) {
@@ -74,22 +74,14 @@ function getCardType(ccNum) {
   }
 }
 
-function isValidLength(ccNum, cardType) {
-  for (let i in cardType.valid_length) {
-    if (ccNum.length <= cardType.valid_length[i]) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function formatCardNumber(ccNum, cardType) {
+export function formatCardNumber(ccNum, cardType) {
   let numAppendedChars = 0;
   let formattedNumber = "";
   let cardFormatIndex = "";
 
-  if (!cardType) return ccNum;
+  // if (!cardType) return ccNum;
   let cardFormatString = getCardFormatString(ccNum, cardType);
+  console.log(cardFormatString);
   for (let i = 0; i < ccNum.length; i++) {
     cardFormatIndex = i + numAppendedChars;
     if (!cardFormatString || cardFormatIndex >= cardFormatString.length) {
@@ -105,7 +97,17 @@ function formatCardNumber(ccNum, cardType) {
   return formattedNumber;
 }
 
+function isValidLength(ccNum, cardType) {
+  for (let i in cardType.valid_length) {
+    if (ccNum.length <= cardType.valid_length[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function getCardFormatString(ccNum, cardType) {
+  if (!cardType) return app.default_format;
   for (let i in cardType.formats) {
     const format = cardType.formats[i];
     if (ccNum.length <= format.length) {
@@ -114,13 +116,10 @@ function getCardFormatString(ccNum, cardType) {
   }
 }
 
-function addIdentifier(element, cardType) {
+function addIdentifier(element, cardType, cvvInput) {
   let identifier = app.el_ccUnknown;
   if (cardType) {
     identifier = app.el_ccTypePrefix + cardType.code;
-    // setMaxLength(element, cardType.security);
-  } else {
-    // setMaxLength(element);
   }
   if (!element.classList.contains(identifier)) {
     let classes = [app.el_ccUnknown];
@@ -129,18 +128,13 @@ function addIdentifier(element, cardType) {
     }
     element.classList.remove(...classes);
     element.classList.add(identifier);
-    if (cardType) element.setAttribute("maxlength", cardType.max_length);
+    if (cardType) {
+      console.log(cvvInput.current.getAttribute("maxlength"));
+      element.setAttribute("maxlength", cardType.max_length);
+      cvvInput.current.setAttribute("maxlength", cardType.security);
+    }
   }
 }
-
-// TODO: Change the maxlength of the security
-// function setMaxLength(element, length) {
-//   if (element.length && app.isInteger(length)) {
-//     element.attr("maxlength", length);
-//   } else if (element.length) {
-//     element.attr("maxlength", "");
-//   }
-// }
 
 export function cleanValue(value) {
   const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
