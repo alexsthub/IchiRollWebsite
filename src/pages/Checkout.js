@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
+import { ccData } from "../constants/ccData";
+
 // TODO: The text inputs render half then another half for choppiness
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
@@ -166,8 +168,8 @@ export default class Checkout extends React.Component {
   monitorCCFormat = (e) => {
     const value = e.target.value;
     const ccNum = value.replace(/\D/g, "");
-    const cardType = getCardType(ccNum);
-    const formattedNumber = formatCardNumber(ccNum, cardType);
+    const cardType = getCardType(ccNum, ccData);
+    const formattedNumber = formatCardNumber(ccNum, cardType, ccData);
 
     this.addIdentifier(e.target, cardType);
     return formattedNumber;
@@ -193,7 +195,8 @@ export default class Checkout extends React.Component {
         this.state.cardExpiry,
         this.state.cardSecurity,
         this.state.cardZip,
-        this.ccType
+        this.ccType,
+        ccData
       );
       if (Object.keys(errors).length > 0) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
@@ -330,6 +333,7 @@ export default class Checkout extends React.Component {
                     onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
                     maxLength={19}
                     icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
+                    errorText={this.state.inputErrors.cardNumber}
                   />
 
                   <div style={{ display: "flex" }}>

@@ -24,11 +24,12 @@ function validateEmail(email) {
 //   return null;
 // }
 
-export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip, ccType) {
+export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip, ccType, ccData) {
   let errorObject = {};
-  const numberValidated = validateCCNumber(ccNumber, ccType);
+  const numberValidated = validateCCNumber(ccNumber, ccType, ccData);
+  console.log(numberValidated);
   const expiryValidated = validateCCExpiry(ccExpiry);
-  const securityValidated = validateCCSecurity(ccSecurity);
+  const securityValidated = validateCCSecurity(ccSecurity, ccType, ccData);
   const zipValidated = validateCCZip(ccZip);
 
   if (!numberValidated) errorObject["cardNumber"] = "Invalid credit card number";
@@ -38,16 +39,19 @@ export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip
   return errorObject;
 }
 
-// TODO: We need the number, identification, card type info to verify if it is the correct number of things
-function validateCCNumber(ccNumber, ccType) {
-  console.log(ccNumber);
-  console.log(ccType);
+function validateCCNumber(ccNumber, ccType, ccData) {
+  if (!ccType) return false;
+  const cardType = ccData.cardTypes[ccType];
+  const expectedLength = cardType.formats.length;
+  const expression = /^[0-9]+$/;
+
+  const cleanNumber = ccNumber.replace(/ /g, "");
+  if (cleanNumber.length !== expectedLength || !expression.test(cleanNumber)) return false;
   return true;
 }
 
 function validateCCExpiry(ccExpiry) {
   const splitStr = ccExpiry.split("/");
-  console.log(splitStr);
   if (splitStr.length < 2 || splitStr[1].length < 2) return false;
   const expression = /^[0-9]+$/;
   splitStr.forEach((s) => {
@@ -67,9 +71,11 @@ function validateCCExpiry(ccExpiry) {
   return true;
 }
 
-function validateCCSecurity(ccSecurity) {
+function validateCCSecurity(ccSecurity, ccType, ccData) {
+  if (!ccType) return false;
+  const cardType = ccData.cardTypes[ccType];
   const expression = /^[0-9]+$/;
-  return expression.test(ccSecurity) && ccSecurity.length > 2;
+  return expression.test(ccSecurity) && ccSecurity.length === cardType.security;
 }
 
 function validateCCZip(ccZip) {
