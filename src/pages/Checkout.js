@@ -46,7 +46,7 @@ export default class Checkout extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "primary",
+      activeSection: "secondary",
       transitionHeight: null,
     };
 
@@ -91,9 +91,11 @@ export default class Checkout extends React.Component {
   };
 
   handleExpirationChange = (e) => {
+    const { cardExpiry } = this.state;
     let formattedValue;
     const value = e.target.value;
-    if (this.isBackspace && value.charAt(value.length - 1) === "/") {
+
+    if (this.isBackspace && cardExpiry.charAt(cardExpiry.length - 1) === "/") {
       formattedValue = value.substr(0, value.length - 1);
     } else {
       formattedValue = value
@@ -105,8 +107,19 @@ export default class Checkout extends React.Component {
         .replace(/[^\d/]|^[/]*$/g, "")
         .replace(/\/\//g, "/");
     }
+
+    this.isBackspace = false;
     this.updateErrors("cardExpiry");
     this.setState({ cardExpiry: formattedValue });
+  };
+
+  expiryKeydown = (e) => {
+    if (e.keyCode === 8) {
+      this.isBackspace = true;
+    }
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
   };
 
   handlePaymentChange = (e, key) => {
@@ -205,7 +218,6 @@ export default class Checkout extends React.Component {
       );
       if (!areAllNullValues(errors)) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
-        console.log(updatedErrors);
         this.setState({ inputErrors: updatedErrors });
       } else {
         this.setState({ activeSection: "secondary" });
@@ -372,10 +384,7 @@ export default class Checkout extends React.Component {
                         autoCorrect="off"
                         spellCheck="off"
                         value={this.state.cardExpiry}
-                        onKeyDown={(e) => {
-                          if (e.keyCode === 8) this.isBackspace = true;
-                          if (e.keyCode === 13) e.preventDefault();
-                        }}
+                        onKeyDown={this.expiryKeydown}
                         onChange={this.handleExpirationChange}
                         stateKey={"cardExpiry"}
                         maxLength={5}
