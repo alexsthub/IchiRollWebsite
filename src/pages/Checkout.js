@@ -72,6 +72,17 @@ export default class Checkout extends React.Component {
     }
   };
 
+  componentDidUpdate = () => {
+    if (!this.state.transitionHeight) {
+      this.calcHeight(this.transitionDiv.current);
+    }
+  };
+
+  calcHeight = (el) => {
+    const height = el.offsetHeight;
+    this.setState({ transitionHeight: height });
+  };
+
   updateInput = (e, key) => {
     if (e.target.value !== this.state[key]) {
       this.updateErrors(key);
@@ -215,11 +226,6 @@ export default class Checkout extends React.Component {
         alert("Checkout!");
       }
     }
-  };
-
-  calcHeight = (el) => {
-    const height = el.offsetHeight;
-    this.setState({ transitionHeight: height });
   };
 
   render() {

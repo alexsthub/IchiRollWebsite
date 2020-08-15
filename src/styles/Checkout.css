@@ -234,7 +234,6 @@ h4 {
 .trans-div {
   position: relative;
   overflow: hidden;
-  height: auto;
   transition: height 400ms ease;
   padding: 0px 2px;
 }
