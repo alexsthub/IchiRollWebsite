@@ -6,24 +6,25 @@ import {
   calculateSubtotal,
   calculateTax,
   calculateTip,
-  calculateNumberItems,
   areAllNullValues,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
 import { cleanValue, getCardType, formatCardNumber, addIdentifier } from "../helpers/ccHelpers";
 
+// Components
+import OrderSummary from "../components/checkout/OrderSummary";
+
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
-import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 import { ccData } from "../constants/ccData";
+import { tipValues, TAX_RATE } from "../constants/values";
 
 // TODO: How to get this so that the header doesn't show?
-const TAX_RATE = 0.101;
 export default class CheckoutScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +51,7 @@ export default class CheckoutScreen extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "secondary",
+      activeSection: "primary",
       transitionHeight: null,
     };
 
@@ -518,135 +519,8 @@ export default class CheckoutScreen extends React.Component {
           onTipValueChange={this.onTipValueChange}
           customTip={this.state.customTip}
           applyTip={this.applyTip}
+          tipValues={tipValues}
         />
-      </div>
-    );
-  }
-}
-
-const tipValues = [
-  { label: "15%", value: 0.15 },
-  { label: "18%", value: 0.18 },
-  { label: "20%", value: 0.2 },
-  { label: "No Tip", value: 0 },
-  { label: "Custom", value: null },
-];
-
-class OrderSummary extends React.Component {
-  render() {
-    const tipButtons = tipValues.map((tip, index) => {
-      return (
-        <button
-          key={tip.label}
-          className={`tip-button${this.props.selectedTipIndex === index ? " tip-active" : ""}`}
-          onClick={(e) => this.props.handleTipClick(e, index)}
-        >
-          {tip.label}
-        </button>
-      );
-    });
-
-    const customTip =
-      this.props.selectedTipIndex === 4 ? (
-        <div className="custom-tip">
-          <CurrencyInput
-            id="custom-tip"
-            name="custom-tip"
-            placeholder="$0.00"
-            value={this.props.customTip}
-            allowDecimals={true}
-            decimalsLimit={2}
-            maxLength={8}
-            prefix={"$"}
-            onChange={this.props.onTipValueChange}
-            onBlur={() => {}}
-          />
-          <button onClick={this.props.applyTip}>Apply</button>
-        </div>
-      ) : null;
-
-    const lineItems = this.props.cart.map((itemObj) => {
-      return (
-        <SummaryLineItem
-          key={itemObj.item.id + itemObj.timestamp}
-          item={itemObj.item}
-          quantity={itemObj.quantity}
-          instruction={itemObj.specialInstruction}
-        />
-      );
-    });
-
-    return (
-      <div className="column">
-        <h2>Order Summary</h2>
-        <section className="order-summary">
-          <div className="os-items-container">
-            <div className="os-details-row">
-              <h4>My Order</h4>
-              <p>{`(${calculateNumberItems(this.props.cart)} items)`}</p>
-            </div>
-            {lineItems}
-            <div className="ci">
-              <Link to="/order" className="checkout-button">
-                Edit Order
-              </Link>
-            </div>
-          </div>
-          <div className="tip-container">
-            <h4>Tip Amount</h4>
-            <div className="tip-row">{tipButtons.slice(0, 3)}</div>
-            <div className="tip-row">{tipButtons.slice(3)}</div>
-            {customTip}
-          </div>
-          <div className="os-details">
-            <div className="os-details-row">
-              <p>Subtotal</p>
-              <p>{this.props.priceObject.subtotal}</p>
-            </div>
-            <div className="os-details-row">
-              <p>Tip Amount</p>
-              <p>{this.props.priceObject.tip}</p>
-            </div>
-            <div className="os-details-row">
-              <p>Tax</p>
-              <p>{this.props.priceObject.tax}</p>
-            </div>
-          </div>
-          <div className="os-total">
-            <div className="os-details-row">
-              <p>Total</p>
-              <p>{this.props.priceObject.total}</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-}
-
-class SummaryLineItem extends React.Component {
-  render() {
-    const { instruction, quantity, item } = this.props;
-    const instructionElement = instruction ? (
-      <div className="li-instruction-container">
-        <p className="li-instruction">{instruction}</p>
-      </div>
-    ) : null;
-    return (
-      <div style={{ marginTop: 10, marginBottom: 10 }}>
-        <div className="li-container">
-          <div className="li-quant-c">
-            <p className="li-quantity">{`${quantity}x`}</p>
-          </div>
-          <div className="li-desc-c">
-            <p className="li-title">{item.title.en_US}</p>
-          </div>
-          <div>
-            <p>{priceToString(item.price * quantity)}</p>
-          </div>
-        </div>
-
-        <div className="li-details">{instructionElement}</div>
       </div>
     );
   }
