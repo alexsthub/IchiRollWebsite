@@ -35,7 +35,11 @@ export default class CheckoutScreen extends React.Component {
       cardNumber: "",
       cardExpiry: "",
       cardSecurity: "",
-      cardZip: "",
+      billingName: "",
+      billingAddress: "",
+      billingCity: "",
+      billingState: "",
+      billingZip: "",
       inputErrors: {},
 
       cart: [],
@@ -46,7 +50,7 @@ export default class CheckoutScreen extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "primary",
+      activeSection: "secondary",
       transitionHeight: null,
     };
 
@@ -227,9 +231,13 @@ export default class CheckoutScreen extends React.Component {
         this.state.cardNumber,
         this.state.cardExpiry,
         this.state.cardSecurity,
-        this.state.cardZip,
         this.ccType,
-        ccData
+        ccData,
+        this.state.billingName,
+        this.state.billingAddress,
+        this.state.billingCity,
+        this.state.billingState,
+        this.state.billingZip
       );
       if (!areAllNullValues(errors)) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
@@ -352,82 +360,142 @@ export default class CheckoutScreen extends React.Component {
                 </div>
                 <form id="billing-form">
                   <div className="payment-container">
-                    <h2>Payment Information</h2>
+                    <h2 style={{ marginBottom: 5 }}>Payment Information</h2>
 
-                    <FloatingInput
-                      label={"Card Number"}
-                      name={"card-number"}
-                      placeholder={"Card Number"}
-                      type={"text"}
-                      pattern="\d*"
-                      autoComplete={"cc-number"}
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="off"
-                      value={this.state.cardNumber}
-                      onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
-                      onKeyDown={this.preventEnterSubmit}
-                      maxLength={19}
-                      icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
-                      errorText={this.state.inputErrors.cardNumber}
-                    />
+                    <div id="card-info">
+                      <h4>Payment Method</h4>
+                      <FloatingInput
+                        label={"Card Number"}
+                        name={"card-number"}
+                        placeholder={"Card Number"}
+                        type={"text"}
+                        pattern="\d*"
+                        autoComplete={"cc-number"}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="off"
+                        value={this.state.cardNumber}
+                        onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
+                        onKeyDown={this.preventEnterSubmit}
+                        maxLength={19}
+                        icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
+                        errorText={this.state.inputErrors.cardNumber}
+                      />
 
-                    <div style={{ display: "flex" }}>
-                      <FloatingInput
-                        className="flex1 space-right"
-                        label={"Card Expiry Date"}
-                        name={"card-expiry"}
-                        placeholder={"MM/YY"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardExpiry}
-                        onKeyDown={this.expiryKeydown}
-                        onChange={this.handleExpirationChange}
-                        stateKey={"cardExpiry"}
-                        maxLength={5}
-                        errorText={this.state.inputErrors.cardExpiry}
-                      />
-                      <FloatingInput
-                        refProp={this.cvvInput}
-                        className="flex1 space-right"
-                        label={"Security Code"}
-                        name={"card-sc"}
-                        placeholder={"Security Code"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoComplete={"cc-csc"}
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardSecurity}
-                        onChange={this.handlePaymentChange}
-                        onKeyDown={this.preventEnterSubmit}
-                        stateKey={"cardSecurity"}
-                        maxLength={3}
-                        errorText={this.state.inputErrors.cardSecurity}
-                      />
-                      <FloatingInput
-                        className="flex1"
-                        label={"Zip Code"}
-                        name={"card-zip"}
-                        placeholder={"Zip Code"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoComplete={"shipping postal-code"}
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardZip}
-                        onChange={this.handlePaymentChange}
-                        onKeyDown={this.preventEnterSubmit}
-                        stateKey={"cardZip"}
-                        maxLength={5}
-                        errorText={this.state.inputErrors.cardZip}
-                      />
+                      <div style={{ display: "flex" }}>
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"Card Expiry Date"}
+                          name={"card-expiry"}
+                          placeholder={"MM/YY"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardExpiry}
+                          onKeyDown={this.expiryKeydown}
+                          onChange={this.handleExpirationChange}
+                          stateKey={"cardExpiry"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.cardExpiry}
+                        />
+                        <FloatingInput
+                          refProp={this.cvvInput}
+                          className="flex1"
+                          label={"Security Code"}
+                          name={"card-sc"}
+                          placeholder={"Security Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"cc-csc"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardSecurity}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"cardSecurity"}
+                          maxLength={3}
+                          errorText={this.state.inputErrors.cardSecurity}
+                        />
+                      </div>
                     </div>
+
+                    <div id="billing-info">
+                      <h4>Billing Address</h4>
+                      {/* //TODO: Make a line and everything under is billing */}
+                      <FloatingInput
+                        label={"Full Name"}
+                        name={"billing-name"}
+                        placeholder={"Full Name"}
+                        autoComplete={"name"}
+                        value={this.state.billingName}
+                        onChange={this.updateInput}
+                        stateKey={"billingName"}
+                        errorText={this.state.inputErrors.billingName}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+
+                      <FloatingInput
+                        label={"Address"}
+                        name={"billing-adddress"}
+                        placeholder={"Address"}
+                        autoComplete={"billing street-address"}
+                        value={this.state.billingAddress}
+                        onChange={this.updateInput}
+                        stateKey={"billingAddress"}
+                        errorText={this.state.inputErrors.billingAddress}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+
+                      <div style={{ display: "flex" }}>
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"City"}
+                          name={"billing-city"}
+                          placeholder={"City"}
+                          autoComplete={"billing address-level2"}
+                          value={this.state.billingCity}
+                          onChange={this.updateInput}
+                          stateKey={"billingCity"}
+                          errorText={this.state.inputErrors.billingCity}
+                          onKeyDown={this.preventEnterSubmit}
+                        />
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"State"}
+                          name={"billing-state"}
+                          placeholder={"State"}
+                          autoComplete={"billing address-level1"}
+                          value={this.state.billingState}
+                          onChange={this.updateInput}
+                          stateKey={"billingState"}
+                          errorText={this.state.inputErrors.billingState}
+                          onKeyDown={this.preventEnterSubmit}
+                        />
+
+                        <FloatingInput
+                          className="flex1"
+                          label={"Zip Code"}
+                          name={"card-zip"}
+                          placeholder={"Zip Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"billing postal-code"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.billingZip}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"billingZip"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.billingZip}
+                        />
+                      </div>
+                    </div>
+
                     <p style={{ color: "#aaa", marginTop: 15 }}>
                       All payments are secure and encrypted.
                     </p>
