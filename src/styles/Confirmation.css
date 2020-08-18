@@ -1,0 +1,66 @@
+.confirmation {
+  margin-top: 100px;
+  padding: 50px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+}
+
+.flex {
+  display: flex;
+}
+
+/* .flex-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+} */
+
+.confirmation p {
+  margin: 0;
+}
+
+.conf-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 35px;
+  border-bottom: 1px solid #c2c2c2;
+
+  padding: 0px 100px 35px;
+}
+
+.conf-icon {
+  color: #7dd4b7;
+  font-size: 60px;
+  margin-bottom: 40px;
+}
+
+.ch-title {
+  font-size: 2em;
+  padding-bottom: 24px;
+}
+
+.ch-order-no {
+  font-weight: 700;
+  font-size: 1.4em;
+  padding-bottom: 20px;
+}
+
+.ch-desc {
+  color: #696970;
+}
+
+/* Details */
+.conf-details {
+  margin-top: 35px;
+}
+
+/* Summary */
+.conf-summary {
+  margin: 35px 0px 0px;
+}
+
+/* Payment */
+.conf-payment {
+  padding: 35px 0px 10px;
+}

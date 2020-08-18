@@ -5,7 +5,7 @@ import { priceToString } from "../helpers/utils";
 
 export default class MenuItem extends React.Component {
   handleClick = (e) => {
-    this.props.onClick(e, this.props.item);
+    if (this.props.onClick) this.props.onClick(e, this.props.item);
   };
 
   render() {

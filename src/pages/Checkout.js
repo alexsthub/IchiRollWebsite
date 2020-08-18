@@ -24,7 +24,7 @@ import { ccData } from "../constants/ccData";
 
 // TODO: How to get this so that the header doesn't show?
 const TAX_RATE = 0.101;
-export default class Checkout extends React.Component {
+export default class CheckoutScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +46,7 @@ export default class Checkout extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "secondary",
+      activeSection: "primary",
       transitionHeight: null,
     };
 
