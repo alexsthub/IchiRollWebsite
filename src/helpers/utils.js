@@ -1,4 +1,4 @@
-import { clients } from "wix-restaurants-js-sdk";
+import { clients, helpers } from "wix-restaurants-js-sdk";
 
 export function priceToString(price) {
   return `$${(price / 100).toFixed(2)}`;
@@ -6,6 +6,10 @@ export function priceToString(price) {
 
 export function formatPriceFloat(price) {
   return `$${price.toFixed(2)}`;
+}
+
+export function stringToPrice(priceStr) {
+  return parseInt(priceStr.replace("$", "").replace(".", ""));
 }
 
 export async function getRestaurantDetails() {

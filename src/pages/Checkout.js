@@ -3,10 +3,13 @@ import "../styles/Checkout.css";
 
 import {
   priceToString,
+  stringToPrice,
   calculateSubtotal,
   calculateTax,
   calculateTip,
   areAllNullValues,
+  getRestaurantDetails,
+  getMenuDetails,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
 import { cleanValue, getCardType, formatCardNumber, addIdentifier } from "../helpers/ccHelpers";
@@ -24,6 +27,17 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { ccData } from "../constants/ccData";
 import { tipValues, TAX_RATE } from "../constants/values";
 
+// Wix
+import { fixtures, helpers, clients } from "wix-restaurants-js-sdk";
+import {
+  getContact,
+  getOrderItems,
+  getDispatch,
+  getPlatform,
+  getOrderCharges,
+  getPayment,
+} from "../helpers/checkoutHelpers";
+
 // TODO: How to get this so that the header doesn't show?
 export default class CheckoutScreen extends React.Component {
   constructor(props) {
@@ -33,14 +47,14 @@ export default class CheckoutScreen extends React.Component {
       email: "alextan785@gmail.com",
       phone: "3605151765",
       notes: "",
-      cardNumber: "",
-      cardExpiry: "",
+      cardNumber: "413132321212122",
+      cardExpiry: "11/21",
       cardSecurity: "",
-      billingName: "",
-      billingAddress: "",
-      billingCity: "",
-      billingState: "",
-      billingZip: "",
+      billingName: "Alex Tan",
+      billingAddress: "1785 53rd Loop SE",
+      billingCity: "Olympia",
+      billingState: "WA",
+      billingZip: "98501",
       inputErrors: {},
 
       cart: [],
@@ -51,7 +65,7 @@ export default class CheckoutScreen extends React.Component {
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "primary",
+      activeSection: "secondary",
       transitionHeight: null,
     };
 
@@ -63,7 +77,7 @@ export default class CheckoutScreen extends React.Component {
     this.addIdentifier = addIdentifier.bind(this);
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const storageCart = localStorage.getItem("cart");
     const scheduledTimeStr = localStorage.getItem("time");
     if (storageCart) {
@@ -75,6 +89,9 @@ export default class CheckoutScreen extends React.Component {
       const scheduledTime = JSON.parse(scheduledTimeStr);
       this.setState({ scheduledTime: scheduledTime });
     }
+
+    this.restaurantDetails = await getRestaurantDetails();
+    this.menu = await getMenuDetails();
   };
 
   componentDidUpdate = () => {
@@ -244,9 +261,69 @@ export default class CheckoutScreen extends React.Component {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
         this.setState({ inputErrors: updatedErrors });
       } else {
-        alert("Checkout!");
+        this.handleCheckout();
       }
     }
+  };
+
+  handleCheckout = () => {
+    // Contact
+    const contact = getContact(this.state.name, this.state.email, this.state.phone);
+    const orderItems = getOrderItems(this.state.cart);
+    const dispatch = getDispatch(this.state.scheduledTime);
+    const platform = getPlatform();
+    const source = "";
+
+    console.log(dispatch.type);
+    console.log(dispatch.time);
+    console.log(this.menu.chargesV2);
+    const orderCharges = getOrderCharges(
+      dispatch,
+      orderItems,
+      stringToPrice(this.state.priceObject.tip),
+      source,
+      platform,
+      this.menu.chargesV2,
+      this.restaurantDetails.timezone
+    );
+    console.log(orderCharges);
+
+    const total = helpers.Order.calculateTotalOrder({
+      orderItems: orderItems,
+      orderCharges: orderCharges,
+      dispatchCharge: dispatch.charge,
+    });
+    console.log(total);
+
+    // TODO: What is the card object?
+    const payment = getPayment(stringToPrice(this.state.priceObject.total), null);
+
+    const order = fixtures
+      .Order()
+      .setRestaurantId(this.restaurantDetails.id)
+      .setDeveloperId(null)
+      .setSource(source)
+      .setPlatform(platform)
+      .setLocale("en_US")
+      .setCurrency("USD")
+      .setOrderItems(orderItems)
+      .setOrderCharges(orderCharges)
+      .setContact(contact)
+      .setDispatch(dispatch)
+      .addPayment(payment)
+      .setPrice(stringToPrice(this.state.priceObject.total));
+
+    if (this.state.notes !== "") order.setComment(this.state.notes);
+
+    // clients.wixRestaurantsClient.submitOrder({ order }).then((submittedOrder) => {
+    //   if (submittedOrder.status === "pending") {
+    //     console.log(
+    //       `Order has been submitted. Order ID is ${submittedOrder.id}. Order requires SMS confirmation.`
+    //     );
+    //   } else {
+    //     console.log(`Order has been submitted. Order ID is ${submittedOrder.id}.`);
+    //   }
+    // });
   };
 
   render() {
@@ -376,7 +453,10 @@ export default class CheckoutScreen extends React.Component {
                         autoCorrect="off"
                         spellCheck="off"
                         value={this.state.cardNumber}
-                        onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
+                        onChange={(e) => {
+                          this.setState({ cardNumber: this.monitorCCFormat(e) });
+                          this.updateErrors("cardNumber");
+                        }}
                         onKeyDown={this.preventEnterSubmit}
                         maxLength={19}
                         icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
