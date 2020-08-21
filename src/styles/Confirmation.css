@@ -12,11 +12,9 @@
   flex-direction: column;
 }
 
-/* .flex-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-} */
+.align-center {
+  align-items: center;
+}
 
 .confirmation p {
   margin: 0;
@@ -30,7 +28,7 @@
   padding-bottom: 35px;
   border-bottom: 1px solid #c2c2c2;
 
-  padding: 0px 140px 35px;
+  padding: 0px 180px 35px;
 }
 
 .conf-icon {
@@ -63,12 +61,17 @@
   margin-top: 16px;
 }
 
-/* Summary */
-.conf-summary {
-  margin: 35px 0px 0px;
+.conf-summary-li {
+  margin: 5px 0px 20px;
 }
 
-/* Payment */
-.conf-payment {
-  padding: 35px 0px 10px;
+.conf-subtotal {
+  color: #5e5e5e;
+  padding-bottom: 10px;
+}
+
+.conf-total {
+  padding-top: 10px;
+  border-top: 1px solid #c2c2c2;
+  font-size: 1.5em;
 }

@@ -4,6 +4,10 @@ export function priceToString(price) {
   return `$${(price / 100).toFixed(2)}`;
 }
 
+export function formatPriceFloat(price) {
+  return `$${price.toFixed(2)}`;
+}
+
 export async function getRestaurantDetails() {
   const organizationId = "258553461683418";
   const rest = clients.createRestClient();
