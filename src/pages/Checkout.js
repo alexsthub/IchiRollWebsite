@@ -67,6 +67,7 @@ export default class CheckoutScreen extends React.Component {
       priceObject: null,
       activeSection: "secondary",
       transitionHeight: null,
+      loading: true,
     };
 
     this.transitionDiv = createRef();
@@ -78,6 +79,8 @@ export default class CheckoutScreen extends React.Component {
   }
 
   componentDidMount = async () => {
+    this.restaurantDetails = await getRestaurantDetails();
+    this.menu = await getMenuDetails();
     const storageCart = localStorage.getItem("cart");
     const scheduledTimeStr = localStorage.getItem("time");
     if (storageCart) {
@@ -89,9 +92,7 @@ export default class CheckoutScreen extends React.Component {
       const scheduledTime = JSON.parse(scheduledTimeStr);
       this.setState({ scheduledTime: scheduledTime });
     }
-
-    this.restaurantDetails = await getRestaurantDetails();
-    this.menu = await getMenuDetails();
+    this.setState({ loading: false });
   };
 
   componentDidUpdate = () => {
@@ -101,6 +102,7 @@ export default class CheckoutScreen extends React.Component {
   };
 
   calcHeight = (el) => {
+    if (!el) return;
     const height = el.offsetHeight;
     this.setState({ transitionHeight: height });
   };
@@ -327,7 +329,7 @@ export default class CheckoutScreen extends React.Component {
   };
 
   render() {
-    if (!this.state.priceObject) return null;
+    if (this.state.loading) return null;
     const { scheduledTime } = this.state;
     const timeContent = scheduledTime.isNow
       ? "ASAP (Estimated 20 minutes)"
