@@ -6,4 +6,5 @@ export const tipValues = [
   { label: "Custom", value: null },
 ];
 
-export const TAX_RATE = 0.101;
+// TODO: Maybe change this to menu.chargesV2 value instead of hardcode
+export const TAX_RATE = 0.102;

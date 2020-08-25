@@ -28,7 +28,7 @@ import { ccData } from "../constants/ccData";
 import { tipValues, TAX_RATE } from "../constants/values";
 
 // Wix
-import { fixtures, helpers, clients } from "wix-restaurants-js-sdk";
+import { fixtures } from "wix-restaurants-js-sdk";
 import {
   getContact,
   getOrderItems,
@@ -269,16 +269,12 @@ export default class CheckoutScreen extends React.Component {
   };
 
   handleCheckout = () => {
-    // Contact
     const contact = getContact(this.state.name, this.state.email, this.state.phone);
     const orderItems = getOrderItems(this.state.cart);
     const dispatch = getDispatch(this.state.scheduledTime);
     const platform = getPlatform();
     const source = "";
 
-    console.log(dispatch.type);
-    console.log(dispatch.time);
-    console.log(this.menu.chargesV2);
     const orderCharges = getOrderCharges(
       dispatch,
       orderItems,
@@ -288,14 +284,8 @@ export default class CheckoutScreen extends React.Component {
       this.menu.chargesV2,
       this.restaurantDetails.timezone
     );
-    console.log(orderCharges);
 
-    const total = helpers.Order.calculateTotalOrder({
-      orderItems: orderItems,
-      orderCharges: orderCharges,
-      dispatchCharge: dispatch.charge,
-    });
-    console.log(total);
+    const total = stringToPrice(this.state.priceObject.total);
 
     // TODO: What is the card object?
     const payment = getPayment(stringToPrice(this.state.priceObject.total), null);
@@ -313,7 +303,7 @@ export default class CheckoutScreen extends React.Component {
       .setContact(contact)
       .setDispatch(dispatch)
       .addPayment(payment)
-      .setPrice(stringToPrice(this.state.priceObject.total));
+      .setPrice(total);
 
     if (this.state.notes !== "") order.setComment(this.state.notes);
 
@@ -507,7 +497,6 @@ export default class CheckoutScreen extends React.Component {
 
                     <div id="billing-info">
                       <h4>Billing Address</h4>
-                      {/* //TODO: Make a line and everything under is billing */}
                       <FloatingInput
                         label={"Full Name"}
                         name={"billing-name"}

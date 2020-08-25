@@ -1,4 +1,4 @@
-import { clients, helpers } from "wix-restaurants-js-sdk";
+import { clients } from "wix-restaurants-js-sdk";
 
 export function priceToString(price) {
   return `$${(price / 100).toFixed(2)}`;
