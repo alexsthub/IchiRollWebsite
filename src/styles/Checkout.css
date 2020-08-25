@@ -114,6 +114,15 @@ h4 {
   border-right: 15px solid #fff;
 }
 
+#card-info {
+  padding-bottom: 10px;
+}
+
+#billing-info {
+  border-top: 1px solid #c2c2c2;
+  padding-top: 10px;
+}
+
 /* Button */
 
 .continue {

@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 import { priceToString, calculateSubtotal, calculateTax } from "../../helpers/utils";
+import { TAX_RATE } from "../../constants/values";
 
-const TAX_RATE = 0.101;
 export default class OrderMenu extends React.Component {
   calculateNumberItems = () => {
     if (this.props.cart.length === 0) return 0;

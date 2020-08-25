@@ -3,28 +3,43 @@ import "../styles/Checkout.css";
 
 import {
   priceToString,
+  stringToPrice,
   calculateSubtotal,
   calculateTax,
   calculateTip,
-  calculateNumberItems,
   areAllNullValues,
+  getRestaurantDetails,
+  getMenuDetails,
 } from "../helpers/utils";
 import { validateContactInformation, validatePaymentInformation } from "../helpers/validation";
 import { cleanValue, getCardType, formatCardNumber, addIdentifier } from "../helpers/ccHelpers";
 
+// Components
+import OrderSummary from "../components/checkout/OrderSummary";
+
 import { CSSTransition } from "react-transition-group";
 import TextareaAutosize from "react-textarea-autosize";
-import CurrencyInput from "react-currency-input-field";
 import FloatingInput from "../components/checkout/FloatingInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 import { ccData } from "../constants/ccData";
+import { tipValues, TAX_RATE } from "../constants/values";
+
+// Wix
+import { fixtures } from "wix-restaurants-js-sdk";
+import {
+  getContact,
+  getOrderItems,
+  getDispatch,
+  getPlatform,
+  getOrderCharges,
+  getPayment,
+} from "../helpers/checkoutHelpers";
 
 // TODO: How to get this so that the header doesn't show?
-const TAX_RATE = 0.101;
-export default class Checkout extends React.Component {
+export default class CheckoutScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,10 +47,14 @@ export default class Checkout extends React.Component {
       email: "alextan785@gmail.com",
       phone: "3605151765",
       notes: "",
-      cardNumber: "",
-      cardExpiry: "",
+      cardNumber: "413132321212122",
+      cardExpiry: "11/21",
       cardSecurity: "",
-      cardZip: "",
+      billingName: "Alex Tan",
+      billingAddress: "1785 53rd Loop SE",
+      billingCity: "Olympia",
+      billingState: "WA",
+      billingZip: "98501",
       inputErrors: {},
 
       cart: [],
@@ -48,6 +67,7 @@ export default class Checkout extends React.Component {
       priceObject: null,
       activeSection: "secondary",
       transitionHeight: null,
+      loading: true,
     };
 
     this.transitionDiv = createRef();
@@ -58,7 +78,9 @@ export default class Checkout extends React.Component {
     this.addIdentifier = addIdentifier.bind(this);
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    this.restaurantDetails = await getRestaurantDetails();
+    this.menu = await getMenuDetails();
     const storageCart = localStorage.getItem("cart");
     const scheduledTimeStr = localStorage.getItem("time");
     if (storageCart) {
@@ -70,6 +92,7 @@ export default class Checkout extends React.Component {
       const scheduledTime = JSON.parse(scheduledTimeStr);
       this.setState({ scheduledTime: scheduledTime });
     }
+    this.setState({ loading: false });
   };
 
   componentDidUpdate = () => {
@@ -79,6 +102,7 @@ export default class Checkout extends React.Component {
   };
 
   calcHeight = (el) => {
+    if (!el) return;
     const height = el.offsetHeight;
     this.setState({ transitionHeight: height });
   };
@@ -227,21 +251,75 @@ export default class Checkout extends React.Component {
         this.state.cardNumber,
         this.state.cardExpiry,
         this.state.cardSecurity,
-        this.state.cardZip,
         this.ccType,
-        ccData
+        ccData,
+        this.state.billingName,
+        this.state.billingAddress,
+        this.state.billingCity,
+        this.state.billingState,
+        this.state.billingZip
       );
       if (!areAllNullValues(errors)) {
         const updatedErrors = { ...this.state.inputErrors, ...errors };
         this.setState({ inputErrors: updatedErrors });
       } else {
-        alert("Checkout!");
+        this.handleCheckout();
       }
     }
   };
 
+  handleCheckout = () => {
+    const contact = getContact(this.state.name, this.state.email, this.state.phone);
+    const orderItems = getOrderItems(this.state.cart);
+    const dispatch = getDispatch(this.state.scheduledTime);
+    const platform = getPlatform();
+    const source = "";
+
+    const orderCharges = getOrderCharges(
+      dispatch,
+      orderItems,
+      stringToPrice(this.state.priceObject.tip),
+      source,
+      platform,
+      this.menu.chargesV2,
+      this.restaurantDetails.timezone
+    );
+
+    const total = stringToPrice(this.state.priceObject.total);
+
+    // TODO: What is the card object?
+    const payment = getPayment(stringToPrice(this.state.priceObject.total), null);
+
+    const order = fixtures
+      .Order()
+      .setRestaurantId(this.restaurantDetails.id)
+      .setDeveloperId(null)
+      .setSource(source)
+      .setPlatform(platform)
+      .setLocale("en_US")
+      .setCurrency("USD")
+      .setOrderItems(orderItems)
+      .setOrderCharges(orderCharges)
+      .setContact(contact)
+      .setDispatch(dispatch)
+      .addPayment(payment)
+      .setPrice(total);
+
+    if (this.state.notes !== "") order.setComment(this.state.notes);
+
+    // clients.wixRestaurantsClient.submitOrder({ order }).then((submittedOrder) => {
+    //   if (submittedOrder.status === "pending") {
+    //     console.log(
+    //       `Order has been submitted. Order ID is ${submittedOrder.id}. Order requires SMS confirmation.`
+    //     );
+    //   } else {
+    //     console.log(`Order has been submitted. Order ID is ${submittedOrder.id}.`);
+    //   }
+    // });
+  };
+
   render() {
-    if (!this.state.priceObject) return null;
+    if (this.state.loading) return null;
     const { scheduledTime } = this.state;
     const timeContent = scheduledTime.isNow
       ? "ASAP (Estimated 20 minutes)"
@@ -352,82 +430,144 @@ export default class Checkout extends React.Component {
                 </div>
                 <form id="billing-form">
                   <div className="payment-container">
-                    <h2>Payment Information</h2>
+                    <h2 style={{ marginBottom: 5 }}>Payment Information</h2>
 
-                    <FloatingInput
-                      label={"Card Number"}
-                      name={"card-number"}
-                      placeholder={"Card Number"}
-                      type={"text"}
-                      pattern="\d*"
-                      autoComplete={"cc-number"}
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="off"
-                      value={this.state.cardNumber}
-                      onChange={(e) => this.setState({ cardNumber: this.monitorCCFormat(e) })}
-                      onKeyDown={this.preventEnterSubmit}
-                      maxLength={19}
-                      icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
-                      errorText={this.state.inputErrors.cardNumber}
-                    />
+                    <div id="card-info">
+                      <h4>Payment Method</h4>
+                      <FloatingInput
+                        label={"Card Number"}
+                        name={"card-number"}
+                        placeholder={"Card Number"}
+                        type={"text"}
+                        pattern="\d*"
+                        autoComplete={"cc-number"}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="off"
+                        value={this.state.cardNumber}
+                        onChange={(e) => {
+                          this.setState({ cardNumber: this.monitorCCFormat(e) });
+                          this.updateErrors("cardNumber");
+                        }}
+                        onKeyDown={this.preventEnterSubmit}
+                        maxLength={19}
+                        icon={<FontAwesomeIcon style={{ color: "lightgray" }} icon={faLock} />}
+                        errorText={this.state.inputErrors.cardNumber}
+                      />
 
-                    <div style={{ display: "flex" }}>
-                      <FloatingInput
-                        className="flex1 space-right"
-                        label={"Card Expiry Date"}
-                        name={"card-expiry"}
-                        placeholder={"MM/YY"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardExpiry}
-                        onKeyDown={this.expiryKeydown}
-                        onChange={this.handleExpirationChange}
-                        stateKey={"cardExpiry"}
-                        maxLength={5}
-                        errorText={this.state.inputErrors.cardExpiry}
-                      />
-                      <FloatingInput
-                        refProp={this.cvvInput}
-                        className="flex1 space-right"
-                        label={"Security Code"}
-                        name={"card-sc"}
-                        placeholder={"Security Code"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoComplete={"cc-csc"}
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardSecurity}
-                        onChange={this.handlePaymentChange}
-                        onKeyDown={this.preventEnterSubmit}
-                        stateKey={"cardSecurity"}
-                        maxLength={3}
-                        errorText={this.state.inputErrors.cardSecurity}
-                      />
-                      <FloatingInput
-                        className="flex1"
-                        label={"Zip Code"}
-                        name={"card-zip"}
-                        placeholder={"Zip Code"}
-                        type={"text"}
-                        pattern="\d*"
-                        autoComplete={"shipping postal-code"}
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                        spellCheck="off"
-                        value={this.state.cardZip}
-                        onChange={this.handlePaymentChange}
-                        onKeyDown={this.preventEnterSubmit}
-                        stateKey={"cardZip"}
-                        maxLength={5}
-                        errorText={this.state.inputErrors.cardZip}
-                      />
+                      <div style={{ display: "flex" }}>
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"Card Expiry Date"}
+                          name={"card-expiry"}
+                          placeholder={"MM/YY"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardExpiry}
+                          onKeyDown={this.expiryKeydown}
+                          onChange={this.handleExpirationChange}
+                          stateKey={"cardExpiry"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.cardExpiry}
+                        />
+                        <FloatingInput
+                          refProp={this.cvvInput}
+                          className="flex1"
+                          label={"Security Code"}
+                          name={"card-sc"}
+                          placeholder={"Security Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"cc-csc"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.cardSecurity}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"cardSecurity"}
+                          maxLength={3}
+                          errorText={this.state.inputErrors.cardSecurity}
+                        />
+                      </div>
                     </div>
+
+                    <div id="billing-info">
+                      <h4>Billing Address</h4>
+                      <FloatingInput
+                        label={"Full Name"}
+                        name={"billing-name"}
+                        placeholder={"Full Name"}
+                        autoComplete={"name"}
+                        value={this.state.billingName}
+                        onChange={this.updateInput}
+                        stateKey={"billingName"}
+                        errorText={this.state.inputErrors.billingName}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+
+                      <FloatingInput
+                        label={"Address"}
+                        name={"billing-adddress"}
+                        placeholder={"Address"}
+                        autoComplete={"billing street-address"}
+                        value={this.state.billingAddress}
+                        onChange={this.updateInput}
+                        stateKey={"billingAddress"}
+                        errorText={this.state.inputErrors.billingAddress}
+                        onKeyDown={this.preventEnterSubmit}
+                      />
+
+                      <div style={{ display: "flex" }}>
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"City"}
+                          name={"billing-city"}
+                          placeholder={"City"}
+                          autoComplete={"billing address-level2"}
+                          value={this.state.billingCity}
+                          onChange={this.updateInput}
+                          stateKey={"billingCity"}
+                          errorText={this.state.inputErrors.billingCity}
+                          onKeyDown={this.preventEnterSubmit}
+                        />
+                        <FloatingInput
+                          className="flex1 space-right"
+                          label={"State"}
+                          name={"billing-state"}
+                          placeholder={"State"}
+                          autoComplete={"billing address-level1"}
+                          value={this.state.billingState}
+                          onChange={this.updateInput}
+                          stateKey={"billingState"}
+                          errorText={this.state.inputErrors.billingState}
+                          onKeyDown={this.preventEnterSubmit}
+                        />
+
+                        <FloatingInput
+                          className="flex1"
+                          label={"Zip Code"}
+                          name={"card-zip"}
+                          placeholder={"Zip Code"}
+                          type={"text"}
+                          pattern="\d*"
+                          autoComplete={"billing postal-code"}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="off"
+                          value={this.state.billingZip}
+                          onChange={this.handlePaymentChange}
+                          onKeyDown={this.preventEnterSubmit}
+                          stateKey={"billingZip"}
+                          maxLength={5}
+                          errorText={this.state.inputErrors.billingZip}
+                        />
+                      </div>
+                    </div>
+
                     <p style={{ color: "#aaa", marginTop: 15 }}>
                       All payments are secure and encrypted.
                     </p>
@@ -450,135 +590,8 @@ export default class Checkout extends React.Component {
           onTipValueChange={this.onTipValueChange}
           customTip={this.state.customTip}
           applyTip={this.applyTip}
+          tipValues={tipValues}
         />
-      </div>
-    );
-  }
-}
-
-const tipValues = [
-  { label: "15%", value: 0.15 },
-  { label: "18%", value: 0.18 },
-  { label: "20%", value: 0.2 },
-  { label: "No Tip", value: 0 },
-  { label: "Custom", value: null },
-];
-
-class OrderSummary extends React.Component {
-  render() {
-    const tipButtons = tipValues.map((tip, index) => {
-      return (
-        <button
-          key={tip.label}
-          className={`tip-button${this.props.selectedTipIndex === index ? " tip-active" : ""}`}
-          onClick={(e) => this.props.handleTipClick(e, index)}
-        >
-          {tip.label}
-        </button>
-      );
-    });
-
-    const customTip =
-      this.props.selectedTipIndex === 4 ? (
-        <div className="custom-tip">
-          <CurrencyInput
-            id="custom-tip"
-            name="custom-tip"
-            placeholder="$0.00"
-            value={this.props.customTip}
-            allowDecimals={true}
-            decimalsLimit={2}
-            maxLength={8}
-            prefix={"$"}
-            onChange={this.props.onTipValueChange}
-            onBlur={() => {}}
-          />
-          <button onClick={this.props.applyTip}>Apply</button>
-        </div>
-      ) : null;
-
-    const lineItems = this.props.cart.map((itemObj) => {
-      return (
-        <SummaryLineItem
-          key={itemObj.item.id + itemObj.timestamp}
-          item={itemObj.item}
-          quantity={itemObj.quantity}
-          instruction={itemObj.specialInstruction}
-        />
-      );
-    });
-
-    return (
-      <div className="column">
-        <h2>Order Summary</h2>
-        <section className="order-summary">
-          <div className="os-items-container">
-            <div className="os-details-row">
-              <h4>My Order</h4>
-              <p>{`(${calculateNumberItems(this.props.cart)} items)`}</p>
-            </div>
-            {lineItems}
-            <div className="ci">
-              <Link to="/order" className="checkout-button">
-                Edit Order
-              </Link>
-            </div>
-          </div>
-          <div className="tip-container">
-            <h4>Tip Amount</h4>
-            <div className="tip-row">{tipButtons.slice(0, 3)}</div>
-            <div className="tip-row">{tipButtons.slice(3)}</div>
-            {customTip}
-          </div>
-          <div className="os-details">
-            <div className="os-details-row">
-              <p>Subtotal</p>
-              <p>{this.props.priceObject.subtotal}</p>
-            </div>
-            <div className="os-details-row">
-              <p>Tip Amount</p>
-              <p>{this.props.priceObject.tip}</p>
-            </div>
-            <div className="os-details-row">
-              <p>Tax</p>
-              <p>{this.props.priceObject.tax}</p>
-            </div>
-          </div>
-          <div className="os-total">
-            <div className="os-details-row">
-              <p>Total</p>
-              <p>{this.props.priceObject.total}</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-}
-
-class SummaryLineItem extends React.Component {
-  render() {
-    const { instruction, quantity, item } = this.props;
-    const instructionElement = instruction ? (
-      <div className="li-instruction-container">
-        <p className="li-instruction">{instruction}</p>
-      </div>
-    ) : null;
-    return (
-      <div style={{ marginTop: 10, marginBottom: 10 }}>
-        <div className="li-container">
-          <div className="li-quant-c">
-            <p className="li-quantity">{`${quantity}x`}</p>
-          </div>
-          <div className="li-desc-c">
-            <p className="li-title">{item.title.en_US}</p>
-          </div>
-          <div>
-            <p>{priceToString(item.price * quantity)}</p>
-          </div>
-        </div>
-
-        <div className="li-details">{instructionElement}</div>
       </div>
     );
   }

@@ -24,17 +24,39 @@ function validateEmail(email) {
 //   return null;
 // }
 
-export function validatePaymentInformation(ccNumber, ccExpiry, ccSecurity, ccZip, ccType, ccData) {
+export function validatePaymentInformation(
+  ccNumber,
+  ccExpiry,
+  ccSecurity,
+  ccType,
+  ccData,
+  billingName,
+  billingAddress,
+  billingCity,
+  billingState,
+  billlingZip
+) {
   let errorObject = {};
   const numberValidated = validateCCNumber(ccNumber, ccType, ccData);
   const expiryValidated = validateCCExpiry(ccExpiry);
   const securityValidated = validateCCSecurity(ccSecurity, ccType, ccData);
-  const zipValidated = validateCCZip(ccZip);
+
+  const nameValidated = validateBillingName(billingName);
+  const addressValidated = validateBillingAddress(billingAddress);
+  const cityValidated = validateBillingCity(billingCity);
+  const stateValidated = validateBillingState(billingState);
+  const zipValidated = validateBillingZip(billlingZip);
 
   errorObject["cardNumber"] = !numberValidated ? "Invalid credit card number" : null;
   errorObject["cardExpiry"] = !expiryValidated ? "Invalid expiry" : null;
   errorObject["cardSecurity"] = !securityValidated ? "Invalid CVV" : null;
-  errorObject["cardZip"] = !zipValidated ? "Invalid zipcode" : null;
+
+  errorObject["billingName"] = !nameValidated ? "Invalid name" : null;
+  errorObject["billingAddress"] = !addressValidated ? "Invalid address" : null;
+  errorObject["billingCity"] = !cityValidated ? "Invalid city" : null;
+  errorObject["billingState"] = !stateValidated ? "Invalid state" : null;
+  errorObject["billingZip"] = !zipValidated ? "Invalid zipcode" : null;
+
   return errorObject;
 }
 
@@ -77,7 +99,24 @@ function validateCCSecurity(ccSecurity, ccType, ccData) {
   return expression.test(ccSecurity) && ccSecurity.length === cardType.security;
 }
 
-function validateCCZip(ccZip) {
+function validateBillingName(billingName) {
+  const expression = /^([A-Za-z]{2,})\s([A-Za-z]{2,})$/;
+  return expression.test(billingName);
+}
+
+function validateBillingAddress(billingAddress) {
+  return true;
+}
+
+function validateBillingCity(billingCity) {
+  return true;
+}
+
+function validateBillingState(billingState) {
+  return true;
+}
+
+function validateBillingZip(ccZip) {
   const expression = /^[0-9]+$/;
   return expression.test(ccZip) && ccZip.length === 5;
 }
