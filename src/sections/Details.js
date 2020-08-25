@@ -1,5 +1,7 @@
 import React from "react";
 import "../styles/Details.css";
+
+import Photogrid from "../components/home/Photogrid";
 import MapContainer from "../components/MapContainer.js";
 
 import { getRestaurantDetails } from "../helpers/utils";
@@ -61,6 +63,7 @@ export default class Details extends React.Component {
         </div>
 
         <MapContainer />
+        <Photogrid />
       </section>
     );
   }
