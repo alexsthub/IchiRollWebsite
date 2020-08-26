@@ -17,19 +17,47 @@ const backgroundUrls = [
   "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
 ];
 
-// TODO: Only animate once it comes into the viewport
+const OFFSET = 300;
 export default class Photogrid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { showGrid: false };
+    this.photogridRef = React.createRef();
+  }
+
+  componentDidMount = () => {
+    window.addEventListener("scroll", this.shouldShowGrid);
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("scroll", this.shouldShowGrid);
+  };
+
+  shouldShowGrid = () => {
+    if (!this.photogridRef.current) return;
+    const currentOffset = window.pageYOffset;
+    const gridOffset = this.photogridRef.current.offsetTop - OFFSET;
+    if (!this.state.showGrid && currentOffset > gridOffset) {
+      this.setState({ showGrid: true });
+      window.removeEventListener("scroll", this.shouldShowGrid);
+    }
+  };
+
   render() {
     const photoCards = backgroundUrls.map((url, idx) => {
       return (
         <div
           key={String(idx)}
-          className="photo-card"
+          className={`photo-card ${this.state.showGrid ? "photo-animate" : "photo-hide"}`}
           style={{ backgroundImage: `url(${url})` }}
         ></div>
       );
     });
 
-    return <div className="photo-grid">{photoCards}</div>;
+    return (
+      <div className="photo-grid" ref={this.photogridRef}>
+        {photoCards}
+      </div>
+    );
   }
 }

@@ -38,7 +38,13 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
 
+.photo-hide {
+  opacity: 0;
+}
+
+.photo-animate {
   animation: cardEntrance 700ms ease-out;
   animation-fill-mode: backwards;
 }
