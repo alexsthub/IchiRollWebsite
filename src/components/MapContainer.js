@@ -1,32 +1,66 @@
 import React from "react";
+import "../styles/components/MapContainer.css";
 
-import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import GoogleMapReact from "google-map-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
-const mapStyles = {
-  width: "100%",
-  height: "50%",
+const mapProps = {
+  center: {
+    lat: 47.719947,
+    lng: -122.35495,
+  },
+  zoom: 15,
 };
 
-export class MapContainer extends React.Component {
+const mapOptions = {
+  mapTypeControl: false,
+  scrollwheel: false,
+};
+
+// TODO: Create a marker and an info window
+export default class MapContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { showingInfoWindow: true, activeMarker: {} };
+  }
+  å;
   render() {
     return (
-      <div>
-        <Map
-          google={this.props.google}
-          zoom={15}
-          style={mapStyles}
-          initialCenter={{
-            lat: 47.719947,
-            lng: -122.35495,
-          }}
-        >
-          <Marker />
-        </Map>
+      <div style={{ position: "relative" }}>
+        <div className="map-container">
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: process.env.REACT_APP_MAPS_KEY,
+              region: "us",
+              language: "en",
+            }}
+            defaultCenter={mapProps.center}
+            defaultZoom={mapProps.zoom}
+            options={mapOptions}
+          >
+            <Marker lat={mapProps.center.lat} lng={mapProps.center.lng} />
+          </GoogleMapReact>
+          <a
+            className="map-button"
+            href="https://www.google.com/maps?cid=4060084535191355784"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get Directions
+          </a>
+        </div>
       </div>
     );
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyApuOpZPe1uTPu51vrM--tLqRvnNap4Nbs",
-})(MapContainer);
+class Marker extends React.Component {
+  render() {
+    return (
+      <div className="map-marker">
+        <FontAwesomeIcon icon={faMapMarkerAlt} style={{ fontSize: 36 }} />
+      </div>
+    );
+  }
+}

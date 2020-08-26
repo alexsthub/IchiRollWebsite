@@ -1,0 +1,36 @@
+.map-container {
+  position: relative;
+  height: 80vh;
+  width: 100%;
+}
+
+.map-button {
+  position: absolute;
+  font-size: 26px;
+  font-weight: 300;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 15px;
+  border-radius: 2px;
+  color: white;
+  border: 2px solid white;
+  background-color: #2e2e2e;
+  text-decoration: none;
+  user-select: none;
+
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.map-button:hover {
+  color: black;
+  background-color: #c2c2c2;
+}
+
+
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -90%);
+}
