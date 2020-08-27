@@ -59,7 +59,11 @@ class Marker extends React.Component {
   render() {
     return (
       <div className="map-marker">
-        <FontAwesomeIcon icon={faMapMarkerAlt} style={{ fontSize: 36 }} />
+        <div className="marker-window">
+          <p>{"Ichi Roll Wok & Teriyaki"}</p>
+          <p>306 N 125th St, Seattle, WA 98133</p>
+        </div>
+        <FontAwesomeIcon icon={faMapMarkerAlt} style={{ fontSize: 54 }} />
       </div>
     );
   }

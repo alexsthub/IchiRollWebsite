@@ -6,7 +6,7 @@ export default class Background extends React.Component {
     return (
       <div className="background">
         <div className="background-content">
-          <p className="greet">Welcome</p>
+          <p>Welcome</p>
           <p>Something something text here maybe.</p>
         </div>
       </div>

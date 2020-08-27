@@ -26,11 +26,38 @@
 
 .map-button:hover {
   color: black;
-  background-color: #c2c2c2;
+  background-color: white;
+  border: 2px solid black;
 }
 
 
 .map-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   position: absolute;
-  transform: translate(-50%, -90%);
+  transform: translate(-50%, -100%);
+}
+
+.marker-window {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+  background-color: white;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.marker-window p:first-child {
+  font-size: 20px;
+  margin: 0px;
+}
+
+.marker-window p:last-child {
+  margin: 0px;
 }

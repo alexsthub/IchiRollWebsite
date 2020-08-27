@@ -15,9 +15,15 @@
 
 .background-content {
   text-align: center;
-  color: white;
+  color: black;
+  background-color: rgba(171, 183, 183, .5);
+  padding: 0px 30px;
 }
 
-.greet {
+.background-content p:first-child {
   font-size: 4rem;
+}
+
+.background-content p:last-child {
+  font-size: 2rem;
 }
