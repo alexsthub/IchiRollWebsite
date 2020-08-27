@@ -62,7 +62,7 @@ export default class Details extends React.Component {
           <div className="hours-table">{hoursTable}</div>
         </div>
 
-        <MapContainer />
+        {/* <MapContainer /> */}
         <Photogrid />
       </section>
     );
