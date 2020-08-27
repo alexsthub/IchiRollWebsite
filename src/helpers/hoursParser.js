@@ -60,7 +60,9 @@ export function groupHours(openHours) {
     if (!isEquivalent(range, prevRange)) {
       const dayRange =
         start === prev ? dayConversion[start] : `${dayConversion[start]} - ${dayConversion[prev]}`;
+      console.log(openHours[start]);
       const timeRange = rangeToString(openHours[start]);
+
       const rowRange = { dayRange: dayRange, timeRange: timeRange };
       res.push(rowRange);
       start = i;
