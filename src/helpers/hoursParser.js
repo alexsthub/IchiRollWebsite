@@ -59,39 +59,26 @@ export function groupHours(openHours) {
     const prevRange = openHours[prev];
     if (!isEquivalent(range, prevRange)) {
       const dayRange =
-        start === prev ? dayConversion[start] : `${dayConversion[start]} - ${dayConversion[prev]}`;
-      console.log(openHours[start]);
-      const timeRange = rangeToString(openHours[start]);
+        start === prev
+          ? dayConversion[start]
+          : `${dayConversion[start].substring(0, 3)} - ${dayConversion[prev].substring(0, 3)}`;
 
-      const rowRange = { dayRange: dayRange, timeRange: timeRange };
+      const rowRange = { dayRange: dayRange, timeRange: openHours[start] };
       res.push(rowRange);
       start = i;
     }
     if (i === 6) {
       const dayRange =
-        start === i ? dayConversion[start] : `${dayConversion[start]} - ${dayConversion[i]}`;
-      const timeRange = rangeToString(range);
-      const rowRange = { dayRange: dayRange, timeRange: timeRange };
+        start === i
+          ? dayConversion[start]
+          : `${dayConversion[start].substring(0, 3)} - ${dayConversion[i].substring(0, 3)}`;
+      const rowRange = { dayRange: dayRange, timeRange: range };
       res.push(rowRange);
       break;
     }
     prev = i;
   }
   return res;
-}
-
-function rangeToString(range) {
-  if (Object.keys(range).length === 0 && range.constructor === Object) return "Closed";
-
-  const { startHour, startMinute, endHour, endMinute } = range;
-  const isAM = Math.floor(startHour / 12) % 2 === 0;
-  const endIsAM = Math.floor(endHour / 12) % 2 === 0;
-  let dateString = `${startHour % 12}:${
-    startMinute.toString().length < 2 ? "0" + startMinute : startMinute
-  }${isAM ? "AM" : "PM"} - ${endHour % 12}:${
-    endMinute.toString().length < 2 ? "0" + endMinute : endMinute
-  }${endIsAM ? "AM" : "PM"}`;
-  return dateString;
 }
 
 function isEquivalent(a, b) {

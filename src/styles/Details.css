@@ -61,19 +61,17 @@
   text-shadow: 1px 1px 1px #000000;
 }
 
-
-/* .hours-descr {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-} */
-
-
-
-.phone {
-  margin-left: auto;
+.cr-range {
+  font-size: 32px;
+  font-weight: 400;
   text-shadow: 1px 1px 1px #000000;
   margin: 0px;
+}
+
+.phone {
+  font-size: 26px;
+  text-shadow: 1px 1px 1px #000000;
+  margin: 20px 0px 0px 0px;
 }
 
 .border {
