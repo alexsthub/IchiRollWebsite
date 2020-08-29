@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Details.css";
 
+import HoursBox from "../components/home/HoursBox";
 import Photogrid from "../components/home/Photogrid";
 import MapContainer from "../components/MapContainer.js";
 
@@ -39,7 +40,6 @@ export default class Details extends React.Component {
       );
     });
 
-    // TODO: Hours-container cannot be space-evenly. needs to be flex: 1??
     return (
       <section id="details" className="details-container">
         <div className="details">
@@ -51,56 +51,6 @@ export default class Details extends React.Component {
         <MapContainer />
         <Photogrid />
       </section>
-    );
-  }
-}
-
-class HoursBox extends React.Component {
-  render() {
-    let timeRange;
-    const { startHour, endHour, startMinute, endMinute, dayRange } = this.props;
-    if (!startHour || !endHour || !dayRange) {
-      timeRange = <p className="cr-number">Closed</p>;
-    } else {
-      timeRange = (
-        <div style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-          <CustomHour hour={startHour} minute={startMinute} />
-          <p className="hours-box-divider">-</p>
-          <CustomHour hour={endHour} minute={endMinute} />
-        </div>
-      );
-    }
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-      >
-        {timeRange}
-        <p className="cr-range">{dayRange}</p>
-      </div>
-    );
-  }
-}
-
-class CustomHour extends React.Component {
-  render() {
-    const { hour, minute } = this.props;
-    const formattedHour = hour > 12 ? hour - 12 : hour;
-    const suffix = hour < 12 ? "AM" : "PM";
-    const time = minute && minute !== 0 ? `${formattedHour}:${minute}` : formattedHour;
-    return (
-      <div className="cr-container">
-        <div className="cr-number">
-          <p>{time}</p>
-        </div>
-        <div className="cr-suffix">
-          <p>{suffix}</p>
-        </div>
-      </div>
     );
   }
 }
