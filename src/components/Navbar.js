@@ -2,6 +2,8 @@ import React from "react";
 import "../styles/components/Navbar.css";
 
 import Button from "./Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -52,7 +54,11 @@ export default class Navbar extends React.Component {
             {"Ichi Roll Wok & Teriyaki"}
           </div>
 
-          <Button text="Order Online" onClick={() => this.handleNavigation("/order")} />
+          <Button
+            text="Order Online"
+            onClick={() => this.handleNavigation("/order")}
+            icon={<FontAwesomeIcon className="button-icon" icon={faArrowRight} size="sm" />}
+          />
         </div>
       </nav>
     );

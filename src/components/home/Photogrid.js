@@ -17,7 +17,7 @@ const backgroundUrls = [
   "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
 ];
 
-const OFFSET = 400;
+const OFFSET = 500;
 export default class Photogrid extends React.Component {
   constructor(props) {
     super(props);

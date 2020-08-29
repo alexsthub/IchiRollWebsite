@@ -1,0 +1,25 @@
+.detail-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  align-items: center;
+}
+
+.about {
+  background-color: #ebebeb;
+  padding: 80px 0px;
+  text-align: center;
+}
+
+.about h2 {
+  display: flex;
+  letter-spacing: 1px;
+  border-bottom: 3px solid black;
+}
+
+.about-text {
+  margin-top: 10px;
+  font-weight: 400;
+  width: 70%;
+}

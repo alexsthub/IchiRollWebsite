@@ -2,15 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../styles/components/Button.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-
 export default class Button extends React.Component {
   render() {
+    const icon = this.props.icon;
+    const containerClass = this.props.className
+      ? `${this.props.className} button-container`
+      : "button-container";
+    const pClass = this.props.pClassName ? `${this.props.pClassName} button-text` : "button-text";
+
     return (
-      <div className="button-container" onClick={this.props.onClick}>
-        <p className="button-text">{this.props.text}</p>
-        <FontAwesomeIcon className="right-arrow" icon={faArrowRight} size="sm" />
+      <div className={containerClass} onClick={this.props.onClick}>
+        <p className={pClass}>{this.props.text}</p>
+        {icon}
       </div>
     );
   }
@@ -19,4 +22,7 @@ export default class Button extends React.Component {
 Button.propTypes = {
   text: PropTypes.string,
   onClick: PropTypes.func,
+  icon: PropTypes.element,
+  className: PropTypes.string,
+  pClassName: PropTypes.string,
 };
