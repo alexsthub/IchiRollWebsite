@@ -48,7 +48,7 @@ export default class Details extends React.Component {
           <p className="phone">{`Tel: ${PHONE_NUMBER}`}</p>
         </div>
 
-        {/* <MapContainer /> */}
+        <MapContainer />
         <Photogrid />
       </section>
     );

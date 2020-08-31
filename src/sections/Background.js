@@ -6,7 +6,6 @@ import Button from "../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: Can we make background-content full size flex instead of transforming?
 export default class Background extends React.Component {
   handleLearnMore = () => {
     // TODO: Scroll to the end of the background
@@ -14,7 +13,7 @@ export default class Background extends React.Component {
   };
 
   handleOrder = () => {
-    // TODO: :O
+    window.open("/order", "_self");
   };
 
   render() {
