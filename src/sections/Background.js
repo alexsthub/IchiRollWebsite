@@ -7,9 +7,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 export default class Background extends React.Component {
+  constructor(props) {
+    super(props);
+    this.containerRef = React.createRef();
+  }
+
+  // TODO: subtract the height of the navbar
   handleLearnMore = () => {
-    // TODO: Scroll to the end of the background
-    console.log("HANDLE");
+    const ref = this.containerRef.current;
+    if (ref) {
+      const top = ref.offsetHeight + ref.offsetTop;
+      window.scrollTo({ top: top, behavior: "smooth" });
+    }
   };
 
   handleOrder = () => {
@@ -18,7 +27,7 @@ export default class Background extends React.Component {
 
   render() {
     return (
-      <div className="background-container">
+      <div className="background-container" ref={this.containerRef}>
         <div className="background-overlay"></div>
         <div className="background"></div>
         <div className="background-content">

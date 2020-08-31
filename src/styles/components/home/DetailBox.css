@@ -14,14 +14,13 @@
 
 .about h2 {
   display: flex;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  font-weight: bold;
   border-bottom: 3px solid black;
 }
 
 .about-text {
   margin-top: 10px;
-  font-weight: 400;
+  font-weight: 700;
   width: 70%;
 }
-
-/* Menu */
