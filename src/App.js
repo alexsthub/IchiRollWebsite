@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar";
-import Header from "./components/Header";
 
 // Pages
 import HomeScreen from "./pages/Home";
@@ -25,7 +24,6 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Navbar headerRef={this.headerRef} />
-        <Header refProp={this.headerRef} />
         <Switch>
           <Route exact path="/" component={HomeScreen} />
           <Route path="/menu" component={MenuScreen} />

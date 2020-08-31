@@ -1,66 +1,45 @@
 import React from "react";
 import "../styles/components/Navbar.css";
 
-import Button from "./Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-
 export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { top: -70 };
-  }
-
-  componentDidMount() {
-    window.addEventListener("scroll", this.listenToScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.listenToScroll);
-  }
-
-  listenToScroll = () => {
-    const headerRef = this.props.headerRef;
-    if (!headerRef) return;
-    const currentScrollPos = window.pageYOffset;
-    const bottom = headerRef.current.offsetTop + headerRef.current.offsetHeight;
-    if (currentScrollPos >= bottom && this.state.top === -70) {
-      this.setState({ top: 0 });
-    } else if (currentScrollPos < bottom && this.state.top === 0) {
-      this.setState({ top: -70 });
-    }
-  };
-
-  handleNavigation = (path) => {
+  handleNavigation = (e, path) => {
     const url = window.location.pathname;
-    if (url === path) window.scrollTo({ top: 0, behavior: "smooth" });
-    else window.open(path, "_self");
+    if (url === path) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   render() {
     return (
-      <nav className="nav" style={{ top: this.state.top }}>
+      <nav className="nav">
         <div className="nav-content">
-          <div style={{ display: "flex" }}>
-            <div onClick={() => this.handleNavigation("/")} className="option">
+          <p className="nav-title">{"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}</p>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <a onClick={(e) => this.handleNavigation(e, "/")} className="option" href="/">
               Home
-            </div>
-            <div onClick={() => this.handleNavigation("/menu")} className="option">
+            </a>
+            <Dot />
+            <a onClick={(e) => this.handleNavigation(e, "/menu")} className="option" href="/menu">
               Menu
-            </div>
+            </a>
+            <Dot />
+            <a onClick={(e) => this.handleNavigation(e, "/order")} className="option" href="/order">
+              Order Online
+            </a>
+            <Dot />
+            <a onClick={(e) => this.handleNavigation(e, "/")} className="option" href="/">
+              Delivery
+            </a>
           </div>
-
-          <div style={{ fontWeight: "bold", paddingBottom: 5, fontSize: "1.5rem" }}>
-            {"Ichi Roll Wok & Teriyaki"}
-          </div>
-
-          <Button
-            text="Order Online"
-            onClick={() => this.handleNavigation("/order")}
-            icon={<FontAwesomeIcon className="button-icon" icon={faArrowRight} size="sm" />}
-          />
         </div>
       </nav>
     );
+  }
+}
+
+class Dot extends React.Component {
+  render() {
+    return <div className="dot" />;
   }
 }
