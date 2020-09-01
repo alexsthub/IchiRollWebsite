@@ -1,0 +1,45 @@
+.delivery-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150px;
+}
+
+.delivery-container h2 {
+  font-size: 2.5em;
+}
+
+.delivery-options-container {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.delivery-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.delivery-option p {
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.delivery-option a {
+  color: white;
+  background-color: black;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 15px 25px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.delivery-option a:hover {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}

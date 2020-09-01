@@ -2,13 +2,14 @@
   position: fixed;
   top: 0;
   height: 55px;
-
-  z-index: 5;
-  background-color: white;
   width: 100%;
+  z-index: 5;
 
   display: flex;
   justify-content: center;
+
+  background-color: black;
+  color: white;
 
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2)
 }
@@ -33,7 +34,7 @@
   margin-left: 15px;
   margin-right: 15px;
   padding-bottom: 3px;
-  color: black;
+  color: white;
   cursor: pointer;
 }
 
@@ -44,7 +45,7 @@
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #000;
+  background-color: #FFF;
 
   visibility: hidden;
   transform: scaleX(0);

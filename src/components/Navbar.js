@@ -28,7 +28,11 @@ export default class Navbar extends React.Component {
               Order Online
             </a>
             <Dot />
-            <a onClick={(e) => this.handleNavigation(e, "/")} className="option" href="/">
+            <a
+              onClick={(e) => this.handleNavigation(e, "/delivery")}
+              className="option"
+              href="/delivery"
+            >
               Delivery
             </a>
           </div>

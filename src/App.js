@@ -11,6 +11,7 @@ import MenuScreen from "./pages/Menu";
 import OrderScreen from "./pages/Order";
 import CheckoutScreen from "./pages/Checkout";
 import ConfirmationScreen from "./pages/Confirmation";
+import DeliveryScreen from "./pages/Delivery";
 
 import "./styles/App.css";
 
@@ -30,6 +31,7 @@ export default class App extends React.Component {
           <Route exact path="/order/checkout" component={CheckoutScreen} />
           <Route path="/order" component={OrderScreen} />
           <Route path="/confirmation" component={ConfirmationScreen} />
+          <Route path="/delivery" component={DeliveryScreen} />
           <Redirect to="/" />
         </Switch>
       </div>
