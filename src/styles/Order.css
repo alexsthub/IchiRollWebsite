@@ -1,5 +1,5 @@
 :root {
-  --order-margin: 40px;
+  --order-margin: 100px;
   --order-padding: 20px;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .pickup {
-  background-color: #13AA6D;
+  background-color: black;
   color: white;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 10px 0px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
 }
@@ -78,7 +78,7 @@
 
 .switch-background {
   position: absolute;
-  background-color: rgb(19, 170, 109);
+  background-color: black;
   border-radius: 20px;
   height: 29px;
   width: 50%;
@@ -198,7 +198,7 @@
   height: 100%;
   bottom: 0;
   left: 0;
-  background-color: #13AA6D;
+  background-color: black;
 }
 
 /* Order Items */
@@ -271,7 +271,7 @@
   font-weight: bold;
   font-size: 1em;
   color: white;
-  background-color: #13AA6D;
+  background-color: black;
   transition: opacity 0.15s ease-in;
 
   display: flex;
@@ -502,7 +502,7 @@
   margin-left: 15px;
   width: 100%;
   color: white;
-  background-color: #13AA6D;
+  background-color: black;
   user-select: none;
   transition: opacity 0.2s ease-in-out;
 }

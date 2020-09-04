@@ -16,7 +16,7 @@ export default class MenuScreen extends React.Component {
   }
 
   componentDidMount = async () => {
-    window.addEventListener("scroll", this.listenToScroll);
+    // window.addEventListener("scroll", this.listenToScroll);
 
     const organizationId = "258553461683418";
     const rest = clients.createRestClient();
@@ -28,11 +28,11 @@ export default class MenuScreen extends React.Component {
   };
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.listenToScroll);
+    // window.removeEventListener("scroll", this.listenToScroll);
   }
 
   listenToScroll = () => {
-    const yPos = window.scrollY + 52;
+    const yPos = window.scrollY + 55;
     let start = this.state.selectedCategoryIndex;
     let end = start + 1;
     const maxLength = this.menuOptions.length;
@@ -97,6 +97,12 @@ export default class MenuScreen extends React.Component {
     window.scrollTo({ top: scrollLocation, behavior: "smooth" });
   };
 
+  handleNavClick = (option) => {
+    const sectionRef = this.sectionRefs[option];
+    const scrollLocation = sectionRef.current.offsetTop - 52;
+    window.scrollTo({ top: scrollLocation, behavior: "smooth" });
+  };
+
   render() {
     if (this.state.loading) {
       return (
@@ -107,6 +113,9 @@ export default class MenuScreen extends React.Component {
     }
 
     const menu = this.renderMenu();
+    const navButtons = this.menuOptions.map((option) => {
+      return <button onClick={() => this.handleNavClick(option)}>{option}</button>;
+    });
     return (
       <div className="menu-container">
         <div className="menu-header">
@@ -118,8 +127,14 @@ export default class MenuScreen extends React.Component {
             to love as we have.
           </p>
         </div>
+
+        {/*  */}
+        <nav className="menu-nav">
+          <div className="menu-nav-content">{navButtons.slice(0, 8)}</div>
+        </nav>
+        {/*  */}
         <div className="menu-content">
-          <div className="category-container">
+          {/* <div className="category-container">
             <DropdownOptions
               className="category-dropdown"
               options={this.menuOptions}
@@ -130,7 +145,7 @@ export default class MenuScreen extends React.Component {
                   : this.menuOptions[this.state.selectedCategoryIndex]
               }
             />
-          </div>
+          </div> */}
           {menu}
         </div>
       </div>

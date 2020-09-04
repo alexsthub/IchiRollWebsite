@@ -10,11 +10,7 @@ export default class OrderHeader extends React.Component {
       <div className="order-header">
         <p>{"Ichi Roll Wok & Teriyaki"}</p>
         <div className="order-location">
-          <FontAwesomeIcon
-            style={{ color: "#13AA6D", marginRight: 10 }}
-            icon={faMapMarkerAlt}
-            size="sm"
-          />
+          <FontAwesomeIcon style={{ marginRight: 10 }} icon={faMapMarkerAlt} size="sm" />
           <p>306 N 125th St, Seattle, WA 98133</p>
         </div>
       </div>
