@@ -3,21 +3,33 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin: 75px 0;
 }
 
 .menu-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  background: url("/menuImage.jpg") no-repeat center center;
+  background-size: cover;
+  width: 100%;
+  color: white;
+
+  font-family: Futura;
+}
+
+.menu-hc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0px;
 }
 
 .menu-title {
   position: relative;
-  font-size: 60px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 5px;
+  font-size: 5em;
+  font-weight: 700;
+  padding: 0px 20px 5px;
   margin-bottom: 15px;
 }
 
@@ -28,10 +40,12 @@
   height: 6px;
   bottom: 0;
   left: 0;
-  background-color: #000;
+  background-color: white;
 }
 
 .menu-intro {
+  font-weight: 500;
+  font-size: 1.1em;
   width: 40%;
 }
 
@@ -39,7 +53,6 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 3rem;
   background-color: black;
   color: white;
 

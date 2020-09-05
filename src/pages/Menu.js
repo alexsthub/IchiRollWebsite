@@ -119,13 +119,15 @@ export default class MenuScreen extends React.Component {
     return (
       <div className="menu-container">
         <div className="menu-header">
-          <p className="menu-title">Menu</p>
-          <p className="menu-intro">
-            Amidst the Covid-19 pandemic, we are only open to takeout during our open hours. Our
-            menu offers a wide selection of dishes, such as fried rice, chow mein, sushi, and of
-            course, teriyaki. Enjoy our take on traditional asian cusine that we hope you will come
-            to love as we have.
-          </p>
+          <div className="menu-hc">
+            <p className="menu-title">MENU</p>
+            <p className="menu-intro">
+              Amidst the Covid-19 pandemic, we are only open to takeout during our open hours. Our
+              menu offers a wide selection of dishes, such as fried rice, chow mein, sushi, and of
+              course, teriyaki. Enjoy our take on traditional asian cusine that we hope you will
+              come to love as we have.
+            </p>
+          </div>
         </div>
 
         {/*  */}
