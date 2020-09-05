@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/components/MapContainer.css";
+import "../../styles/components/MapContainer.css";
 
 import GoogleMapReact from "google-map-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,7 +18,6 @@ const mapOptions = {
   scrollwheel: false,
 };
 
-// TODO: Create a marker and an info window
 export default class MapContainer extends React.Component {
   constructor(props) {
     super(props);

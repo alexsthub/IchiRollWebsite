@@ -1,7 +1,8 @@
 import React from "react";
-import "../styles/Background.css";
+import "../../styles/Background.css";
 
-import Button from "../components/Button";
+import Button from "../Button";
+import ImageOverlay from "../ImageOverlay";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -27,10 +28,8 @@ export default class Background extends React.Component {
 
   render() {
     return (
-      <div className="background-container" ref={this.containerRef}>
-        <div className="background-overlay"></div>
-        <div className="background"></div>
-        <div className="background-content">
+      <ImageOverlay backgroundClass="hero" opacity={0.55} refProp={this.containerRef}>
+        <div className="flex-center">
           <p className="bc-title">{"Ichi Roll Wok & Teriyaki"}</p>
           <p className="bc-subtitle">Something something text here maybe.</p>
 
@@ -52,7 +51,7 @@ export default class Background extends React.Component {
             />
           </div>
         </div>
-      </div>
+      </ImageOverlay>
     );
   }
 }

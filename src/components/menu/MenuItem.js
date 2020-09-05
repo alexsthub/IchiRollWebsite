@@ -1,7 +1,7 @@
 import React from "react";
-import "../styles/components/MenuItem.css";
+import "../../styles/components/MenuItem.css";
 
-import { priceToString } from "../helpers/utils";
+import { priceToString } from "../../helpers/utils";
 
 export default class MenuItem extends React.Component {
   handleClick = (e) => {

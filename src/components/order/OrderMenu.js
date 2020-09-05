@@ -2,7 +2,7 @@ import React from "react";
 import "../../styles/Order.css";
 
 import OrderCategory from "./OrderCategory";
-import MenuItem from "../MenuItem";
+import MenuItem from "../menu/MenuItem";
 import LineItem from "../order/LineItem";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

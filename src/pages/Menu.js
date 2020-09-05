@@ -3,7 +3,7 @@ import { clients } from "wix-restaurants-js-sdk";
 import Loader from "react-loader-spinner";
 import DropdownOptions from "../components/DropDownOptions";
 
-import MenuSection from "../components/MenuSection";
+import MenuSection from "../components/menu/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";

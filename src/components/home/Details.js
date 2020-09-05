@@ -1,14 +1,14 @@
 import React from "react";
-import "../styles/Details.css";
+import "../../styles/Details.css";
 
-import HoursBox from "../components/home/HoursBox";
-import Photogrid from "../components/home/Photogrid";
-import MapContainer from "../components/MapContainer.js";
+import HoursBox from "./HoursBox";
+import Photogrid from "./Photogrid";
+import MapContainer from "./MapContainer.js";
 
-import { getRestaurantDetails } from "../helpers/utils";
-import { convertRawOpenHours, groupHours } from "../helpers/hoursParser";
+import { getRestaurantDetails } from "../../helpers/utils";
+import { convertRawOpenHours, groupHours } from "../../helpers/hoursParser";
 
-import { PHONE_NUMBER } from "../constants/values";
+import { PHONE_NUMBER } from "../../constants/values";
 
 export default class Details extends React.Component {
   constructor(props) {

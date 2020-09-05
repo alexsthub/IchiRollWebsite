@@ -1,7 +1,7 @@
 import React from "react";
 import MenuItem from "./MenuItem";
 
-import "../styles/Menu.css";
+import "../../styles/Menu.css";
 
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
