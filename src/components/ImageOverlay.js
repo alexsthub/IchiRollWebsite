@@ -10,7 +10,7 @@ export default class ImageOverlay extends React.Component {
     return (
       <div className="background-container" ref={this.props.refProp} style={this.props.style}>
         <div className="background-overlay" style={{ opacity: this.props.opacity }}></div>
-        <div className={backgroundClassName}></div>
+        <div className={backgroundClassName} style={this.props.backgroundStyle}></div>
         <div className="background-content flex-center">{this.props.children}</div>
       </div>
     );

@@ -1,8 +1,8 @@
 import React, { createRef } from "react";
 import { clients } from "wix-restaurants-js-sdk";
-import Loader from "react-loader-spinner";
 import DropdownOptions from "../components/DropDownOptions";
 
+import ImageOverlay from "../components/ImageOverlay";
 import MenuSection from "../components/menu/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
@@ -12,7 +12,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { menu: {}, loading: true, selectedCategoryIndex: -1 };
+    this.state = { menu: {}, loading: true, selectedCategoryIndex: -1, overlayHeight: null };
   }
 
   componentDidMount = async () => {
@@ -24,7 +24,7 @@ export default class MenuScreen extends React.Component {
     const menu = constructMenu(menuObj);
     this.menuOptions = Object.keys(menu);
     this.sectionRefs = this.generateSectionRefs(menu);
-    this.setState({ menu: menu, loading: false });
+    this.setState({ menu: menu, loading: false, overlayHeight: this.headerContent.offsetHeight });
   };
 
   componentWillUnmount() {
@@ -104,35 +104,44 @@ export default class MenuScreen extends React.Component {
   };
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Loader type="TailSpin" color="gray" height={75} width={75} />
-        </div>
-      );
-    }
-
     const menu = this.renderMenu();
-    const navButtons = this.menuOptions.map((option) => {
-      return <button onClick={() => this.handleNavClick(option)}>{option}</button>;
-    });
+    const navButtons = this.menuOptions
+      ? this.menuOptions.map((option) => {
+          return (
+            <button key={option} onClick={() => this.handleNavClick(option)}>
+              {option}
+            </button>
+          );
+        })
+      : null;
     return (
       <div className="menu-container">
-        <div className="menu-header">
-          <div className="menu-hc">
-            <p className="menu-title">MENU</p>
-            <p className="menu-intro">
-              Amidst the Covid-19 pandemic, we are only open to takeout during our open hours. Our
-              menu offers a wide selection of dishes, such as fried rice, chow mein, sushi, and of
-              course, teriyaki. Enjoy our take on traditional asian cusine that we hope you will
-              come to love as we have.
-            </p>
+        <ImageOverlay
+          backgroundClass="menu-header"
+          opacity={0.3}
+          style={{ width: "100%", height: "100%" }}
+          backgroundStyle={{ height: this.state.overlayHeight }}
+        >
+          <div className="flex-center">
+            <div
+              className="menu-hc"
+              ref={(header) => {
+                this.headerContent = header;
+              }}
+            >
+              <p className="menu-title">MENU</p>
+              <p className="menu-intro">
+                Amidst the Covid-19 pandemic, we are only open to takeout during our open hours. Our
+                menu offers a wide selection of dishes, such as fried rice, chow mein, sushi, and of
+                course, teriyaki. Enjoy our take on traditional asian cusine that we hope you will
+                come to love as we have.
+              </p>
+            </div>
           </div>
-        </div>
+        </ImageOverlay>
 
-        {/*  */}
         <nav className="menu-nav">
-          <div className="menu-nav-content">{navButtons.slice(0, 8)}</div>
+          <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 8) : null}</div>
         </nav>
         {/*  */}
         <div className="menu-content">
