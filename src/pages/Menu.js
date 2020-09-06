@@ -93,14 +93,7 @@ export default class MenuScreen extends React.Component {
     return section;
   };
 
-  handleDropdownClick = (option) => {
-    const sectionTitle = option.value;
-    const sectionRef = this.sectionRefs[sectionTitle];
-    const scrollLocation = sectionRef.current.offsetTop - 55 - 49;
-    window.scrollTo({ top: scrollLocation, behavior: "smooth" });
-  };
-
-  handleNavClick = (option) => {
+  handleScrollClick = (option) => {
     const sectionRef = this.sectionRefs[option];
     const scrollLocation = sectionRef.current.offsetTop - 55 - 49;
     window.scrollTo({ top: scrollLocation, behavior: "smooth" });
@@ -114,7 +107,7 @@ export default class MenuScreen extends React.Component {
           return (
             <button
               key={option}
-              onClick={() => this.handleNavClick(option)}
+              onClick={() => this.handleScrollClick(option)}
               className={selectedClass}
             >
               {option}
@@ -149,13 +142,13 @@ export default class MenuScreen extends React.Component {
         </ImageOverlay>
 
         <nav className="menu-nav">
-          <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 10) : null}</div>
+          <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 14) : null}</div>
 
           {this.menuOptions ? (
             <DropdownOptions
               className="category-dropdown"
               options={navButtons ? navButtons.slice(10, 14) : []}
-              onChange={this.handleDropdownClick}
+              onChange={(option) => this.handleScrollClick(option.value.key)}
               value={"More"}
             />
           ) : null}

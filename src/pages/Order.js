@@ -24,6 +24,7 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
+// TODO: On sunday something is fucked up
 // TODO: Maybe I should read scheduledtime for localstorage but if it is not valid anymore then just reset
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
@@ -66,13 +67,14 @@ export default class OrderScreen extends React.Component {
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
-
+    console.log(hours);
     if (!withinTimeRange(hours, currentHour, currentMinute)) {
       this.setState({ isNow: false });
       this.isNowAvailable = false;
       if (
-        currentHour < hours.startHour ||
-        (currentHour === hours.startHour && currentMinute < hours.startHour)
+        hours &&
+        (currentHour < hours.startHour ||
+          (currentHour === hours.startHour && currentMinute < hours.startHour))
       ) {
         date.setHours(hours.startHour, hours.startMinute);
       } else {

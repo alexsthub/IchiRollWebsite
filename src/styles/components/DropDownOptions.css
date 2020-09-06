@@ -56,7 +56,7 @@
   overflow-y: auto;
   white-space: nowrap;
 
-  top: 32px;
+  top: calc(100% + 2px);
   z-index: 20;
   -webkit-overflow-scrolling: touch;
 }

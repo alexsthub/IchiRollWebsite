@@ -106,7 +106,7 @@ class Dropdown extends Component {
     }
   };
 
-  renderOption = (option) => {
+  renderOption = (option, index) => {
     let value = option.value;
     if (typeof value === "undefined") {
       value = option.label || option;
@@ -119,11 +119,10 @@ class Dropdown extends Component {
       [option.className]: !!option.className,
       "is-selected": isSelected,
     };
-
     const optionClass = classNames(classes);
     return (
       <div
-        key={label}
+        key={String(index)}
         className={optionClass}
         onMouseDown={(e) => this.setValue(value, label, e)}
         onClick={(e) => this.setValue(value, label, e)}
@@ -137,11 +136,11 @@ class Dropdown extends Component {
 
   buildMenu = () => {
     let { options, baseClassName } = this.props;
-    let ops = options.map((option) => {
+
+    let ops = options.map((option, index) => {
       if (option.type === "group") {
         let groupTitle = <div className={`${baseClassName}-title`}>{option.name}</div>;
         let _options = option.items.map((item) => this.renderOption(item));
-
         return (
           <div className={`${baseClassName}-group`} key={option.name} role="listbox" tabIndex="-1">
             {groupTitle}
@@ -149,7 +148,7 @@ class Dropdown extends Component {
           </div>
         );
       } else {
-        return this.renderOption(option);
+        return this.renderOption(option, index);
       }
     });
 
@@ -166,7 +165,6 @@ class Dropdown extends Component {
     return typeof this.state.selected === "string" || this.state.selected.value !== "";
   };
 
-  // TODO: Switch from css arrow to chevron
   render() {
     const {
       baseClassName,
@@ -178,7 +176,7 @@ class Dropdown extends Component {
 
     const disabledClass = this.props.disabled ? "Dropdown-disabled" : "";
     const placeHolderValue =
-      typeof this.state.selected === "string" ? this.state.selected : this.state.selected.label;
+      typeof this.state.selected === "string" ? this.state.selected : this.state.selected.label.key;
 
     const dropdownClass = classNames({
       [`${baseClassName}-root`]: true,
