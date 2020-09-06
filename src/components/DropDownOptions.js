@@ -2,6 +2,9 @@ import React, { Component, createRef } from "react";
 import classNames from "classnames";
 import "../styles/components/DropDownOptions.css";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
 const DEFAULT_PLACEHOLDER_STRING = "Select...";
 
 class Dropdown extends Component {
@@ -163,15 +166,13 @@ class Dropdown extends Component {
     return typeof this.state.selected === "string" || this.state.selected.value !== "";
   };
 
+  // TODO: Switch from css arrow to chevron
   render() {
     const {
       baseClassName,
       controlClassName,
       placeholderClassName,
       menuClassName,
-      arrowClassName,
-      arrowClosed,
-      arrowOpen,
       className,
     } = this.props;
 
@@ -198,12 +199,9 @@ class Dropdown extends Component {
       [`${baseClassName}-menu`]: true,
       [menuClassName]: !!menuClassName,
     });
-    const arrowClass = classNames({
-      [`${baseClassName}-arrow`]: true,
-      [arrowClassName]: !!arrowClassName,
-    });
 
     const value = <div className={placeholderClass}>{placeHolderValue}</div>;
+
     const menu = this.state.isOpen ? (
       <div className={menuClass} aria-expanded="true">
         {this.buildMenu()}
@@ -219,17 +217,11 @@ class Dropdown extends Component {
           aria-haspopup="listbox"
         >
           {value}
-          <div className={`${baseClassName}-arrow-wrapper`}>
-            {arrowOpen && arrowClosed ? (
-              this.state.isOpen ? (
-                arrowOpen
-              ) : (
-                arrowClosed
-              )
-            ) : (
-              <span className={arrowClass} />
-            )}
-          </div>
+          <FontAwesomeIcon
+            style={{ color: "white", marginLeft: 10 }}
+            icon={this.state.isOpen ? faChevronDown : faChevronUp}
+            size="sm"
+          />
         </div>
         {menu}
       </div>

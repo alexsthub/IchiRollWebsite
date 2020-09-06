@@ -8,3 +8,61 @@ fieldset {
 body:not(:-moz-handler-blocked) fieldset {
   display: table-cell;
 }
+
+.fade-in {
+  animation: fadeIn ease 1500ms;
+  -webkit-animation: fadeIn ease 1500ms;
+  -moz-animation: fadeIn ease 1500ms;
+  -o-animation: fadeIn ease 1500ms;
+  -ms-animation: fadeIn ease 1500ms;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

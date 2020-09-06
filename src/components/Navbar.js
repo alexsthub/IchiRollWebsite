@@ -17,23 +17,24 @@ export default class Navbar extends React.Component {
           <p className="nav-title">{"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}</p>
           <div style={{ display: "flex", alignItems: "center" }}>
             <a onClick={(e) => this.handleNavigation(e, "/")} className="option" href="/">
-              Home
+              HOME
             </a>
             <Dot />
             <a onClick={(e) => this.handleNavigation(e, "/menu")} className="option" href="/menu">
-              Menu
+              MENU
             </a>
             <Dot />
             <a onClick={(e) => this.handleNavigation(e, "/order")} className="option" href="/order">
-              Order Online
+              ORDER ONLINE
             </a>
             <Dot />
             <a
               onClick={(e) => this.handleNavigation(e, "/delivery")}
               className="option"
               href="/delivery"
+              style={{ marginRight: 0 }}
             >
-              Delivery
+              DELIVERY
             </a>
           </div>
         </div>

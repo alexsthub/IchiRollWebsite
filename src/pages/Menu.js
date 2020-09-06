@@ -7,8 +7,11 @@ import MenuSection from "../components/menu/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
+// TODO: Better selected
+// TODO: If too many categories, I need to create drop down and update categories there
+// TODO: Add padding to the bottom or else we won't reach the bottom category
+// TODO: Update menu. Its just kinda ugly
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +19,7 @@ export default class MenuScreen extends React.Component {
   }
 
   componentDidMount = async () => {
-    // window.addEventListener("scroll", this.listenToScroll);
+    window.addEventListener("scroll", this.listenToScroll);
 
     const organizationId = "258553461683418";
     const rest = clients.createRestClient();
@@ -28,11 +31,11 @@ export default class MenuScreen extends React.Component {
   };
 
   componentWillUnmount() {
-    // window.removeEventListener("scroll", this.listenToScroll);
+    window.removeEventListener("scroll", this.listenToScroll);
   }
 
   listenToScroll = () => {
-    const yPos = window.scrollY + 55;
+    const yPos = window.scrollY + 55 + 49;
     let start = this.state.selectedCategoryIndex;
     let end = start + 1;
     const maxLength = this.menuOptions.length;
@@ -93,29 +96,34 @@ export default class MenuScreen extends React.Component {
   handleDropdownClick = (option) => {
     const sectionTitle = option.value;
     const sectionRef = this.sectionRefs[sectionTitle];
-    const scrollLocation = sectionRef.current.offsetTop - 52;
+    const scrollLocation = sectionRef.current.offsetTop - 55 - 49;
     window.scrollTo({ top: scrollLocation, behavior: "smooth" });
   };
 
   handleNavClick = (option) => {
     const sectionRef = this.sectionRefs[option];
-    const scrollLocation = sectionRef.current.offsetTop - 52;
+    const scrollLocation = sectionRef.current.offsetTop - 55 - 49;
     window.scrollTo({ top: scrollLocation, behavior: "smooth" });
   };
 
   render() {
     const menu = this.renderMenu();
     const navButtons = this.menuOptions
-      ? this.menuOptions.map((option) => {
+      ? this.menuOptions.map((option, index) => {
+          const selectedClass = this.state.selectedCategoryIndex === index ? "selected" : "";
           return (
-            <button key={option} onClick={() => this.handleNavClick(option)}>
+            <button
+              key={option}
+              onClick={() => this.handleNavClick(option)}
+              className={selectedClass}
+            >
               {option}
             </button>
           );
         })
       : null;
     return (
-      <div className="menu-container">
+      <div className="menu-container fade-in">
         <ImageOverlay
           backgroundClass="menu-header"
           opacity={0.3}
@@ -141,24 +149,19 @@ export default class MenuScreen extends React.Component {
         </ImageOverlay>
 
         <nav className="menu-nav">
-          <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 8) : null}</div>
-        </nav>
-        {/*  */}
-        <div className="menu-content">
-          {/* <div className="category-container">
+          <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 10) : null}</div>
+
+          {this.menuOptions ? (
             <DropdownOptions
               className="category-dropdown"
-              options={this.menuOptions}
+              options={navButtons ? navButtons.slice(10, 14) : []}
               onChange={this.handleDropdownClick}
-              value={
-                this.state.selectedCategoryIndex === -1
-                  ? "Categories"
-                  : this.menuOptions[this.state.selectedCategoryIndex]
-              }
+              value={"More"}
             />
-          </div> */}
-          {menu}
-        </div>
+          ) : null}
+        </nav>
+        {/*  */}
+        <div className="menu-content">{menu}</div>
       </div>
     );
   }
