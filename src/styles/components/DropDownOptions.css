@@ -11,7 +11,7 @@
   border-radius: 2px;
   box-sizing: border-box;
   color: white;
-  cursor: default;
+  cursor: pointer;
   outline: none;
   padding: 8px 10px;
   transition: all 200ms ease;
@@ -19,25 +19,6 @@
 
 .Dropdown-control:hover {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
-}
-
-.Dropdown-arrow {
-  border-color: white transparent transparent;
-  border-style: solid;
-  border-width: 5px 5px 0;
-  content: ' ';
-  display: block;
-  height: 0;
-  margin-top: -ceil(2.5);
-  position: absolute;
-  right: 10px;
-  top: 14px;
-  width: 0
-}
-
-.is-open .Dropdown-arrow {
-  border-color: transparent transparent white;
-  border-width: 0 5px 5px;
 }
 
 .Dropdown-menu {
