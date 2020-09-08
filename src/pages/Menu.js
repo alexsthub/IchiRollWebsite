@@ -9,7 +9,7 @@ import constructMenu from "../helpers/menuQuery";
 import "../styles/Menu.css";
 
 // TODO: Better selected
-// TODO: Update menu. Its just kinda ugly
+// TODO: Instead of fade-in transition, go from 0 opacity to 1 after everything is mounted
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);

@@ -1,10 +1,12 @@
 import React from "react";
-import MenuItem from "./MenuItem";
 
 import "../../styles/Menu.css";
 
+import { priceToString } from "../../helpers/utils";
+
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,8 +23,24 @@ export default class MenuSection extends React.Component {
 
   render() {
     const { title, menuItems } = this.props;
+    console.log(menuItems);
     const items = menuItems.map((item) => {
-      return <MenuItem key={item.title.en_US} item={item} />;
+      return (
+        <div style={{ marginBottom: 40 }}>
+          <div className="mic">
+            <div className="mid">
+              <span className="mis">{item.title.en_US}</span>
+              <div className="mi-spacing">
+                .......................................................................................................................................................................................................................................
+              </div>
+            </div>
+            <div className="mip">{priceToString(item.price)}</div>
+          </div>
+          {item.description.en_US !== "" ? (
+            <p className="mi-desc">{item.description.en_US}</p>
+          ) : null}
+        </div>
+      );
     });
 
     const icon = this.state.showItems ? faChevronDown : faChevronUp;
@@ -34,7 +52,7 @@ export default class MenuSection extends React.Component {
           <FontAwesomeIcon style={{ color: "black", marginRight: 10 }} icon={icon} size="sm" />
         </div>
         <SlideDown className="slide-transition" transitionOnAppear={false}>
-          {this.state.showItems ? <div className="basic-grid">{items}</div> : null}
+          {this.state.showItems ? <div style={{ marginTop: 36 }}>{items}</div> : null}
         </SlideDown>
       </div>
     );
