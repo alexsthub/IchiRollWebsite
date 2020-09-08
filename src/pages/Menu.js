@@ -8,8 +8,6 @@ import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
-// TODO: Better selected
-// TODO: Instead of fade-in transition, go from 0 opacity to 1 after everything is mounted
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -181,8 +179,10 @@ export default class MenuScreen extends React.Component {
       dropdownElement = null;
     }
 
+    const containerClass = `menu-container ${this.checkBreakpoint ? "hidden" : "show"}`;
+
     return (
-      <div className="menu-container fade-in">
+      <div className={containerClass}>
         <ImageOverlay
           backgroundClass="menu-header"
           opacity={0.3}
