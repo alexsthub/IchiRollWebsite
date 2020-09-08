@@ -29,10 +29,9 @@ export default class MenuSection extends React.Component {
 
     return (
       <div className="section-container" key={title} ref={this.props.refProp}>
-        <div className="section-border" />
         <div className="section-title-container" onClick={this.handleClick}>
           <p className="section-title">{title}</p>
-          <FontAwesomeIcon style={{ color: "gray" }} icon={icon} size="sm" />
+          <FontAwesomeIcon style={{ color: "black", marginRight: 10 }} icon={icon} size="sm" />
         </div>
         <SlideDown className="slide-transition" transitionOnAppear={false}>
           {this.state.showItems ? <div className="basic-grid">{items}</div> : null}

@@ -91,6 +91,7 @@
 
 .menu-content {
   width: 70%;
+  margin-bottom: 80px;
 }
 
 .category-dropdown {
@@ -100,13 +101,7 @@
 
 .section-container {
   text-align: start;
-}
-
-.section-border {
-  height: 1px;
-  width: 100%;
-  background-color: lightgray;
-  margin-top: 20px;
+  padding: 40px 0 8px 0;
 }
 
 .section-title-container {
@@ -114,6 +109,8 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
 .section-title-container:hover {
@@ -144,4 +141,10 @@
 .slide-transition {
   transition-duration: .3s;
   transition-timing-function: ease-in-out;
+}
+
+.menu-container footer {
+  height: 200px;
+  background-color: black;
+  width: 100%;
 }

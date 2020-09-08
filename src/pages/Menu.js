@@ -8,10 +8,9 @@ import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
-// TODO: Better selected
-// TODO: Change value in dropdown when we scroll past the navBreakpointIndex
+// TODO: Make scroll -50px or something
 
-// TODO: Add padding to the bottom or else we won't reach the bottom category
+// TODO: Better selected
 // TODO: Update menu. Its just kinda ugly
 export default class MenuScreen extends React.Component {
   constructor(props) {
@@ -47,12 +46,12 @@ export default class MenuScreen extends React.Component {
 
   componentDidUpdate = () => {
     if (this.checkBreakpoint) {
+      this.checkBreakpoint = false;
       this.setNavBreakpointIndex();
     }
   };
 
   setNavBreakpointIndex = () => {
-    this.checkBreakpoint = false;
     const firstYPosition = 0;
     const keys = Object.keys(this.navOptionRefs);
     for (let i = 0; i < keys.length; i++) {
@@ -71,7 +70,6 @@ export default class MenuScreen extends React.Component {
     }
   };
 
-  // TODO: WHen dev tools is up, we DIE
   resizeListener = () => {
     this.setNavBreakpointIndex();
   };
@@ -80,6 +78,7 @@ export default class MenuScreen extends React.Component {
     const yPos = window.scrollY + 55 + 49;
     let start = this.state.selectedCategoryIndex;
     let end = start + 1;
+
     const maxLength = this.menuOptions.length;
     while (start >= -1 || end < maxLength) {
       if (start >= -1 && this.checkRange(start, yPos)) {
@@ -164,6 +163,26 @@ export default class MenuScreen extends React.Component {
       : null;
 
     const dropdownButtons = navBreakpointIndex ? navButtons.slice(navBreakpointIndex) : [];
+    const dropdownValue =
+      navBreakpointIndex && selectedCategoryIndex >= navBreakpointIndex
+        ? this.menuOptions[selectedCategoryIndex]
+        : "More";
+
+    let dropdownElement;
+    if (this.menuOptions) {
+      dropdownElement = (
+        <DropdownOptions
+          className="category-dropdown"
+          options={dropdownButtons}
+          onChange={(option) => this.handleScrollClick(option.value.key)}
+          value={dropdownValue}
+        />
+      );
+    }
+    if (!this.checkBreakpoint && dropdownButtons.length === 0) {
+      dropdownElement = null;
+    }
+
     return (
       <div className="menu-container fade-in">
         <ImageOverlay
@@ -192,18 +211,11 @@ export default class MenuScreen extends React.Component {
 
         <nav className="menu-nav">
           <div className="menu-nav-content">{navButtons ? navButtons.slice(0, 14) : null}</div>
-          {/* // TODO: If dropdownButtons is empty, we can't show this */}
-          {this.menuOptions ? (
-            <DropdownOptions
-              className="category-dropdown"
-              options={dropdownButtons}
-              onChange={(option) => this.handleScrollClick(option.value.key)}
-              value={"More"}
-            />
-          ) : null}
+          {dropdownElement}
         </nav>
 
         <div className="menu-content">{menu}</div>
+        <footer></footer>
       </div>
     );
   }
