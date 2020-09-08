@@ -8,8 +8,6 @@ import constructMenu from "../helpers/menuQuery";
 
 import "../styles/Menu.css";
 
-// TODO: Make scroll -50px or something
-
 // TODO: Better selected
 // TODO: Update menu. Its just kinda ugly
 export default class MenuScreen extends React.Component {
@@ -136,7 +134,7 @@ export default class MenuScreen extends React.Component {
 
   handleScrollClick = (option) => {
     const sectionRef = this.sectionRefs[option];
-    const scrollLocation = sectionRef.current.offsetTop - 55 - 49;
+    const scrollLocation = sectionRef.current.offsetTop - 55 - 48;
     window.scrollTo({ top: scrollLocation, behavior: "smooth" });
   };
 
@@ -215,7 +213,16 @@ export default class MenuScreen extends React.Component {
         </nav>
 
         <div className="menu-content">{menu}</div>
-        <footer></footer>
+        <footer>
+          <p style={{ fontSize: "1.3rem", fontWeight: 600 }}>
+            {"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}
+          </p>
+          <div>
+            <p style={{ margin: 0, fontSize: ".8rem" }}>(206) 363-5100</p>
+            <p style={{ margin: 0, fontSize: ".8rem" }}>306 N 125th St, Seattle, WA 98133</p>
+          </div>
+          <p style={{ marginBottom: 0, fontSize: "0.8rem" }}>©2020 by Alex Tan</p>
+        </footer>
       </div>
     );
   }

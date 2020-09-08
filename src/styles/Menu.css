@@ -119,8 +119,8 @@
 
 .section-title {
   font-size: 20px;
-  font-family: CircularMed;
-  font-weight: bold;
+  font-family: Futura;
+  font-weight: 400;
   line-height: 1.25;
   letter-spacing: 0.25px;
   text-transform: none;
@@ -144,7 +144,18 @@
 }
 
 .menu-container footer {
-  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: black;
+  color: white;
+  font-family: Futura;
   width: 100%;
+  padding: 40px 0px 20px;
+}
+
+
+.menu-container footer div p {
+  margin: 0px;
+  font-size: .8rem;
 }
