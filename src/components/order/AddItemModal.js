@@ -71,8 +71,10 @@ export default class AddItemModal extends React.Component {
             <div style={{ display: "flex" }}>
               <p className="m-title">{item.title.en_US}</p>
             </div>
-            {item.description.en_US !== "" ? <p>{item.description.en_US}</p> : null}
-            <p>{priceToString(item.price)}</p>
+            {item.description.en_US !== "" ? (
+              <p className="m-desc">{item.description.en_US}</p>
+            ) : null}
+            <p className="m-price">{priceToString(item.price)}</p>
           </div>
 
           <div className="m-instructions">
@@ -131,12 +133,13 @@ export default class AddItemModal extends React.Component {
 
 const customStyles = {
   content: {
-    top: "50%",
+    top: "52%",
     left: "50%",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     padding: 0,
+    maxHeight: "85vh",
   },
 };

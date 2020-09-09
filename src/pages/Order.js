@@ -15,6 +15,8 @@ import {
   withinTimeRange,
   isGreaterDate,
 } from "../helpers/dateHelpers";
+import { priceToString, calculateSubtotal, calculateTax } from "../helpers/utils";
+import { TAX_RATE } from "../constants/values";
 
 // Components
 import OrderHeader from "../components/order/OrderHeader";
@@ -24,7 +26,6 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
-// TODO: Tidy up style
 // TODO: Maybe I should read scheduledtime for localstorage but if it is not valid anymore then just reset
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
@@ -45,6 +46,7 @@ export default class OrderScreen extends React.Component {
 
     this.editIndex = null;
     this.isNowAvailable = true;
+    this.priceObject = this.calculatePrices();
   }
 
   componentDidMount = async () => {
@@ -55,7 +57,11 @@ export default class OrderScreen extends React.Component {
 
     const selectedMenuCategory = Object.keys(this.menu)[0];
     const storageCart = localStorage.getItem("cart");
-    if (storageCart) this.setState({ cart: JSON.parse(storageCart) });
+    if (storageCart) {
+      const cart = JSON.parse(storageCart);
+      this.priceObject = this.calculatePrices(cart);
+      this.setState({ cart: cart });
+    }
     this.setState({ selectedMenuCategory: selectedMenuCategory });
     this.selectFirstAvailableTime(this.openHours);
   };
@@ -153,6 +159,7 @@ export default class OrderScreen extends React.Component {
     const cart = this.state.cart;
     cart.push(newItem);
     localStorage.setItem("cart", JSON.stringify(cart));
+    this.priceObject = this.calculatePrices(cart);
     this.setState({ cart: cart });
     this.closeModal();
   };
@@ -168,6 +175,7 @@ export default class OrderScreen extends React.Component {
     cart[index] = editItem;
 
     localStorage.setItem("cart", JSON.stringify(cart));
+    this.priceObject = this.calculatePrices(cart);
     this.setState({ cart: cart });
     this.closeModal();
   };
@@ -182,6 +190,7 @@ export default class OrderScreen extends React.Component {
     const currentCart = this.state.cart;
     currentCart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(currentCart));
+    this.priceObject = this.calculatePrices(currentCart);
     this.setState({ cart: currentCart });
   };
 
@@ -199,6 +208,19 @@ export default class OrderScreen extends React.Component {
 
   closeModal = () => {
     this.setState({ selectedItem: null });
+  };
+
+  calculatePrices = (cart = null) => {
+    const subtotal = calculateSubtotal(cart ? cart : this.state.cart);
+    const tax = calculateTax(subtotal, TAX_RATE);
+    const total = subtotal + tax;
+
+    const priceObject = {
+      subtotal: priceToString(subtotal),
+      tax: priceToString(tax),
+      total: priceToString(total),
+    };
+    return priceObject;
   };
 
   render() {
@@ -229,6 +251,7 @@ export default class OrderScreen extends React.Component {
             handleListItemEdit={this.handleEdit}
             handleListItemRemove={this.handleRemove}
             handleCheckout={this.handleCheckout}
+            priceObject={this.priceObject}
           />
         </div>
         {this.state.selectedItem ? (

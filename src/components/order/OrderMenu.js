@@ -8,9 +8,7 @@ import LineItem from "../order/LineItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
-import { priceToString, calculateSubtotal, calculateTax } from "../../helpers/utils";
-import { TAX_RATE } from "../../constants/values";
-
+//  TODO: Make the grid item a little smaller if it doesn't have a description
 export default class OrderMenu extends React.Component {
   calculateNumberItems = () => {
     if (this.props.cart.length === 0) return 0;
@@ -19,19 +17,6 @@ export default class OrderMenu extends React.Component {
       num += itemObj.quantity;
     });
     return num;
-  };
-
-  calculatePrices = () => {
-    const subtotal = calculateSubtotal(this.props.cart);
-    const tax = calculateTax(subtotal, TAX_RATE);
-    const total = subtotal + tax;
-
-    const priceObject = {
-      subtotal: priceToString(subtotal),
-      tax: priceToString(tax),
-      total: priceToString(total),
-    };
-    return priceObject;
   };
 
   render() {
@@ -61,13 +46,19 @@ export default class OrderMenu extends React.Component {
       );
     });
 
-    const cart =
-      this.props.cart.length === 0 ? (
+    const pricingObject = this.props.priceObject;
+
+    let cart;
+    let summary;
+    if (this.props.cart.length === 0) {
+      cart = (
         <div className="ob-summary-empty">
           <FontAwesomeIcon className="shopping-icon" icon={faShoppingBag} size="4x" />
           <p>Choose an item from the menu to get started.</p>
         </div>
-      ) : (
+      );
+    } else {
+      cart = (
         <div style={{ marginLeft: 15, marginRight: 15 }}>
           {this.props.cart.map((orderObject, i) => {
             return (
@@ -86,26 +77,8 @@ export default class OrderMenu extends React.Component {
         </div>
       );
 
-    const pricingObject = this.calculatePrices();
-
-    return (
-      <div className="order-menu">
-        <div className="col order-category">
-          <p style={{ fontWeight: "bold", marginLeft: 15 }}>Categories</p>
-          {categories}
-        </div>
-
-        <div className="col order-items">{renderedItems}</div>
-
-        <div className="col order-basket">
-          <div className="ob-header">
-            <p>Order Summary</p>
-            <p>{`(${this.calculateNumberItems()} items)`}</p>
-          </div>
-
-          {cart}
-
-          <div className="ob-border" />
+      summary = (
+        <div>
           <div className="ob-line-container">
             <div className="ob-summary-line">
               <p>Subtotal</p>
@@ -120,11 +93,34 @@ export default class OrderMenu extends React.Component {
               <p>{pricingObject.total}</p>
             </div>
           </div>
+
           <div className="checkout-container" onClick={this.props.handleCheckout}>
             <div className={`checkout${this.props.cart.length === 0 ? " checkout-disabled" : ""}`}>
               Checkout
             </div>
           </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="order-menu">
+        <div className="col order-category">
+          <p style={{ marginLeft: 15, fontWeight: "bold" }}>Categories</p>
+          {categories}
+        </div>
+
+        <div className="col order-items">{renderedItems}</div>
+
+        <div className="col order-basket">
+          <div className="ob-header">
+            <p>Order Summary</p>
+            <p>{`(${this.calculateNumberItems()} items)`}</p>
+          </div>
+
+          {cart}
+          <div className="ob-border" />
+          {summary}
         </div>
       </div>
     );

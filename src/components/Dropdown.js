@@ -51,7 +51,6 @@ export default class Dropdown extends React.Component {
 
   render() {
     const { selectedDate, selectedTime, dateOptions, hourOptions } = this.props;
-
     const menu = this.state.isOpen ? (
       <div className="dropdown-menu">
         <div className="dropdown-content">
@@ -59,6 +58,8 @@ export default class Dropdown extends React.Component {
           <DropdownOptions
             className="dd-picker"
             controlClassName="dd-picker-control"
+            menuClassName="dd-picker-menu"
+            optionClassName="dd-picker-option"
             onChange={this.handleDateChange}
             options={dateOptions}
             value={selectedDate}
@@ -68,6 +69,7 @@ export default class Dropdown extends React.Component {
           <DropdownOptions
             className="dd-picker"
             controlClassName="dd-picker-control"
+            menuClassName="dd-picker-menu"
             onChange={this.handleTimeChange}
             options={hourOptions}
             value={this.state.selectedTime}

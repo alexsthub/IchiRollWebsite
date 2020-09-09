@@ -107,6 +107,7 @@ class Dropdown extends Component {
   };
 
   renderOption = (option, index) => {
+    const { optionClassName } = this.props;
     let value = option.value;
     if (typeof value === "undefined") {
       value = option.label || option;
@@ -118,6 +119,7 @@ class Dropdown extends Component {
       [`${this.props.baseClassName}-option`]: true,
       [option.className]: !!option.className,
       "is-selected": isSelected,
+      [optionClassName]: !!optionClassName,
     };
     const optionClass = classNames(classes);
     return (
@@ -136,7 +138,6 @@ class Dropdown extends Component {
 
   buildMenu = () => {
     let { options, baseClassName } = this.props;
-
     let ops = options.map((option, index) => {
       if (option.type === "group") {
         let groupTitle = <div className={`${baseClassName}-title`}>{option.name}</div>;
@@ -176,7 +177,6 @@ class Dropdown extends Component {
 
     const disabledClass = this.props.disabled ? "Dropdown-disabled" : "";
 
-    console.log(this.state.selected);
     const placeHolderValue =
       typeof this.state.selected === "string" ? this.state.selected : this.state.selected.label;
 

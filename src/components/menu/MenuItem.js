@@ -3,6 +3,7 @@ import "../../styles/components/MenuItem.css";
 
 import { priceToString } from "../../helpers/utils";
 
+// TODO: If no image and no description, just make it one line space between
 export default class MenuItem extends React.Component {
   handleClick = (e) => {
     if (this.props.onClick) this.props.onClick(e, this.props.item);
