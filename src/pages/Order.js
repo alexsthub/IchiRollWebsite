@@ -24,7 +24,7 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
-// TODO: On sunday something is fucked up
+// TODO: Tidy up style
 // TODO: Maybe I should read scheduledtime for localstorage but if it is not valid anymore then just reset
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
@@ -40,6 +40,7 @@ export default class OrderScreen extends React.Component {
       selectedItem: null,
       cart: [],
       shouldRedirect: false,
+      loading: true,
     };
 
     this.editIndex = null;
@@ -67,7 +68,6 @@ export default class OrderScreen extends React.Component {
     const currentHour = date.getHours();
     const currentMinute = date.getMinutes();
     let hours = openHours[dayOfWeek];
-    console.log(hours);
     if (!withinTimeRange(hours, currentHour, currentMinute)) {
       this.setState({ isNow: false });
       this.isNowAvailable = false;
@@ -104,6 +104,7 @@ export default class OrderScreen extends React.Component {
       dateOptions: dateOptions,
       selectedDate: dateOptions[0],
       selectedTime: hourOptions[0],
+      loading: false,
     });
   };
 
@@ -201,10 +202,10 @@ export default class OrderScreen extends React.Component {
   };
 
   render() {
-    if (this.state.selectedDate === null) return null;
     if (this.state.shouldRedirect) return <Redirect to={"/order/checkout"} />;
+    const containerClass = `order-outer ${this.state.loading ? "hidden" : "show"}`;
     return (
-      <div className="order-outer">
+      <div className={containerClass}>
         <div className="order-inner">
           <OrderHeader />
           <OrderTime

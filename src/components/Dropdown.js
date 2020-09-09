@@ -50,6 +50,8 @@ export default class Dropdown extends React.Component {
   };
 
   render() {
+    const { selectedDate, selectedTime, dateOptions, hourOptions } = this.props;
+
     const menu = this.state.isOpen ? (
       <div className="dropdown-menu">
         <div className="dropdown-content">
@@ -58,8 +60,8 @@ export default class Dropdown extends React.Component {
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleDateChange}
-            options={this.props.dateOptions}
-            value={this.props.selectedDate}
+            options={dateOptions}
+            value={selectedDate}
             placeholder={"Select a date"}
           />
           <p>Select Pickup Time</p>
@@ -67,7 +69,7 @@ export default class Dropdown extends React.Component {
             className="dd-picker"
             controlClassName="dd-picker-control"
             onChange={this.handleTimeChange}
-            options={this.props.hourOptions}
+            options={hourOptions}
             value={this.state.selectedTime}
             placeholder={"Select a time"}
           />
@@ -85,7 +87,7 @@ export default class Dropdown extends React.Component {
       <div className="dropdown-container" ref={this.wrapperRef}>
         <div className="time oval" onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
           <FontAwesomeIcon style={{ marginRight: 5 }} icon={faCalendar} />
-          <div>{`${this.props.selectedDate.label} @ ${this.props.selectedTime.label}`}</div>
+          <div>{`${selectedDate.label} @ ${selectedTime.label}`}</div>
           <FontAwesomeIcon
             style={{ marginLeft: 10, color: "gray" }}
             icon={this.state.isOpen ? faChevronUp : faChevronDown}

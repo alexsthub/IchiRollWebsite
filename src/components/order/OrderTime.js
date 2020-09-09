@@ -14,6 +14,8 @@ export default class OrderTime extends React.Component {
   };
 
   render() {
+    if (!this.props.selectedDate || !this.props.selectedTime) return null;
+
     const transformLocation = this.props.isNow ? "translateX(0%)" : "translateX(calc(100% - 10px))";
 
     return (

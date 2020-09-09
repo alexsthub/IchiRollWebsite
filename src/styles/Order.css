@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .order-inner {

@@ -35,6 +35,10 @@ export default class OrderMenu extends React.Component {
   };
 
   render() {
+    if (!this.props.menu || !this.props.selectedCategory) return null;
+
+    const categoryItems = this.props.menu[this.props.selectedCategory];
+
     const categories = Object.keys(this.props.menu).map((category) => {
       return (
         <OrderCategory
@@ -46,7 +50,6 @@ export default class OrderMenu extends React.Component {
       );
     });
 
-    const categoryItems = this.props.menu[this.props.selectedCategory];
     const renderedItems = categoryItems.map((item) => {
       return (
         <MenuItem
