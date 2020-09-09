@@ -29,7 +29,7 @@ export default class Background extends React.Component {
   render() {
     return (
       <ImageOverlay backgroundClass="hero" opacity={0.55} refProp={this.containerRef}>
-        <div className="flex-center">
+        <div className="flex-center" style={{ fontFamily: "Futura" }}>
           <p className="bc-title">{"Ichi Roll Wok & Teriyaki"}</p>
           <p className="bc-subtitle">Something something text here maybe.</p>
 

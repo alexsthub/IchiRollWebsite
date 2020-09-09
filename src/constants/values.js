@@ -12,6 +12,6 @@ export const TAX_RATE = 0.102;
 export const PHONE_NUMBER = "(206) 363-5100";
 
 export const ABOUT_TEXT = [
-  "Local restaurant that prioritizes fresh ingredients and great customer service.",
+  "Local restaurant that prioritizes fresh ingredients and a great customer experience.",
   "Creates traditional teriyaki flavors with additional dishes to supplement what customers know and love.",
 ];
