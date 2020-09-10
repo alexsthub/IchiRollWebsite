@@ -141,5 +141,6 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     padding: 0,
     maxHeight: "85vh",
+    width: 430,
   },
 };

@@ -1,12 +1,25 @@
 .item-container {
   display: flex;
   flex-direction: row;
-  flex: 1;
 
   box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
   border-radius: 8px;
 
   text-align: start;
+  margin-bottom: 1rem;
+}
+
+.item-container-sm {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+}
+
+.item-details-sm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
 }
 
 .item-details {

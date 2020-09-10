@@ -8,7 +8,7 @@ import LineItem from "../order/LineItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
-//  TODO: Make the grid item a little smaller if it doesn't have a description
+// TODO: order-items class. Grid before
 export default class OrderMenu extends React.Component {
   calculateNumberItems = () => {
     if (this.props.cart.length === 0) return 0;
@@ -35,9 +35,11 @@ export default class OrderMenu extends React.Component {
       );
     });
 
-    const renderedItems = categoryItems.map((item) => {
+    const renderedItems = categoryItems.map((item, index) => {
+      const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
       return (
         <MenuItem
+          style={style}
           key={item.title.en_US}
           item={item}
           className={"order-item"}

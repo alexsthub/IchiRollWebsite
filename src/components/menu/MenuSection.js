@@ -23,10 +23,9 @@ export default class MenuSection extends React.Component {
 
   render() {
     const { title, menuItems } = this.props;
-    console.log(menuItems);
     const items = menuItems.map((item) => {
       return (
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 40 }} key={item.id}>
           <div className="mic">
             <div className="mid">
               <span className="mis">{item.title.en_US}</span>
