@@ -3,7 +3,7 @@ import React from "react";
 export default class Footer extends React.Component {
   render() {
     return (
-      <footer className="basic-footer">
+      <footer className="basic-footer" style={this.props.style}>
         <p style={{ fontSize: "1.3rem", fontWeight: 600 }}>
           {"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}
         </p>
