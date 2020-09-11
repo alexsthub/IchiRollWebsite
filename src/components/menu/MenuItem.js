@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/components/MenuItem.css";
+import "../../styles/components/menu/MenuItem.css";
 
 import { priceToString } from "../../helpers/utils";
 

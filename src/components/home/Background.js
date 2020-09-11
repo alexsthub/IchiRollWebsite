@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/Background.css";
+import "../../styles/components/home/Background.css";
 
 import Button from "../Button";
 import ImageOverlay from "../ImageOverlay";

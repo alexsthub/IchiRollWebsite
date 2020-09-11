@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/Details.css";
+import "../../styles/components/home/Details.css";
 
 export default class CustomHour extends React.Component {
   render() {

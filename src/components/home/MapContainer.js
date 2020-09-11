@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/components/MapContainer.css";
+import "../../styles/components/home/MapContainer.css";
 
 import GoogleMapReact from "google-map-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

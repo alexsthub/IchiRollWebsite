@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/components/Photogrid.css";
+import "../../styles/components/home/Photogrid.css";
 
 const backgroundUrls = [
   "https://lh5.googleusercontent.com/p/AF1QipOkddqbGXf20LvWFDWjDfWqltnyd_x9qu4n2Bgx=w203-h114-k-no",

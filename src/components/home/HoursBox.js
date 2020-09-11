@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/Details.css";
+import "../../styles/components/home/Details.css";
 
 import CustomHour from "./CustomHour";
 
