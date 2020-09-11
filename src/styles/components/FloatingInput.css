@@ -28,6 +28,7 @@ input {
   background: #F7F7F7;
   box-sizing: border-box;
   border: none;
+  font-family: proxima-nova;
 }
 
 input:focus {

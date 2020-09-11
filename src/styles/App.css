@@ -74,3 +74,14 @@ body:not(:-moz-handler-blocked) fieldset {
     opacity: 1;
   }
 }
+
+.basic-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  color: white;
+  font-family: Futura;
+  width: 100%;
+  padding: 40px 0px 20px;
+}

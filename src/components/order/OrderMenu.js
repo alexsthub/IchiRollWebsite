@@ -8,7 +8,6 @@ import LineItem from "../order/LineItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: order-items class. Grid before
 export default class OrderMenu extends React.Component {
   calculateNumberItems = () => {
     if (this.props.cart.length === 0) return 0;
@@ -105,6 +104,9 @@ export default class OrderMenu extends React.Component {
       );
     }
 
+    const numItems = this.calculateNumberItems();
+    const numItemText = numItems === 1 ? "(1 item)" : `(${numItems} items)`;
+
     return (
       <div className="order-menu">
         <div className="col order-category">
@@ -117,7 +119,7 @@ export default class OrderMenu extends React.Component {
         <div className="col order-basket">
           <div className="ob-header">
             <p>Order Summary</p>
-            <p>{`(${this.calculateNumberItems()} items)`}</p>
+            <p>{numItemText}</p>
           </div>
 
           {cart}

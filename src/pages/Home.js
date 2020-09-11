@@ -1,6 +1,7 @@
 import React from "react";
 import Background from "../components/home/Background";
 import Details from "../components/home/Details";
+import Footer from "../components/Footer";
 
 import ImageOverlay from "../components/ImageOverlay";
 import Button from "../components/Button";
@@ -41,7 +42,7 @@ export default class HomeScreen extends React.Component {
                 <Button
                   text={"Show Menu"}
                   onClick={this.handleMenuClick}
-                  className="background-button test"
+                  className="background-button"
                   pClassName="background-button-text"
                 />
               </div>
@@ -49,6 +50,7 @@ export default class HomeScreen extends React.Component {
           </DetailBox>
         </div>
         <Details openHours={this.props.openHours} />
+        <Footer />
       </div>
     );
   }

@@ -182,18 +182,6 @@
   transition-timing-function: ease-in-out;
 }
 
-.menu-container footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: black;
-  color: white;
-  font-family: Futura;
-  width: 100%;
-  padding: 40px 0px 20px;
-}
-
-
 .menu-container footer div p {
   margin: 0px;
   font-size: .8rem;

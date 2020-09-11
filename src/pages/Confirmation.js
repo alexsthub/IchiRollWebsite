@@ -13,6 +13,7 @@ export default class ConfirmationScreen extends React.Component {
     super(props);
     this.state = { order: {}, loading: true };
   }
+
   // 43.97, 6.60, 4.44, 55.01
   // TODO: I need to get the full prices here. FUCCKKKKKK
   componentDidMount = () => {

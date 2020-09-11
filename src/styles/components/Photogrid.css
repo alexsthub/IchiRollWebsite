@@ -11,8 +11,8 @@
     'j  i  h  g';
   grid-template-rows: repeat(4, 25%);
   grid-template-columns: 300px auto auto 300px;
-
   --stagger-delay: 100ms;
+  margin-bottom: 1.5rem;
 }
 
 @keyframes cardEntrance {

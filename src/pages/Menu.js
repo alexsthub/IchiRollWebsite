@@ -5,6 +5,7 @@ import DropdownOptions from "../components/DropDownOptions";
 import ImageOverlay from "../components/ImageOverlay";
 import MenuSection from "../components/menu/MenuSection";
 import constructMenu from "../helpers/menuQuery";
+import Footer from "../components/Footer";
 
 import "../styles/Menu.css";
 
@@ -213,16 +214,7 @@ export default class MenuScreen extends React.Component {
         </nav>
 
         <div className="menu-content">{menu}</div>
-        <footer>
-          <p style={{ fontSize: "1.3rem", fontWeight: 600 }}>
-            {"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}
-          </p>
-          <div>
-            <p style={{ margin: 0, fontSize: ".8rem" }}>(206) 363-5100</p>
-            <p style={{ margin: 0, fontSize: ".8rem" }}>306 N 125th St, Seattle, WA 98133</p>
-          </div>
-          <p style={{ marginBottom: 0, fontSize: "0.8rem" }}>©2020 by Alex Tan</p>
-        </footer>
+        <Footer />
       </div>
     );
   }

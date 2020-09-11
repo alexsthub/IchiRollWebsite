@@ -1,3 +1,7 @@
+#checkout {
+  font-family: Futura;
+}
+
 #checkout p {
   margin: 0px;
 }
@@ -60,9 +64,7 @@ h4 {
   overflow-wrap: break-word;
   box-sizing: border-box;
   resize: none;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: proxima-nova
 }
 
 .f-section textarea:focus {
@@ -138,7 +140,7 @@ h4 {
   text-decoration: none;
   cursor: pointer;
   border: 0px solid #c2c2c2;
-  margin: 30px 0px;
+  margin: 10px 0px 30px;
 
   transition: all 0.3s ease-in-out;
 }
@@ -173,6 +175,7 @@ h4 {
   text-align: center;
   background-color: #f7f7f7;
   cursor: pointer;
+  font-family: Futura;
 }
 
 .tip-button:focus {

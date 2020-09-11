@@ -38,7 +38,6 @@ import {
   getPayment,
 } from "../helpers/checkoutHelpers";
 
-// TODO: How to get this so that the header doesn't show?
 export default class CheckoutScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -59,13 +58,12 @@ export default class CheckoutScreen extends React.Component {
 
       cart: [],
       scheduledTime: {},
-      textareaHeight: 54,
       selectedTipIndex: 0,
       customTip: null,
       appliedTip: 0,
 
       priceObject: null,
-      activeSection: "secondary",
+      activeSection: "primary",
       transitionHeight: null,
       loading: true,
     };
@@ -160,12 +158,6 @@ export default class CheckoutScreen extends React.Component {
       errors[key] = null;
       this.setState({ errors: errors });
     }
-  };
-
-  handleNoteChange = (e) => {
-    const scrollHeight = e.target.scrollHeight;
-    if (scrollHeight > 54) this.setState({ textareaHeight: scrollHeight });
-    this.setState({ notes: e.target.value });
   };
 
   handleTipClick = (e, index) => {
@@ -325,7 +317,7 @@ export default class CheckoutScreen extends React.Component {
       ? "ASAP (Estimated 20 minutes)"
       : `${scheduledTime.selectedDate.label} @ ${scheduledTime.selectedTime.label}`;
     return (
-      <div style={{ marginTop: 60 }} className="row" id="checkout">
+      <div style={{ marginTop: 100 }} className="row" id="checkout">
         <div className="column">
           <h2>Pickup Information</h2>
           <div className="pickup-details" id="address">
@@ -402,7 +394,7 @@ export default class CheckoutScreen extends React.Component {
                     <TextareaAutosize
                       placeholder={"Add details for your order pickup here."}
                       value={this.state.notes}
-                      onChange={this.handleNoteChange}
+                      onChange={(e) => this.setState({ notes: e.target.value })}
                     />
                   </div>
                 </form>
@@ -568,7 +560,7 @@ export default class CheckoutScreen extends React.Component {
                       </div>
                     </div>
 
-                    <p style={{ color: "#aaa", marginTop: 15 }}>
+                    <p style={{ color: "#aaa", marginTop: 0 }}>
                       All payments are secure and encrypted.
                     </p>
                   </div>

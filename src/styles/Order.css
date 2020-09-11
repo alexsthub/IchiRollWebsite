@@ -209,10 +209,6 @@
 /* Order Items */
 .order-items {
   margin: 30px;
-  /* display: grid; */
-  /* gap: 1rem; */
-  /* grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); */
-  /* grid-auto-rows: 140px; */
 }
 
 /* Order Basket */

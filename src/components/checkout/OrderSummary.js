@@ -50,6 +50,9 @@ export default class OrderSummary extends React.Component {
       );
     });
 
+    const numItems = calculateNumberItems(this.props.cart);
+    const numItemText = numItems === 1 ? "(1 item)" : `(${numItems} items)`;
+
     return (
       <div className="column">
         <h2>Order Summary</h2>
@@ -57,7 +60,7 @@ export default class OrderSummary extends React.Component {
           <div className="os-items-container">
             <div className="os-details-row">
               <h4>My Order</h4>
-              <p>{`(${calculateNumberItems(this.props.cart)} items)`}</p>
+              <p>{numItemText}</p>
             </div>
             {lineItems}
             <div className="ci">
