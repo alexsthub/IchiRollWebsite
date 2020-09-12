@@ -5,42 +5,27 @@ import HoursBox from "./HoursBox";
 import Photogrid from "./Photogrid";
 import MapContainer from "./MapContainer.js";
 
-import { getRestaurantDetails } from "../../helpers/utils";
-import { convertRawOpenHours, groupHours } from "../../helpers/hoursParser";
-
 import { PHONE_NUMBER } from "../../constants/values";
 
 // TODO: Make the hours container responsive
 // TODO: Make the photogrid responsive
 export default class Details extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loading: true };
-  }
-
-  componentDidMount = async () => {
-    const restaurantDetails = await getRestaurantDetails();
-    const openHours = convertRawOpenHours(restaurantDetails.openTimes);
-    this.groupedHours = groupHours(openHours);
-    this.setState({ loading: false });
-  };
-
   render() {
-    if (this.state.loading) return false;
-
-    const hours = this.groupedHours.map((hourObj) => {
-      const { timeRange, dayRange } = hourObj;
-      return (
-        <HoursBox
-          key={dayRange}
-          startHour={timeRange.startHour}
-          startMinute={timeRange.startMinute}
-          endHour={timeRange.endHour}
-          endMinute={timeRange.endMinute}
-          dayRange={dayRange}
-        />
-      );
-    });
+    const hours = this.props.groupedHours
+      ? this.props.groupedHours.map((hourObj) => {
+          const { timeRange, dayRange } = hourObj;
+          return (
+            <HoursBox
+              key={dayRange}
+              startHour={timeRange.startHour}
+              startMinute={timeRange.startMinute}
+              endHour={timeRange.endHour}
+              endMinute={timeRange.endMinute}
+              dayRange={dayRange}
+            />
+          );
+        })
+      : null;
 
     return (
       <section id="details" className="details-container">

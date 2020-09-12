@@ -20,7 +20,7 @@ export default class DeliveryScreen extends React.Component {
     });
 
     return (
-      <div className="delivery-container">
+      <div className="delivery-container fade-in">
         <h2>DELIVERY OPTIONS</h2>
         <div className="delivery-options-container">{options}</div>
         <Footer style={{ marginTop: "auto" }} />

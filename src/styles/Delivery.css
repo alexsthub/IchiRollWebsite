@@ -48,10 +48,10 @@
   padding: 15px 25px;
   width: 100%;
   transition: all 0.3s ease-in-out;
+  border: 1px solid black;
 }
 
 .delivery-option a:hover {
   color: black;
   background-color: white;
-  border: 1px solid black;
 }

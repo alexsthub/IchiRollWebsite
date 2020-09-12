@@ -72,6 +72,8 @@ export default class MenuScreen extends React.Component {
   };
 
   listenToScroll = () => {
+    if (!this.menuOptions) return;
+
     const yPos = window.scrollY + 55 + 49;
     let start = this.state.selectedCategoryIndex;
     let end = start + 1;

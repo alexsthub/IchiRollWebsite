@@ -8,7 +8,24 @@ import Button from "../components/Button";
 import DetailBox from "../components/home/DetailBox";
 import { ABOUT_TEXT } from "../constants/values";
 
+import { getRestaurantDetails } from "../helpers/utils";
+import { convertRawOpenHours, groupHours } from "../helpers/hoursParser";
+
+import "../styles/App.css";
+
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: true };
+  }
+
+  componentDidMount = async () => {
+    const restaurantDetails = await getRestaurantDetails();
+    const openHours = convertRawOpenHours(restaurantDetails.openTimes);
+    this.groupedHours = groupHours(openHours);
+    this.setState({ loading: false });
+  };
+
   handleMenuClick = () => {
     window.open("/menu", "_self");
   };
@@ -18,8 +35,10 @@ export default class HomeScreen extends React.Component {
       return <p key={String(i)}>{text}</p>;
     });
 
+    const containerClass = this.state.loading ? "hidden" : "show";
+
     return (
-      <div>
+      <div className={containerClass} style={{ transition: "opacity 0.3s ease" }}>
         <Background />
         <div className="detail-box-container">
           <DetailBox className="about">
@@ -49,7 +68,7 @@ export default class HomeScreen extends React.Component {
             </ImageOverlay>
           </DetailBox>
         </div>
-        <Details openHours={this.props.openHours} />
+        <Details openHours={this.props.openHours} groupedHours={this.groupedHours} />
         <Footer />
       </div>
     );
