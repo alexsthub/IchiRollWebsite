@@ -7,8 +7,6 @@ import MapContainer from "./MapContainer.js";
 
 import { PHONE_NUMBER } from "../../constants/values";
 
-// TODO: Make the hours container responsive
-// TODO: Make the photogrid responsive
 export default class Details extends React.Component {
   render() {
     const hours = this.props.groupedHours
@@ -35,8 +33,8 @@ export default class Details extends React.Component {
           <p className="phone">{`Tel: ${PHONE_NUMBER}`}</p>
         </div>
 
-        {/* <MapContainer /> */}
-        {/* <Photogrid /> */}
+        <MapContainer />
+        <Photogrid />
       </section>
     );
   }

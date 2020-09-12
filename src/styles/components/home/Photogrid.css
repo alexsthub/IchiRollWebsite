@@ -15,6 +15,37 @@
   margin-bottom: 1.5rem;
 }
 
+@media (max-width: 900px) {
+  .photo-grid {
+    grid-template-areas:
+      'a  b'
+      'd  c';
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 1rem;
+  }
+
+  .photo-card:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .photo-grid {
+    grid-template-areas:
+      'a'
+      'b';
+    grid-template-columns: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .photo-card:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+
+
 @keyframes cardEntrance {
   from {
     opacity: 0;
