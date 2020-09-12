@@ -10,6 +10,8 @@ import { convertRawOpenHours, groupHours } from "../../helpers/hoursParser";
 
 import { PHONE_NUMBER } from "../../constants/values";
 
+// TODO: Make the hours container responsive
+// TODO: Make the photogrid responsive
 export default class Details extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +51,7 @@ export default class Details extends React.Component {
         </div>
 
         {/* <MapContainer /> */}
-        <Photogrid />
+        {/* <Photogrid /> */}
       </section>
     );
   }

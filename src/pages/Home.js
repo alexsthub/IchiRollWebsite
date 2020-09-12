@@ -21,7 +21,7 @@ export default class HomeScreen extends React.Component {
     return (
       <div>
         <Background />
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div className="detail-box-container">
           <DetailBox className="about">
             <div className="detail-box">
               <h2>ABOUT US</h2>

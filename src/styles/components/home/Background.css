@@ -35,7 +35,7 @@
   font-size: calc(10px + 2vmin);
   z-index: 1;
   background: url("/sub-hero-image.jpg") no-repeat;
-  min-height: 350px;
+  height: 100%;
 }
 
 .menu-section p {
@@ -43,4 +43,36 @@
   margin: 0px;
   font-size: 1.7em;
   letter-spacing: 2px;
+}
+
+.detail-box-container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 500px) {
+  .background-buttons {
+    flex-direction: column;
+  }
+
+  .bc-title {
+    font-size: 3rem;
+    margin-top: 0px;
+    margin-bottom: 0.3em;
+  }
+
+  .bc-subtitle {
+    font-size: 1.2rem;
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 900px) {
+  .detail-box-container {
+    flex-direction: column;
+  }
+
+  .sub-hero {
+    height: 350px;
+  }
 }
