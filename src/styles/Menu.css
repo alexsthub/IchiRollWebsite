@@ -58,7 +58,7 @@
   position: -webkit-sticky;
   position: sticky;
   top: 54px;
-  z-index: 20;
+  z-index: 11;
   border-bottom: 1px solid lightgray;
 }
 
@@ -70,7 +70,7 @@
   flex: 1;
   align-items: center;
   font-family: proxima-nova;
-  padding-left: 5%;
+  padding-left: 2.5%;
   margin-right: 10%;
 }
 
@@ -98,7 +98,7 @@
 
 .category-dropdown {
   text-align: start;
-  margin-right: 5%;
+  margin-right: 2.5%;
 }
 
 .section-container {

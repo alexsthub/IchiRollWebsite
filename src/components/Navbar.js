@@ -1,7 +1,17 @@
 import React from "react";
 import "../styles/components/Navbar.css";
 
+import { Link } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+
 export default class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { activeMenu: false };
+  }
+
   handleNavigation = (e, path) => {
     const url = window.location.pathname;
     if (url === path) {
@@ -10,35 +20,106 @@ export default class Navbar extends React.Component {
     }
   };
 
+  openMenu = () => {
+    document.body.style.height = "100vh";
+    document.body.style.overflowY = "hidden";
+    this.setState({ activeMenu: true });
+  };
+
+  closeMenu = () => {
+    document.body.style.height = "auto";
+    document.body.style.overflowY = "scroll";
+    this.setState({ activeMenu: false });
+  };
+
   render() {
     return (
       <nav className="nav">
         <div className="nav-content">
           <p className="nav-title">{"ICHI ROLL WOK & TERIYAKI (SEATTLE)"}</p>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <a onClick={(e) => this.handleNavigation(e, "/")} className="option" href="/">
+          <div className="nav-option-container">
+            <Link to="/" className="option" onClick={(e) => this.handleNavigation(e, "/")}>
               HOME
-            </a>
+            </Link>
             <Dot />
-            <a onClick={(e) => this.handleNavigation(e, "/menu")} className="option" href="/menu">
+            <Link to="/menu" className="option" onClick={(e) => this.handleNavigation(e, "/menu")}>
               MENU
-            </a>
+            </Link>
             <Dot />
-            <a onClick={(e) => this.handleNavigation(e, "/order")} className="option" href="/order">
-              ORDER ONLINE
-            </a>
-            <Dot />
-            <a
-              onClick={(e) => this.handleNavigation(e, "/delivery")}
+            <Link
+              to="/order"
               className="option"
-              href="/delivery"
+              onClick={(e) => this.handleNavigation(e, "/order")}
+            >
+              ORDER ONLINE
+            </Link>
+            <Dot />
+            <Link
+              to="/delivery"
+              className="option"
+              onClick={(e) => this.handleNavigation(e, "/delivery")}
               style={{ marginRight: 0 }}
             >
               DELIVERY
-            </a>
+            </Link>
+          </div>
+          <FontAwesomeIcon className="menu-sm" icon={faBars} onClick={this.openMenu} />
+        </div>
+
+        <SlidingMenu
+          active={this.state.activeMenu}
+          closeMenu={this.closeMenu}
+          handleNavigation={this.handleNavigation}
+        />
+      </nav>
+    );
+  }
+}
+
+class SlidingMenu extends React.Component {
+  handleClick = (e, path) => {
+    this.props.closeMenu();
+    this.props.handleNavigation(e, path);
+  };
+
+  render() {
+    const { active } = this.props;
+    const activeStyle = { width: active ? "100%" : 0 };
+    return (
+      <div className="sliding-menu" style={activeStyle}>
+        <div className="sliding-menu-content">
+          <div className="option-sm">
+            <Link to="/" className="option" onClick={(e) => this.handleClick(e, "/")}>
+              HOME
+            </Link>
+          </div>
+
+          <div className="option-sm">
+            <Link to="/menu" className="option" onClick={(e) => this.handleClick(e, "/menu")}>
+              MENU
+            </Link>
+          </div>
+
+          <div className="option-sm">
+            <Link to="/order" className="option" onClick={(e) => this.handleClick(e, "/order")}>
+              ORDER ONLINE
+            </Link>
+          </div>
+
+          <div className="option-sm">
+            <Link
+              to="/delivery"
+              className="option"
+              onClick={(e) => this.handleClick(e, "/delivery")}
+            >
+              DELIVERY
+            </Link>
           </div>
         </div>
-      </nav>
+        <div className="sliding-menu-close" onClick={this.props.closeMenu}>
+          <FontAwesomeIcon className="menu-sm" icon={faTimes} />
+        </div>
+      </div>
     );
   }
 }
