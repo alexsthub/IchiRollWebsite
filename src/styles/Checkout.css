@@ -32,6 +32,26 @@ h4 {
   padding: 0 60px;
 }
 
+@media (max-width: 1000px) {
+  .column {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 720px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+
+  .column {
+    padding: 0 60px;
+  }
+
+  .pickup-container {
+    margin-top: 5rem;
+  }
+}
+
 /* Pickup information */
 .pickup-details {
   padding: 15px 0;

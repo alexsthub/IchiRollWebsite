@@ -318,7 +318,7 @@ export default class CheckoutScreen extends React.Component {
       : `${scheduledTime.selectedDate.label} @ ${scheduledTime.selectedTime.label}`;
     return (
       <div style={{ marginTop: 100 }} className="row" id="checkout">
-        <div className="column">
+        <div className="column pickup-container">
           <h2>Pickup Information</h2>
           <div className="pickup-details" id="address">
             <p>Address</p>
