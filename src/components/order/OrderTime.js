@@ -23,29 +23,31 @@ export default class OrderTime extends React.Component {
         <div className="oval-exterior">
           <div className="pickup oval">Pickup</div>
         </div>
-        <p>for</p>
-        <div className="switch">
-          <div className="switch-background" style={{ transform: transformLocation }} />
-          <div
-            className={`switch-option${this.props.isNow ? " switch-select" : ""}${
-              this.props.isNowAvailable ? "" : " switch-disabled"
-            }`}
-            onClick={(e) => this.handleClick(e, true)}
-          >
-            <span>Now</span>
-            {!this.props.isNowAvailable ? <span>Unavailable</span> : null}
-          </div>
-          <div
-            className={`switch-option${!this.props.isNow ? " switch-select" : ""}`}
-            onClick={(e) => this.handleClick(e, false)}
-          >
-            Later
+        <div style={{ display: "flex", alignItems: "center", marginTop: 3, marginBottom: 3 }}>
+          <p className="time-text">for</p>
+          <div className="switch">
+            <div className="switch-background" style={{ transform: transformLocation }} />
+            <div
+              className={`switch-option${this.props.isNow ? " switch-select" : ""}${
+                this.props.isNowAvailable ? "" : " switch-disabled"
+              }`}
+              onClick={(e) => this.handleClick(e, true)}
+            >
+              <span>Now</span>
+              {!this.props.isNowAvailable ? <span>Unavailable</span> : null}
+            </div>
+            <div
+              className={`switch-option${!this.props.isNow ? " switch-select" : ""}`}
+              onClick={(e) => this.handleClick(e, false)}
+            >
+              Later
+            </div>
           </div>
         </div>
 
         {!this.props.isNow ? (
           <div className="later-container">
-            <p>at</p>
+            <p className="time-text">at</p>
             <Dropdown
               openHours={this.props.openHours}
               dateOptions={this.props.dateOptions}
