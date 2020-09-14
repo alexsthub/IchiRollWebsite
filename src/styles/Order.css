@@ -12,7 +12,6 @@
 }
 
 .order-inner {
-  /* width: 70%; */
   max-width: 1100px;
   margin: var(--order-margin) 50px var(--order-margin);
   padding: var(--order-padding) 0px 0px 0px;
@@ -381,7 +380,6 @@
 /* Alt Checkout */
 
 .checkout-alt {
-  display: none;
   position: fixed;
   bottom: 25px;
   left: 50%;
@@ -442,18 +440,15 @@
   position: absolute;
   top: 0px;
   right: 20px;
+  cursor: pointer;
 }
 
-@media (max-width: 1000px) {
-  .order-basket {
-    display: none;
+@media (max-width: 600px) {
+  .order-inner {
+    margin: 55px 0px 0px;
   }
 
-  .order-category {
-    display: none;
-  }
-
-  .checkout-alt {
-    display: block;
+  .order-menu {
+    padding-bottom: 80px;
   }
 }

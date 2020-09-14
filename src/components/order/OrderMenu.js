@@ -11,7 +11,6 @@ import { faShoppingBag, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
-// TODO: Make the "at (later)" thing go down to the row below at some width
 // TODO: Figure out what to do with the FUCKING CATEGORIES!!!!!!!!!!
 
 // TODO: Add a back button to checkout?
@@ -19,10 +18,13 @@ const MEDIA_BREAKPOINT = 1000;
 export default class OrderMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { openModal: false };
+    this.state = { openModal: false, isAltMenu: false };
   }
 
   componentDidMount = () => {
+    if (window.innerWidth < MEDIA_BREAKPOINT) {
+      this.setState({ isAltMenu: true });
+    }
     window.addEventListener("resize", this.handleModalResize);
   };
 
@@ -34,6 +36,12 @@ export default class OrderMenu extends React.Component {
     const width = window.innerWidth;
     if (this.state.openModal && width > MEDIA_BREAKPOINT) {
       this.setState({ openModal: false });
+    }
+    if (this.state.isAltMenu && width > MEDIA_BREAKPOINT) {
+      this.setState({ isAltMenu: false });
+    }
+    if (!this.state.isAltMenu && width < MEDIA_BREAKPOINT) {
+      this.setState({ isAltMenu: true });
     }
   };
 
@@ -48,33 +56,6 @@ export default class OrderMenu extends React.Component {
 
   render() {
     if (!this.props.menu || !this.props.selectedCategory) return null;
-
-    const categoryItems = this.props.menu[this.props.selectedCategory];
-
-    const categories = Object.keys(this.props.menu).map((category) => {
-      return (
-        <OrderCategory
-          key={category}
-          title={category}
-          onCategoryClick={this.props.onCategoryClick}
-          selected={this.props.selectedCategory === category}
-        />
-      );
-    });
-
-    const renderedItems = categoryItems.map((item, index) => {
-      const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
-      return (
-        <MenuItem
-          style={style}
-          key={item.title.en_US}
-          item={item}
-          className={"order-item"}
-          onClick={this.props.onItemClick}
-        />
-      );
-    });
-
     const pricingObject = this.props.priceObject;
 
     let cart;
@@ -133,17 +114,43 @@ export default class OrderMenu extends React.Component {
     }
 
     const numItems = this.calculateNumberItems();
-    const numItemText = numItems === 1 ? "(1 item)" : `(${numItems} items)`;
+
     const altNumItemText = numItems === 1 ? "1 Item in Order" : `${numItems} Items in Order`;
-    return (
-      <div className="order-menu">
+
+    let content;
+    if (!this.state.isAltMenu) {
+      const categoryItems = this.props.menu[this.props.selectedCategory];
+      const categories = Object.keys(this.props.menu).map((category) => {
+        return (
+          <OrderCategory
+            key={category}
+            title={category}
+            onCategoryClick={this.props.onCategoryClick}
+            selected={this.props.selectedCategory === category}
+          />
+        );
+      });
+
+      const renderedItems = categoryItems.map((item, index) => {
+        const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
+        return (
+          <MenuItem
+            style={style}
+            key={item.title.en_US}
+            item={item}
+            className={"order-item"}
+            onClick={this.props.onItemClick}
+          />
+        );
+      });
+
+      const numItemText = numItems === 1 ? "(1 item)" : `(${numItems} items)`;
+      content = [
         <div className="col order-category">
           <p style={{ marginLeft: 15, fontWeight: "bold" }}>Categories</p>
           {categories}
-        </div>
-
-        <div className="col order-items">{renderedItems}</div>
-
+        </div>,
+        <div className="col order-items">{renderedItems}</div>,
         <div className="col order-basket">
           <div className="ob-header">
             <p>Order Summary</p>
@@ -153,9 +160,38 @@ export default class OrderMenu extends React.Component {
           {cart}
           <div className="ob-border" />
           {summary}
-        </div>
+        </div>,
+      ];
+    } else {
+      // TODO: Render all of the fucking items right here right now
+      const categoryItems = this.props.menu[this.props.selectedCategory];
+      const renderedItems = categoryItems.map((item, index) => {
+        const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
+        return (
+          <MenuItem
+            style={style}
+            key={item.title.en_US}
+            item={item}
+            className={"order-item"}
+            onClick={this.props.onItemClick}
+          />
+        );
+      });
+      const altCheckout =
+        numItems !== 0 ? (
+          <div className="checkout-alt" onClick={() => this.setState({ openModal: true })}>
+            {altNumItemText}
+          </div>
+        ) : null;
 
-        {numItems !== 0 ? (
+      content = [<div className="col order-items">{renderedItems}</div>, altCheckout];
+    }
+
+    return (
+      <div className="order-menu">
+        {content}
+
+        {this.state.isAltMenu && numItems !== 0 ? (
           <div className="checkout-alt" onClick={() => this.setState({ openModal: true })}>
             {altNumItemText}
           </div>
