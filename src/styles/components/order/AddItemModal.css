@@ -1,0 +1,175 @@
+/* Modal */
+.addItemModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.2s ease-in-out;
+  z-index: 31;
+  opacity: 0;
+}
+
+.addItemModal--after-open {
+  opacity: 1;
+}
+
+.addItemModal--before-close {
+  opacity: 0;
+}
+
+.m-image {
+  display: block;
+  width: 430px;
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: cover;
+  left: 0;
+  position: relative;
+}
+
+.m-title {
+  position: relative;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding-bottom: 3px;
+  margin: 0px;
+}
+
+.m-desc {
+  font-size: .9rem;
+  margin: 0.5rem 0;
+}
+
+.m-price {
+  margin: 0.5rem 0;
+}
+
+.m-instructions {
+  padding-bottom: 15px;
+  border-bottom: 1px solid gray;
+}
+
+.m-content-container {
+  padding: 25px;
+  max-width: 380px;
+  font-family: Futura;
+}
+
+.m-details {
+  position: relative;
+  border-bottom: 1px solid gray;
+}
+
+.m-request-header {
+  margin-top: 0.5rem;
+  margin-bottom: 5px;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.m-text {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 80px;
+  padding: 8px 16px;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.m-text:focus {
+  outline: none;
+}
+
+.m-text::placeholder {
+  user-select: none;
+}
+
+.textarea-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 10px;
+  user-select: none;
+}
+
+.quantity-container {
+  display: flex;
+  height: 45px;
+  padding: 0px 15px;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+.quantity {
+  width: 35px;
+  text-align: center;
+  user-select: none;
+}
+
+.clickable {
+  padding: 3px;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.m-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 45px;
+  padding: 0px 20px;
+  margin-left: 15px;
+  width: 100%;
+  color: white;
+  background-color: black;
+  user-select: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.m-add p {
+  margin: 0px;
+}
+
+.m-add:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  cursor: pointer;
+  width: 27px;
+  height: 27px;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 26px;
+  background: rgba(25, 25, 25, 1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .35);
+  border: none;
+  padding: 0;
+
+  transition: opacity 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-button:hover {
+  opacity: 0.6;
+}

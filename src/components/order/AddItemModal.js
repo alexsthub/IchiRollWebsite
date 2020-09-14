@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/Order.css";
+import "../../styles/components/order/AddItemModal.css";
 
 import { priceToString } from "../../helpers/utils";
 
@@ -123,7 +123,11 @@ export default class AddItemModal extends React.Component {
         contentLabel="add item modal"
         shouldCloseOnOverlayClick={true}
         closeTimeoutMS={200}
-        overlayClassName={"ReactModal__Overlay"}
+        overlayClassName={{
+          base: "addItemModal",
+          afterOpen: "addItemModal--after-open",
+          beforeClose: "addItemModal--before-close",
+        }}
       >
         {content}
       </Modal>

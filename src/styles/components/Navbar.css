@@ -87,7 +87,7 @@
   width: 100%;
   height: 100vh;
   background-color: #3c342f;
-  z-index: 50;
+  z-index: 30;
   font-family: Futura;
   overflow: auto;
   transition: all 0.3s ease-in-out;
