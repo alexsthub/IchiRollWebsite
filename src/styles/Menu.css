@@ -44,7 +44,7 @@
 .menu-intro {
   font-weight: 500;
   font-size: 1.1em;
-  width: 40%;
+  width: 45%;
 }
 
 .menu-nav {
@@ -186,3 +186,22 @@
   margin: 0px;
   font-size: .8rem;
 }
+
+@media (max-width: 1100px) {
+  .menu-intro {
+    width: 60%;
+  }
+}
+
+@media (max-width: 700px) {
+  .menu-intro {
+    width: 80%;
+  }
+
+}
+
+
+
+/* .menu-hc {
+  padding: 4em 0px;
+} */

@@ -13,7 +13,6 @@ import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
-// TODO: Add a back button to checkout?
 const MEDIA_BREAKPOINT = 1000;
 export default class OrderMenu extends React.Component {
   constructor(props) {
