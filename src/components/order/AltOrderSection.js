@@ -29,15 +29,21 @@ export default class OrderSection extends React.Component {
           item={item}
           className={"order-item"}
           onClick={this.props.onItemClick}
+          style={{ marginBottom: 10 }}
         />
       );
     });
 
     const icon = this.state.showItems ? faChevronUp : faChevronDown;
+    let titleContainerStyle = this.props.index === 0 ? { borderTop: "none" } : null;
 
     return (
       <div>
-        <div className="alt-category-title-container" onClick={this.handleClick}>
+        <div
+          className="alt-category-title-container"
+          onClick={this.handleClick}
+          style={titleContainerStyle}
+        >
           <p className="alt-category-title">{category}</p>
           <FontAwesomeIcon style={{ color: "gray", marginRight: 10 }} icon={icon} size="sm" />
         </div>

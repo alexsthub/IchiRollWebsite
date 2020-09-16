@@ -13,6 +13,7 @@ import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
+// TODO: How do i get the width to work out?
 const MEDIA_BREAKPOINT = 1000;
 export default class OrderMenu extends React.Component {
   constructor(props) {
@@ -165,7 +166,7 @@ export default class OrderMenu extends React.Component {
       ];
     } else {
       const menuCategories = Object.keys(this.props.menu);
-      const totalRenderedItems = menuCategories.map((category) => {
+      const totalRenderedItems = menuCategories.map((category, index) => {
         const categoryItems = this.props.menu[category];
         return (
           <AltOrderSection
@@ -173,6 +174,7 @@ export default class OrderMenu extends React.Component {
             category={category}
             categoryItems={categoryItems}
             onItemClick={this.props.onItemClick}
+            index={index}
           />
         );
       });
@@ -188,7 +190,7 @@ export default class OrderMenu extends React.Component {
           </div>
         ) : null;
       content = [
-        <div className="col order-items" key={"alt-order-items"} style={{ marginTop: 10 }}>
+        <div className="col order-items" key={"alt-order-items"} style={{ marginTop: 0 }}>
           {totalRenderedItems}
         </div>,
         altCheckout,

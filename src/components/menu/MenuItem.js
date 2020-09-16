@@ -29,7 +29,12 @@ export default class MenuItem extends React.Component {
     let content;
     if (!item.media.logo) {
       content = (
-        <div className={`item-container-sm`} onClick={this.handleClick}>
+        <div
+          className={
+            this.props.className ? `${this.props.className} item-container-sm` : "item-container-sm"
+          }
+          onClick={this.handleClick}
+        >
           <div className="item-details-sm">
             <p className="item-title">{item.title.en_US}</p>
             <p className="item-price-sm">{priceToString(item.price)}</p>
