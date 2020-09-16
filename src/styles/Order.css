@@ -12,8 +12,8 @@
 }
 
 .order-inner {
-  width: 70%;
-  /* max-width: 1100px; */
+  width: 80%;
+  max-width: 1100px;
   margin: var(--order-margin) 50px var(--order-margin);
   padding: var(--order-padding) 0px 0px 0px;
   border-radius: 6px;
@@ -454,6 +454,19 @@
 .alt-category-title {
   font-size: 1.2rem;
   margin: 0;
+}
+
+@media (max-width: 1500px) {
+  .order-inner {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .order-inner {
+    margin-top: 55px;
+    width: 100%;
+  }
 }
 
 @media (max-width: 700px) {

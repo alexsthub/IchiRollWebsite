@@ -13,7 +13,6 @@ import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
-// TODO: How do i get the width to work out?
 const MEDIA_BREAKPOINT = 1000;
 export default class OrderMenu extends React.Component {
   constructor(props) {
