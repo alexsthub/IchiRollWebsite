@@ -131,10 +131,6 @@ export default class ConfirmationScreen extends React.Component {
               {/*  */}
             </div>
           </section>
-
-          <footer>
-            <p>Need Assistance?</p>
-          </footer>
         </div>
       </div>
     );

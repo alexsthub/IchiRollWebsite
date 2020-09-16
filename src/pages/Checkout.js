@@ -42,18 +42,18 @@ export default class CheckoutScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Alex Tan",
-      email: "alextan785@gmail.com",
-      phone: "3605151765",
+      name: "",
+      email: "",
+      phone: "",
       notes: "",
-      cardNumber: "413132321212122",
-      cardExpiry: "11/21",
+      cardNumber: "",
+      cardExpiry: "",
       cardSecurity: "",
-      billingName: "Alex Tan",
-      billingAddress: "1785 53rd Loop SE",
-      billingCity: "Olympia",
-      billingState: "WA",
-      billingZip: "98501",
+      billingName: "",
+      billingAddress: "",
+      billingCity: "",
+      billingState: "",
+      billingZip: "",
       inputErrors: {},
 
       cart: [],
