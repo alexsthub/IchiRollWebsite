@@ -26,7 +26,7 @@ import AddItemModal from "../components/order/AddItemModal";
 
 import { Redirect } from "react-router-dom";
 
-// TODO: Maybe I should read scheduledtime for localstorage but if it is not valid anymore then just reset
+// TODO: The order grid size changes when you change categories bc its fucking flex!
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -57,13 +57,51 @@ export default class OrderScreen extends React.Component {
 
     const selectedMenuCategory = Object.keys(this.menu)[0];
     const storageCart = localStorage.getItem("cart");
+    const setTime = localStorage.getItem("time");
     if (storageCart) {
       const cart = JSON.parse(storageCart);
       this.priceObject = this.calculatePrices(cart);
       this.setState({ cart: cart });
     }
-    this.setState({ selectedMenuCategory: selectedMenuCategory });
     this.selectFirstAvailableTime(this.openHours);
+    if (setTime) {
+      const timeObj = JSON.parse(setTime);
+      if (
+        !timeObj.isNow &&
+        this.isAcceptableTime(timeObj.selectedDate, timeObj.selectedTime, this.openHours)
+      ) {
+        this.setState({
+          isNow: timeObj.isNow,
+          selectedDate: timeObj.selectedDate,
+          selectedTime: timeObj.selectedTime,
+        });
+      }
+    }
+    this.setState({ selectedMenuCategory: selectedMenuCategory });
+  };
+
+  isAcceptableTime = (selectedDate, selectedTime, openHours) => {
+    const dateOptions = this.state.dateOptions;
+    if (
+      dateOptions.some((dateOption) => {
+        return dateOption.label === selectedDate.label;
+      })
+    ) {
+      const selectedDateObj = new Date(selectedDate.value);
+      const selectedDayOfWeek = getDayOfWeek(selectedDateObj);
+      const availableHours = getTimeRangesForDay(selectedDateObj, openHours[selectedDayOfWeek]);
+      if (
+        availableHours.some((availableHour) => {
+          const value = availableHour.value;
+          return (
+            value.hour === selectedTime.value.hour && value.minute === selectedTime.value.minute
+          );
+        })
+      ) {
+        return true;
+      }
+    }
+    return false;
   };
 
   selectFirstAvailableTime = (openHours) => {
@@ -115,6 +153,12 @@ export default class OrderScreen extends React.Component {
   };
 
   updateScheduledTime = (selectedDate, selectedTime) => {
+    const setTime = {
+      isNow: this.state.isNow,
+      selectedDate: selectedDate,
+      selectedTime: selectedTime,
+    };
+    localStorage.setItem("time", JSON.stringify(setTime));
     this.setState({ selectedDate: selectedDate, selectedTime: selectedTime });
   };
 
@@ -197,12 +241,6 @@ export default class OrderScreen extends React.Component {
   handleCheckout = (e) => {
     e.preventDefault();
     if (this.state.cart.length === 0) return;
-    const setTime = {
-      isNow: this.state.isNow,
-      selectedDate: this.state.selectedDate,
-      selectedTime: this.state.selectedTime,
-    };
-    localStorage.setItem("time", JSON.stringify(setTime));
     this.setState({ shouldRedirect: true });
   };
 
