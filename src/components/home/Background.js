@@ -3,6 +3,7 @@ import "../../styles/components/home/Background.css";
 
 import Button from "../Button";
 import ImageOverlay from "../ImageOverlay";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -20,10 +21,6 @@ export default class Background extends React.Component {
       const top = ref.offsetHeight + ref.offsetTop - NAVBAR_HEIGHT;
       window.scrollTo({ top: top, behavior: "smooth" });
     }
-  };
-
-  handleOrder = () => {
-    window.open("/order", "_self");
   };
 
   render() {
@@ -44,13 +41,14 @@ export default class Background extends React.Component {
               pClassName="background-button-text"
             />
 
-            <Button
-              text={"ORDER NOW"}
-              onClick={this.handleOrder}
-              icon={<FontAwesomeIcon className="button-icon trans-right" icon={faArrowRight} />}
-              className="background-button"
-              pClassName="background-button-text"
-            />
+            <Link to="/order" style={{ textDecoration: "none" }}>
+              <Button
+                text={"ORDER NOW"}
+                icon={<FontAwesomeIcon className="button-icon trans-right" icon={faArrowRight} />}
+                className="background-button"
+                pClassName="background-button-text"
+              />
+            </Link>
           </div>
         </div>
       </ImageOverlay>

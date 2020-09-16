@@ -11,6 +11,8 @@ import { ABOUT_TEXT } from "../constants/values";
 import { getRestaurantDetails } from "../helpers/utils";
 import { convertRawOpenHours, groupHours } from "../helpers/hoursParser";
 
+import { Link } from "react-router-dom";
+
 import "../styles/App.css";
 
 export default class HomeScreen extends React.Component {
@@ -24,10 +26,6 @@ export default class HomeScreen extends React.Component {
     const openHours = convertRawOpenHours(restaurantDetails.openTimes);
     this.groupedHours = groupHours(openHours);
     this.setState({ loading: false });
-  };
-
-  handleMenuClick = () => {
-    window.open("/menu", "_self");
   };
 
   render() {
@@ -58,12 +56,13 @@ export default class HomeScreen extends React.Component {
                   <p>LOOK AT OUR MENU</p>
                   <p>FULL OF DELICIOUS DISHES</p>
                 </div>
-                <Button
-                  text={"Show Menu"}
-                  onClick={this.handleMenuClick}
-                  className="background-button"
-                  pClassName="background-button-text"
-                />
+                <Link to="/menu" style={{ textDecoration: "none" }}>
+                  <Button
+                    text={"Show Menu"}
+                    className="background-button"
+                    pClassName="background-button-text"
+                  />
+                </Link>
               </div>
             </ImageOverlay>
           </DetailBox>

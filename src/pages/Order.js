@@ -24,8 +24,6 @@ import OrderTime from "../components/order/OrderTime";
 import OrderMenu from "../components/order/OrderMenu";
 import AddItemModal from "../components/order/AddItemModal";
 
-import { Redirect } from "react-router-dom";
-
 const NUM_DAYS_FUTURE = 3;
 export default class OrderScreen extends React.Component {
   constructor(props) {
@@ -39,7 +37,6 @@ export default class OrderScreen extends React.Component {
       selectedMenuCategory: null,
       selectedItem: null,
       cart: [],
-      shouldRedirect: false,
       loading: true,
     };
 
@@ -238,9 +235,10 @@ export default class OrderScreen extends React.Component {
   };
 
   handleCheckout = (e) => {
-    e.preventDefault();
-    if (this.state.cart.length === 0) return;
-    this.setState({ shouldRedirect: true });
+    console.log("hi");
+    if (this.state.cart.length === 0) {
+      e.preventDefault();
+    }
   };
 
   closeModal = () => {
@@ -261,7 +259,6 @@ export default class OrderScreen extends React.Component {
   };
 
   render() {
-    if (this.state.shouldRedirect) return <Redirect to={"/order/checkout"} />;
     const containerClass = `order-outer ${this.state.loading ? "hidden" : "show"}`;
     return (
       <div className={containerClass}>

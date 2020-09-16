@@ -268,17 +268,15 @@
   margin: 0px;
 }
 
-.checkout-container {
-  padding: 0px 20px;
-}
-
 .checkout {
   align-self: center;
-  padding: 15px 0px;
+  padding: 15px 20px;
+  margin: 0px 20px;
   font-size: 1em;
   color: white;
   background-color: black;
   transition: opacity 0.15s ease-in;
+  text-decoration: none;
 
   display: flex;
   justify-content: center;
