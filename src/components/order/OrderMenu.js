@@ -4,14 +4,14 @@ import "../../styles/Order.css";
 import OrderCategory from "./OrderCategory";
 import MenuItem from "../menu/MenuItem";
 import LineItem from "../order/LineItem";
+import AltSummaryModal from "../order/AltSummaryModal";
+import AltOrderSection from "../order/AltOrderSection";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingBag, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 import Modal from "react-modal";
 Modal.setAppElement("#root");
-
-// TODO: Figure out what to do with the FUCKING CATEGORIES!!!!!!!!!!
 
 // TODO: Add a back button to checkout?
 const MEDIA_BREAKPOINT = 1000;
@@ -135,8 +135,8 @@ export default class OrderMenu extends React.Component {
         const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
         return (
           <MenuItem
-            style={style}
             key={item.title.en_US}
+            style={style}
             item={item}
             className={"order-item"}
             onClick={this.props.onItemClick}
@@ -146,12 +146,14 @@ export default class OrderMenu extends React.Component {
 
       const numItemText = numItems === 1 ? "(1 item)" : `(${numItems} items)`;
       content = [
-        <div className="col order-category">
+        <div className="col order-category" key="order-category">
           <p style={{ marginLeft: 15, fontWeight: "bold" }}>Categories</p>
           {categories}
         </div>,
-        <div className="col order-items">{renderedItems}</div>,
-        <div className="col order-basket">
+        <div className="col order-items" key="order-items">
+          {renderedItems}
+        </div>,
+        <div className="col order-basket" key="order-basket">
           <div className="ob-header">
             <p>Order Summary</p>
             <p>{numItemText}</p>
@@ -163,28 +165,35 @@ export default class OrderMenu extends React.Component {
         </div>,
       ];
     } else {
-      // TODO: Render all of the fucking items right here right now
-      const categoryItems = this.props.menu[this.props.selectedCategory];
-      const renderedItems = categoryItems.map((item, index) => {
-        const style = index === categoryItems.length - 1 ? { marginBottom: 0 } : null;
+      const menuCategories = Object.keys(this.props.menu);
+      const totalRenderedItems = menuCategories.map((category) => {
+        const categoryItems = this.props.menu[category];
         return (
-          <MenuItem
-            style={style}
-            key={item.title.en_US}
-            item={item}
-            className={"order-item"}
-            onClick={this.props.onItemClick}
+          <AltOrderSection
+            key={category}
+            category={category}
+            categoryItems={categoryItems}
+            onItemClick={this.props.onItemClick}
           />
         );
       });
+
       const altCheckout =
         numItems !== 0 ? (
-          <div className="checkout-alt" onClick={() => this.setState({ openModal: true })}>
+          <div
+            className="checkout-alt"
+            onClick={() => this.setState({ openModal: true })}
+            key="checkout-alt"
+          >
             {altNumItemText}
           </div>
         ) : null;
-
-      content = [<div className="col order-items">{renderedItems}</div>, altCheckout];
+      content = [
+        <div className="col order-items" key={"alt-order-items"} style={{ marginTop: 10 }}>
+          {totalRenderedItems}
+        </div>,
+        altCheckout,
+      ];
     }
 
     return (
@@ -207,47 +216,3 @@ export default class OrderMenu extends React.Component {
     );
   }
 }
-
-class AltSummaryModal extends React.Component {
-  render() {
-    return (
-      <Modal
-        isOpen={this.props.isOpen}
-        style={customStyles}
-        overlayClassName={{
-          base: "AltSummaryModalOverlay",
-          afterOpen: "AltSummaryModalOverlay--after-open",
-          beforeClose: "AltSummaryModalOverlay--before-close",
-        }}
-        closeTimeoutMS={300}
-      >
-        <div className="alt-summary-container">
-          <div>
-            <p style={{ fontWeight: 600, fontSize: "1.5rem", marginTop: 0 }}>Order Summary</p>
-            <div className="alt-summary-close" onClick={this.props.closeMenu}>
-              <FontAwesomeIcon
-                style={{ fontSize: 24, padding: 5, cursor: "pointer" }}
-                icon={faTimes}
-              />
-            </div>
-          </div>
-          <div className="alt-cart-container">
-            {this.props.cartElement}
-            <div className="ob-border" />
-            {this.props.summaryElement}
-          </div>
-        </div>
-      </Modal>
-    );
-  }
-}
-
-const customStyles = {
-  content: {
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    boxSizing: "border-box",
-  },
-};

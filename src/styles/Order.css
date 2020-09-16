@@ -443,7 +443,24 @@
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
+/* Alt Menu Sections */
+
+.alt-category-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px 10px 5px;
+  border-top: 1px solid lightgray;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.alt-category-title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
   .order-inner {
     margin: 55px 0px 0px;
   }

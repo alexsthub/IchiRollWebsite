@@ -6,7 +6,6 @@ export const tipValues = [
   { label: "Custom", value: null },
 ];
 
-// TODO: Maybe change this to menu.chargesV2 value instead of hardcode
 export const TAX_RATE = 0.102;
 
 export const PHONE_NUMBER = "(206) 363-5100";

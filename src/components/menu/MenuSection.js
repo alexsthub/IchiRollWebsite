@@ -42,7 +42,7 @@ export default class MenuSection extends React.Component {
       );
     });
 
-    const icon = this.state.showItems ? faChevronDown : faChevronUp;
+    const icon = this.state.showItems ? faChevronUp : faChevronDown;
 
     return (
       <div className="section-container" key={title} ref={this.props.refProp}>

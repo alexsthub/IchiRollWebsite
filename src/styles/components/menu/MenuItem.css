@@ -12,6 +12,12 @@
 .item-container-sm {
   display: flex;
   flex-direction: column;
+
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
+  border-radius: 8px;
+
+  text-align: start;
+  margin-bottom: 1rem;
   padding: 20px 10px;
 }
 
@@ -43,6 +49,13 @@
 
 .item-price {
   margin: 0px;
+}
+
+.item-price-sm {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  margin: 0 0 0 15px;
 }
 
 .item-image-container {
