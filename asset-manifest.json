@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/IchiRollWebsite/static/css/main.4a73d13d.chunk.css",
+    "main.css": "/IchiRollWebsite/static/css/main.e14c51ec.chunk.css",
     "main.js": "/IchiRollWebsite/static/js/main.a70dac75.chunk.js",
     "main.js.map": "/IchiRollWebsite/static/js/main.a70dac75.chunk.js.map",
     "runtime-main.js": "/IchiRollWebsite/static/js/runtime-main.a6fb07fa.js",
@@ -9,17 +9,17 @@
     "static/js/2.6d5e63e6.chunk.js": "/IchiRollWebsite/static/js/2.6d5e63e6.chunk.js",
     "static/js/2.6d5e63e6.chunk.js.map": "/IchiRollWebsite/static/js/2.6d5e63e6.chunk.js.map",
     "index.html": "/IchiRollWebsite/index.html",
-    "precache-manifest.faa81a0a764734c1317219965d2a1405.js": "/IchiRollWebsite/precache-manifest.faa81a0a764734c1317219965d2a1405.js",
+    "precache-manifest.f00efe3b2d5971532c8cbe428d0697b1.js": "/IchiRollWebsite/precache-manifest.f00efe3b2d5971532c8cbe428d0697b1.js",
     "service-worker.js": "/IchiRollWebsite/service-worker.js",
     "static/css/2.dd1866a9.chunk.css.map": "/IchiRollWebsite/static/css/2.dd1866a9.chunk.css.map",
-    "static/css/main.4a73d13d.chunk.css.map": "/IchiRollWebsite/static/css/main.4a73d13d.chunk.css.map",
+    "static/css/main.e14c51ec.chunk.css.map": "/IchiRollWebsite/static/css/main.e14c51ec.chunk.css.map",
     "static/js/2.6d5e63e6.chunk.js.LICENSE.txt": "/IchiRollWebsite/static/js/2.6d5e63e6.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a6fb07fa.js",
     "static/css/2.dd1866a9.chunk.css",
     "static/js/2.6d5e63e6.chunk.js",
-    "static/css/main.4a73d13d.chunk.css",
+    "static/css/main.e14c51ec.chunk.css",
     "static/js/main.a70dac75.chunk.js"
   ]
 }
