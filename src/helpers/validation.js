@@ -105,15 +105,18 @@ function validateBillingName(billingName) {
 }
 
 function validateBillingAddress(billingAddress) {
-  return true;
+  if (billingAddress.replace(" ", "").length > 0) {
+    return true;
+  }
+  return false;
 }
 
 function validateBillingCity(billingCity) {
-  return true;
+  return billingCity.replace(" ", "").length > 0;
 }
 
 function validateBillingState(billingState) {
-  return true;
+  return billingState.replace(" ", "").length > 0;
 }
 
 function validateBillingZip(ccZip) {

@@ -308,6 +308,8 @@ export default class CheckoutScreen extends React.Component {
     //     console.log(`Order has been submitted. Order ID is ${submittedOrder.id}.`);
     //   }
     // });
+
+    window.open("/confirmation", "_self");
   };
 
   render() {
@@ -562,6 +564,10 @@ export default class CheckoutScreen extends React.Component {
 
                     <p style={{ color: "#aaa", marginTop: 0 }}>
                       All payments are secure and encrypted.
+                    </p>
+                    <p style={{ color: "#aaa", margin: 0 }}>
+                      *Demo: Hitting complete purchase will move to a static confirmation screen if
+                      fields pass validation.
                     </p>
                   </div>
                 </form>

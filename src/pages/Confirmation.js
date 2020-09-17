@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
+// TODO: Make this responsive
+// TODO: Dockerize and upload
 export default class ConfirmationScreen extends React.Component {
   constructor(props) {
     super(props);
