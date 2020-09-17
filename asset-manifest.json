@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/IchiRollWebsite/static/css/main.ef588132.chunk.css",
-    "main.js": "/IchiRollWebsite/static/js/main.3c4041e8.chunk.js",
-    "main.js.map": "/IchiRollWebsite/static/js/main.3c4041e8.chunk.js.map",
+    "main.js": "/IchiRollWebsite/static/js/main.246903de.chunk.js",
+    "main.js.map": "/IchiRollWebsite/static/js/main.246903de.chunk.js.map",
     "runtime-main.js": "/IchiRollWebsite/static/js/runtime-main.a6fb07fa.js",
     "runtime-main.js.map": "/IchiRollWebsite/static/js/runtime-main.a6fb07fa.js.map",
     "static/css/2.dd1866a9.chunk.css": "/IchiRollWebsite/static/css/2.dd1866a9.chunk.css",
-    "static/js/2.57525be5.chunk.js": "/IchiRollWebsite/static/js/2.57525be5.chunk.js",
-    "static/js/2.57525be5.chunk.js.map": "/IchiRollWebsite/static/js/2.57525be5.chunk.js.map",
+    "static/js/2.315c3be6.chunk.js": "/IchiRollWebsite/static/js/2.315c3be6.chunk.js",
+    "static/js/2.315c3be6.chunk.js.map": "/IchiRollWebsite/static/js/2.315c3be6.chunk.js.map",
     "index.html": "/IchiRollWebsite/index.html",
-    "precache-manifest.35422d2bfe9fad2fdf23f73215a3fb2d.js": "/IchiRollWebsite/precache-manifest.35422d2bfe9fad2fdf23f73215a3fb2d.js",
+    "precache-manifest.917155cb71f6f129469170a2659f5c06.js": "/IchiRollWebsite/precache-manifest.917155cb71f6f129469170a2659f5c06.js",
     "service-worker.js": "/IchiRollWebsite/service-worker.js",
     "static/css/2.dd1866a9.chunk.css.map": "/IchiRollWebsite/static/css/2.dd1866a9.chunk.css.map",
     "static/css/main.ef588132.chunk.css.map": "/IchiRollWebsite/static/css/main.ef588132.chunk.css.map",
-    "static/js/2.57525be5.chunk.js.LICENSE.txt": "/IchiRollWebsite/static/js/2.57525be5.chunk.js.LICENSE.txt"
+    "static/js/2.315c3be6.chunk.js.LICENSE.txt": "/IchiRollWebsite/static/js/2.315c3be6.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a6fb07fa.js",
     "static/css/2.dd1866a9.chunk.css",
-    "static/js/2.57525be5.chunk.js",
+    "static/js/2.315c3be6.chunk.js",
     "static/css/main.ef588132.chunk.css",
-    "static/js/main.3c4041e8.chunk.js"
+    "static/js/main.246903de.chunk.js"
   ]
 }
