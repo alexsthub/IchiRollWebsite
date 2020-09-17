@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/IchiRollWebsite/precache-manifest.d1888e70a893a1471b2c611751ab1e8e.js"
+  "/IchiRollWebsite/precache-manifest.90d26575ff7c94f86e5ad2499c14aa37.js"
 );
 
 self.addEventListener('message', (event) => {
