@@ -8,8 +8,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
+import Footer from "../components/Footer";
+
 // TODO: Make this responsive
-// TODO: Dockerize and upload
+// TODO: Maybe redesign to be longer
+
+// TODO: Make static and put on gh-pages
 export default class ConfirmationScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -51,7 +55,6 @@ export default class ConfirmationScreen extends React.Component {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          paddingBottom: 100,
         }}
       >
         <div className="confirmation">
@@ -134,6 +137,7 @@ export default class ConfirmationScreen extends React.Component {
             </div>
           </section>
         </div>
+        <Footer style={{ marginTop: "auto" }} />
       </div>
     );
   }

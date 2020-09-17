@@ -1,5 +1,4 @@
 import React, { createRef } from "react";
-import { clients } from "wix-restaurants-js-sdk";
 import DropdownOptions from "../components/DropDownOptions";
 
 import ImageOverlay from "../components/ImageOverlay";
@@ -7,6 +6,7 @@ import MenuSection from "../components/menu/MenuSection";
 import constructMenu from "../helpers/menuQuery";
 import Footer from "../components/Footer";
 
+import { getMenuDetails } from "../helpers/utils";
 import "../styles/Menu.css";
 
 export default class MenuScreen extends React.Component {
@@ -27,9 +27,7 @@ export default class MenuScreen extends React.Component {
     window.addEventListener("scroll", this.listenToScroll);
     window.addEventListener("resize", this.resizeListener);
 
-    const organizationId = "258553461683418";
-    const rest = clients.createRestClient();
-    const menuObj = await rest(`/organizations/${organizationId}/menu`);
+    const menuObj = await getMenuDetails();
     const menu = constructMenu(menuObj);
     this.menuOptions = Object.keys(menu);
     this.sectionRefs = this.generateSectionRefs(menu);
