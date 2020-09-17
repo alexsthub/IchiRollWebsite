@@ -25,11 +25,18 @@ export default class Background extends React.Component {
 
   render() {
     return (
-      <ImageOverlay backgroundClass="hero" opacity={0.55} refProp={this.containerRef}>
+      <ImageOverlay
+        backgroundClass="hero"
+        backgroundStyle={{
+          background: `url(${process.env.PUBLIC_URL}/hero-image.png) no-repeat center center fixed`,
+        }}
+        opacity={0.55}
+        refProp={this.containerRef}
+      >
         <div className="flex-center" style={{ fontFamily: "Futura" }}>
           <div style={{ paddingLeft: 20, paddingRight: 20 }}>
             <p className="bc-title">{"Ichi Roll Wok & Teriyaki"}</p>
-            <p className="bc-subtitle">Something something text here maybe.</p>
+            <p className="bc-subtitle">Enjoy the things you love.</p>
           </div>
 
           <div className="background-buttons">

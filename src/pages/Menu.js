@@ -188,7 +188,10 @@ export default class MenuScreen extends React.Component {
           backgroundClass="menu-header"
           opacity={0.3}
           style={{ width: "100%", height: "100%" }}
-          backgroundStyle={{ height: overlayHeight }}
+          backgroundStyle={{
+            height: overlayHeight,
+            background: `url(${process.env.PUBLIC_URL}/menuImage.jpg) no-repeat center center`,
+          }}
         >
           <div className="flex-center">
             <div

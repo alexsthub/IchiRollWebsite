@@ -28,13 +28,12 @@
   font-size: calc(10px + 2vmin);
   z-index: 1;
   min-height: 100vh;
-  background: url("/hero-image.png") no-repeat center center fixed;
 }
+
 
 .sub-hero {
   font-size: calc(10px + 2vmin);
   z-index: 1;
-  background: url("/sub-hero-image.jpg") no-repeat;
   height: 100%;
 }
 

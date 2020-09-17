@@ -8,8 +8,7 @@
 }
 
 .menu-header {
-  background: url("/menuImage.jpg") no-repeat center center;
-  background-size: cover;
+  background-size: cover !important;
   width: 100%;
   color: white;
   z-index: 1;

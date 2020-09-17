@@ -1,6 +1,6 @@
 {
+  "homepage": "http://alexsthub.github.io/IchiRollWebsite",
   "name": "ichirollteriyaki",
-  "home": "http://alexsthub.github.io/ichirollwebsite"
   "version": "0.1.0",
   "private": true,
   "dependencies": {

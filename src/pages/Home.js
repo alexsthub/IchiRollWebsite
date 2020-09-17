@@ -50,6 +50,9 @@ export default class HomeScreen extends React.Component {
               style={{ width: "100%", height: "100%" }}
               opacity={0.45}
               backgroundClass="sub-hero"
+              backgroundStyle={{
+                background: `url(${process.env.PUBLIC_URL}/sub-hero-image.jpg) no-repeat`,
+              }}
             >
               <div className="flex-center">
                 <div className="menu-section">
