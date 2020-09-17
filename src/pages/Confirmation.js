@@ -10,10 +10,6 @@ import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
 import Footer from "../components/Footer";
 
-// TODO: Make this responsive
-// TODO: Maybe redesign to be longer
-
-// TODO: Make static and put on gh-pages
 export default class ConfirmationScreen extends React.Component {
   constructor(props) {
     super(props);

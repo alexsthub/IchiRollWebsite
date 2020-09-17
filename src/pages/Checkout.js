@@ -309,6 +309,7 @@ export default class CheckoutScreen extends React.Component {
     //   }
     // });
 
+    // TODO:
     window.open("/confirmation", "_self");
   };
 

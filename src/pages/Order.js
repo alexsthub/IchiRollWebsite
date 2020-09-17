@@ -235,9 +235,15 @@ export default class OrderScreen extends React.Component {
   };
 
   handleCheckout = (e) => {
-    console.log("hi");
     if (this.state.cart.length === 0) {
       e.preventDefault();
+    } else {
+      const setTime = {
+        isNow: this.state.isNow,
+        selectedDate: this.state.selectedDate,
+        selectedTime: this.state.selectedTime,
+      };
+      localStorage.setItem("time", JSON.stringify(setTime));
     }
   };
 
