@@ -70,7 +70,7 @@
   align-items: center;
   font-family: proxima-nova;
   padding-left: 2.5%;
-  margin-right: 10%;
+  margin-right: 5%;
 }
 
 .selected {
@@ -98,6 +98,9 @@
 .category-dropdown {
   text-align: start;
   margin-right: 2.5%;
+  width: 175px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .section-container {
