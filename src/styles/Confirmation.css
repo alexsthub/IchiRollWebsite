@@ -2,7 +2,12 @@
   padding: 150px 50px;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 3px 10px 0px, rgba(0, 0, 0, 0.01) 0px 1px 0px 0px, rgba(0, 0, 0, 0.01) 0px 0px 5px 0px;
   font-family: Futura;
-  width: 800px;
+  max-width: 800px;
+  width: 70%;
+}
+
+.confirmation h3 {
+  margin: 0;
 }
 
 .flex {
@@ -29,7 +34,7 @@
   padding-bottom: 35px;
   border-bottom: 1px solid #c2c2c2;
 
-  padding: 0px 180px 35px;
+  padding: 0px 0px 35px;
 }
 
 .conf-icon {
@@ -39,8 +44,10 @@
 }
 
 .ch-title {
+  display: inline-block;
   font-size: 2em;
   padding-bottom: 24px;
+  /* white-space: nowrap; */
 }
 
 .ch-order-no {
@@ -75,4 +82,16 @@
   padding-top: 10px;
   border-top: 1px solid #c2c2c2;
   font-size: 1.5em;
+}
+
+@media (max-width: 1000px) {
+  .confirmation {
+    width: 80%;
+  }
+}
+
+@media (max-width: 650px) {
+  .conf-pickup {
+    flex-direction: column;
+  }
 }

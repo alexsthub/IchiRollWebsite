@@ -225,8 +225,8 @@ export default class CheckoutScreen extends React.Component {
   };
 
   handleContinue = (e) => {
-    e.preventDefault();
     if (this.state.activeSection === "primary") {
+      e.preventDefault();
       const errors = validateContactInformation(
         this.state.name,
         this.state.email,
@@ -252,6 +252,7 @@ export default class CheckoutScreen extends React.Component {
         this.state.billingZip
       );
       if (!areAllNullValues(errors)) {
+        e.preventDefault();
         const updatedErrors = { ...this.state.inputErrors, ...errors };
         this.setState({ inputErrors: updatedErrors });
       } else {
@@ -308,9 +309,6 @@ export default class CheckoutScreen extends React.Component {
     //     console.log(`Order has been submitted. Order ID is ${submittedOrder.id}.`);
     //   }
     // });
-
-    // TODO:
-    window.open("/confirmation", "_self");
   };
 
   render() {
@@ -567,8 +565,8 @@ export default class CheckoutScreen extends React.Component {
                       All payments are secure and encrypted.
                     </p>
                     <p style={{ color: "#aaa", margin: 0 }}>
-                      *Demo: Hitting complete purchase will move to a static confirmation screen if
-                      fields pass validation.
+                      *Demo: Hitting complete purchase will move to a hardcoded confirmation screen
+                      if fields pass validation.
                     </p>
                   </div>
                 </form>
@@ -576,9 +574,11 @@ export default class CheckoutScreen extends React.Component {
             </CSSTransition>
           </div>
 
-          <button className="continue" onClick={this.handleContinue} type="submit">
-            {this.state.activeSection === "primary" ? "Continue" : "Complete Purchase"}
-          </button>
+          <Link onClick={this.handleContinue} to="/confirmation">
+            <button className="continue" type="submit">
+              {this.state.activeSection === "primary" ? "Continue" : "Complete Purchase"}
+            </button>
+          </Link>
         </div>
 
         <OrderSummary

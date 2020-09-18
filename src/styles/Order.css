@@ -326,7 +326,7 @@
 .li-desc-c {
   display: flex;
   flex-direction: column;
-  flex: 2 1 0%;
+  flex: 1;
 }
 
 .li-details {
