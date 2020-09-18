@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "32265d572dd0b35ac1c0aaa79fc1e4d5",
+    "revision": "89a24a3227779b2e758ebbb36106b408",
     "url": "/IchiRollWebsite/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/IchiRollWebsite/static/css/2.dd1866a9.chunk.css"
   },
   {
-    "revision": "bf9345fc49246267a16e",
-    "url": "/IchiRollWebsite/static/css/main.ef588132.chunk.css"
+    "revision": "e93b09983e0ed8f05cc1",
+    "url": "/IchiRollWebsite/static/css/main.00e82931.chunk.css"
   },
   {
     "revision": "f4a1c1bb662a661fc975",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/IchiRollWebsite/static/js/2.315c3be6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "bf9345fc49246267a16e",
-    "url": "/IchiRollWebsite/static/js/main.246903de.chunk.js"
+    "revision": "e93b09983e0ed8f05cc1",
+    "url": "/IchiRollWebsite/static/js/main.c26b3fb8.chunk.js"
   },
   {
     "revision": "63df7baaa4d08c13d3ce",
